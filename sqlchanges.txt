@@ -1,0 +1,33 @@
+INSERT INTO public.tbl_reportappconfig(id, code, description, value, type, used) VALUES (34, 'ReportHeaderAddress', 'Address (Printed in Second Header Line)', '', 2, 0);
+INSERT INTO public.tbl_reportappconfig(id, code, description, value, type, used) VALUES (35, 'PrintReviewTableEveryPage', 'PrintReviewTableEveryPage', '0', 2, 0);
+INSERT INTO public.tbl_reportappconfig(id, code, description, value, type, used) VALUES (36, 'PrintAlmAckForAllAlarms', 'PrintAlmAckForAllAlarms', '0', 2, 0);
+
+ALTER TABLE public.tbl_reportsconfiguration
+RENAME COLUMN printalarmsprows TO printalarmsprows1;
+ALTER TABLE public.tbl_reportsconfiguration
+RENAME COLUMN printminmaxrows TO printminmaxrows1;
+
+ALTER TABLE public.tbl_reportsconfiguration
+ADD COLUMN printalarmsprows integer DEFAULT 0;
+ALTER TABLE public.tbl_reportsconfiguration
+ADD COLUMN printminmaxrows integer DEFAULT 0;
+
+
+
+ALTER TABLE public.tbl_reportcolumns
+RENAME COLUMN setpointcheck TO setpointcheck1;
+ALTER TABLE public.tbl_reportcolumns
+ADD COLUMN setpointcheck integer DEFAULT 0;
+
+
+ALTER TABLE public.tbl_reporttemplates
+ADD COLUMN bodyheadermargin integer DEFAULT 0;
+
+
+UPDATE public.tbl_reportcolumns SET setpointcheck=1 where setpointcheck1=true;
+
+UPDATE public.tbl_reportsconfiguration SET printalarmsprows=1 where printalarmsprows1=true;
+UPDATE public.tbl_reportsconfiguration SET printminmaxrows=1 where printminmaxrows1=true;
+
+UPDATE public.tbl_reportcolumns SET enumid=1 where reportid=-1 or reportid=-2;
+UPDATE public.tbl_reportcolumns SET setpointvalue=colseq-1 where reportid=-1 or reportid=-2;

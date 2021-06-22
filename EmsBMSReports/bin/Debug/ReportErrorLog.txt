@@ -1,0 +1,6 @@
+ExecuteSQLinCRACDb Exceltion=ERROR [42703] ERROR: column "id" does not exist;
+Error while executing the query UPDATE TBL_ReportsConfiguration SET ReportToBeGenerated=3, OutputFileName ='Report_2' WHERE ID=2
+ExecuteSQLinCRACDb Exceltion=ERROR [42601] ERROR: syntax error at or near "UDPATE";
+Error while executing the query UDPATE tbl_reportstatus SET  Status=4 WHERE id=34
+ExecuteSQLinCRACDb Exceltion=ERROR [42601] ERROR: syntax error at or near "UDPATE";
+Error while executing the query UDPATE tbl_reportstatus SET  Status=4 WHERE id=34

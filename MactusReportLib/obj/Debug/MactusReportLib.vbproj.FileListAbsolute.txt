@@ -1,0 +1,12 @@
+D:\GitHub\EmsBMSReports\MactusReportLib\obj\Debug\MactusReportLib.Resources.resources
+D:\GitHub\EmsBMSReports\MactusReportLib\obj\Debug\MactusReportLib.vbproj.GenerateResource.cache
+D:\GitHub\EmsBMSReports\MactusReportLib\obj\Debug\MactusReportLib.vbproj.CoreCompileInputs.cache
+D:\GitHub\EmsBMSReports\MactusReportLib\bin\Debug\MactusReportLib.dll
+D:\GitHub\EmsBMSReports\MactusReportLib\bin\Debug\MactusReportLib.pdb
+D:\GitHub\EmsBMSReports\MactusReportLib\bin\Debug\MactusReportLib.xml
+D:\GitHub\EmsBMSReports\MactusReportLib\bin\Debug\itextsharp.dll
+D:\GitHub\EmsBMSReports\MactusReportLib\obj\Debug\MactusReportLib.vbproj.CopyComplete
+D:\GitHub\EmsBMSReports\MactusReportLib\obj\Debug\MactusReportLib.dll
+D:\GitHub\EmsBMSReports\MactusReportLib\obj\Debug\MactusReportLib.xml
+D:\GitHub\EmsBMSReports\MactusReportLib\obj\Debug\MactusReportLib.pdb
+D:\GitHub\EmsBMSReports\MactusReportLib\bin\Debug\itextsharp.xml
