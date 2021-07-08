@@ -1594,7 +1594,7 @@ Public Class EBOReport
                     UpdateReportProgress(nReportStatusID, dtFrom, dtTo, oTime)
                 End While
 
-                If g_bPrintMinMaxRows Then
+                If g_bAddLimitsTable Then
                     PrintMinMaxRows()
                 End If
 
