@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class DlgAlarmReportConfiguration
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,16 +20,12 @@ Partial Class DlgAlarmReportConfiguration
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.bDeleteReport = New System.Windows.Forms.Button()
         Me.oGrid = New System.Windows.Forms.DataGridView()
-        Me.OK_Button = New System.Windows.Forms.Button()
-        Me.Cancel_Button = New System.Windows.Forms.Button()
-        Me.bAddNewReport = New System.Windows.Forms.Button()
-        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.ReportID = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.ReportTemplate = New System.Windows.Forms.DataGridViewComboBoxColumn()
         Me.ReportType = New System.Windows.Forms.DataGridViewComboBoxColumn()
@@ -42,6 +38,11 @@ Partial Class DlgAlarmReportConfiguration
         Me.DefaultTimeInterval = New System.Windows.Forms.DataGridViewComboBoxColumn()
         Me.DataAggType = New System.Windows.Forms.DataGridViewComboBoxColumn()
         Me.ConfCol = New System.Windows.Forms.DataGridViewButtonColumn()
+        Me.OK_Button = New System.Windows.Forms.Button()
+        Me.Cancel_Button = New System.Windows.Forms.Button()
+        Me.bAddNewReport = New System.Windows.Forms.Button()
+        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.bConfigureColumns = New System.Windows.Forms.Button()
         CType(Me.oGrid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
@@ -66,52 +67,6 @@ Partial Class DlgAlarmReportConfiguration
         Me.oGrid.Name = "oGrid"
         Me.oGrid.Size = New System.Drawing.Size(1074, 461)
         Me.oGrid.TabIndex = 5
-        '
-        'OK_Button
-        '
-        Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.OK_Button.Location = New System.Drawing.Point(4, 4)
-        Me.OK_Button.Margin = New System.Windows.Forms.Padding(4)
-        Me.OK_Button.Name = "OK_Button"
-        Me.OK_Button.Size = New System.Drawing.Size(89, 28)
-        Me.OK_Button.TabIndex = 0
-        Me.OK_Button.Text = "Update"
-        '
-        'Cancel_Button
-        '
-        Me.Cancel_Button.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel_Button.Location = New System.Drawing.Point(101, 4)
-        Me.Cancel_Button.Margin = New System.Windows.Forms.Padding(4)
-        Me.Cancel_Button.Name = "Cancel_Button"
-        Me.Cancel_Button.Size = New System.Drawing.Size(89, 28)
-        Me.Cancel_Button.TabIndex = 1
-        Me.Cancel_Button.Text = "Close"
-        '
-        'bAddNewReport
-        '
-        Me.bAddNewReport.Location = New System.Drawing.Point(28, 482)
-        Me.bAddNewReport.Name = "bAddNewReport"
-        Me.bAddNewReport.Size = New System.Drawing.Size(175, 33)
-        Me.bAddNewReport.TabIndex = 6
-        Me.bAddNewReport.Text = "Add New Report"
-        Me.bAddNewReport.UseVisualStyleBackColor = True
-        '
-        'TableLayoutPanel1
-        '
-        Me.TableLayoutPanel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.TableLayoutPanel1.ColumnCount = 2
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(783, 480)
-        Me.TableLayoutPanel1.Margin = New System.Windows.Forms.Padding(4)
-        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-        Me.TableLayoutPanel1.RowCount = 1
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(195, 36)
-        Me.TableLayoutPanel1.TabIndex = 4
         '
         'ReportID
         '
@@ -143,18 +98,18 @@ Partial Class DlgAlarmReportConfiguration
         '
         'ReportTitle
         '
-        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.ReportTitle.DefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.ReportTitle.DefaultCellStyle = DataGridViewCellStyle7
         Me.ReportTitle.HeaderText = "Report Title"
         Me.ReportTitle.Name = "ReportTitle"
         Me.ReportTitle.Width = 300
         '
         'ReportTitlle2
         '
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.ReportTitlle2.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.ReportTitlle2.DefaultCellStyle = DataGridViewCellStyle8
         Me.ReportTitlle2.HeaderText = "Report Title 2"
         Me.ReportTitlle2.Name = "ReportTitlle2"
         Me.ReportTitlle2.Width = 300
@@ -202,11 +157,67 @@ Partial Class DlgAlarmReportConfiguration
         Me.ConfCol.Visible = False
         Me.ConfCol.Width = 80
         '
+        'OK_Button
+        '
+        Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.OK_Button.Location = New System.Drawing.Point(4, 4)
+        Me.OK_Button.Margin = New System.Windows.Forms.Padding(4)
+        Me.OK_Button.Name = "OK_Button"
+        Me.OK_Button.Size = New System.Drawing.Size(89, 28)
+        Me.OK_Button.TabIndex = 0
+        Me.OK_Button.Text = "Update"
+        '
+        'Cancel_Button
+        '
+        Me.Cancel_Button.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.Cancel_Button.Location = New System.Drawing.Point(101, 4)
+        Me.Cancel_Button.Margin = New System.Windows.Forms.Padding(4)
+        Me.Cancel_Button.Name = "Cancel_Button"
+        Me.Cancel_Button.Size = New System.Drawing.Size(89, 28)
+        Me.Cancel_Button.TabIndex = 1
+        Me.Cancel_Button.Text = "Close"
+        '
+        'bAddNewReport
+        '
+        Me.bAddNewReport.Location = New System.Drawing.Point(28, 482)
+        Me.bAddNewReport.Name = "bAddNewReport"
+        Me.bAddNewReport.Size = New System.Drawing.Size(175, 33)
+        Me.bAddNewReport.TabIndex = 6
+        Me.bAddNewReport.Text = "Add New Report"
+        Me.bAddNewReport.UseVisualStyleBackColor = True
+        '
+        'TableLayoutPanel1
+        '
+        Me.TableLayoutPanel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.TableLayoutPanel1.ColumnCount = 2
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(783, 480)
+        Me.TableLayoutPanel1.Margin = New System.Windows.Forms.Padding(4)
+        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+        Me.TableLayoutPanel1.RowCount = 1
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(195, 36)
+        Me.TableLayoutPanel1.TabIndex = 4
+        '
+        'bConfigureColumns
+        '
+        Me.bConfigureColumns.Location = New System.Drawing.Point(498, 484)
+        Me.bConfigureColumns.Name = "bConfigureColumns"
+        Me.bConfigureColumns.Size = New System.Drawing.Size(175, 33)
+        Me.bConfigureColumns.TabIndex = 7
+        Me.bConfigureColumns.Text = "Configure Columns"
+        Me.bConfigureColumns.UseVisualStyleBackColor = True
+        '
         'DlgAlarmReportConfiguration
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1085, 562)
+        Me.Controls.Add(Me.bConfigureColumns)
         Me.Controls.Add(Me.bDeleteReport)
         Me.Controls.Add(Me.oGrid)
         Me.Controls.Add(Me.bAddNewReport)
@@ -244,4 +255,5 @@ Partial Class DlgAlarmReportConfiguration
     Friend WithEvents DefaultTimeInterval As DataGridViewComboBoxColumn
     Friend WithEvents DataAggType As DataGridViewComboBoxColumn
     Friend WithEvents ConfCol As DataGridViewButtonColumn
+    Friend WithEvents bConfigureColumns As Button
 End Class

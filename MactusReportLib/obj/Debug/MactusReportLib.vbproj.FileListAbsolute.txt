@@ -10,3 +10,4 @@ D:\GitHub\EmsBMSReports\MactusReportLib\obj\Debug\MactusReportLib.dll
 D:\GitHub\EmsBMSReports\MactusReportLib\obj\Debug\MactusReportLib.xml
 D:\GitHub\EmsBMSReports\MactusReportLib\obj\Debug\MactusReportLib.pdb
 D:\GitHub\EmsBMSReports\MactusReportLib\bin\Debug\itextsharp.xml
+D:\GitHub\EmsBMSReports\MactusReportLib\obj\Debug\MactusReportLib.vbproj.AssemblyReference.cache

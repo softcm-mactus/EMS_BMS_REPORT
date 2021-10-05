@@ -13,6 +13,9 @@ Public Module MactusReportLib
     Public g_sVersion As String
     Public g_sInFileDir As String = "D:\BMSEMSReports\INPUT"
     Public g_sOutputFileDir As String = "D:\BMSEMSReports\OUTPUT"
+    Public g_sAutoReportFileDir As String
+    Public g_bAutoReportRequired As Boolean = False
+    Public g_nAutoReportStartHour As Integer = 6
     Public g_sTimeFormatIndian As String = "dd-MM-yyyy HH:mm:ss"
     Public g_sColTimeFormatIndian As String = "dd-MM-yyyy HH:mm"
     Public g_sLSpace As String
@@ -422,6 +425,8 @@ Public Module MactusReportLib
             Exit Function
         End If
 
+        g_sAutoReportFileDir = g_sOutputFileDir
+
         If GetPlantConfigParamValue("DateTimeForatString", g_sTimeFormatIndian) = False Then
             MsgBox("ReadConfiguration Parameter DateTimeForatString Not There")
             Exit Function
@@ -512,7 +517,28 @@ Public Module MactusReportLib
             sError = ex.Message
         End Try
 
+        sTemp = ""
+        If GetPlantConfigParamValue("AutoReportRequired", sTemp) = False Then
+            MsgBox("ReadConfiguration Parameter AutoReportRequired Not There. FALSE value is assumed")
+        End If
 
+        Try
+            g_bAutoReportRequired = CBool(sTemp)
+        Catch ex As Exception
+            g_bAutoReportRequired = False
+            sError = ex.Message
+        End Try
+
+        sTemp = 0
+        If GetPlantConfigParamValue("AutoReportStartHour", sTemp) = False Then
+            MsgBox("ReadConfiguration Parameter AutoReportStartHour Not There. 6 value is assumed")
+        End If
+        Try
+            g_nAutoReportStartHour = CInt(sTemp)
+        Catch ex As Exception
+            g_nAutoReportStartHour = 6
+            sError = ex.Message
+        End Try
 
         ReadDatabaseConnection = True
 
@@ -589,7 +615,7 @@ Public Module MactusReportLib
                 oCmd.Parameters.Add("@7", OdbcType.Int).Value = 0
                 oCmd.Parameters.Add("@8", OdbcType.VarChar).Value = sFileName
                 oCmd.Parameters.Add("@9", OdbcType.VarChar).Value = sReportName
-                oCmd.Parameters.Add("@9", OdbcType.Int).Value = nChart
+                oCmd.Parameters.Add("@10", OdbcType.Int).Value = nChart
 
                 oCmd.ExecuteNonQuery()
 
@@ -604,6 +630,124 @@ Public Module MactusReportLib
 
         End Try
     End Function
+
+    Public Sub CreateFolderIfNotThere(ByRef sFolderName)
+        ' Specify the directories you want to manipulate.
+        Dim di As DirectoryInfo = New DirectoryInfo(sFolderName)
+        Try
+            ' Determine whether the directory exists.
+            If di.Exists Then
+                Exit Sub
+            End If
+
+            ' Try to create the directory.
+            di.Create()
+
+        Catch ex As Exception
+            LogError(ex.Message)
+        End Try
+    End Sub
+
+    Public Function GetAutoReportOutputPathName(ByRef nReportId As Integer, ByRef sReportName As String, ByRef sFileName As String, ByRef sPathFileName As String) As Boolean
+        GetAutoReportOutputPathName = False
+
+        Dim sQuery As String
+        Dim oReader As OdbcDataReader
+        Dim nReportType As ReportType
+
+        Dim sDateFolderName As String
+
+        sDateFolderName = Now.Year.ToString() + "_" + Now.Month.ToString() + "_" + Now.Day.ToString()
+
+
+        sQuery = "SELECT * FROM tbl_reportsconfiguration WHERE reportid=" + nReportId.ToString()
+        Try
+            Using oConnection As New OdbcConnection(g_sConString)
+                oConnection.Open()
+                Dim oCmd As New OdbcCommand(sQuery, oConnection)
+                oReader = oCmd.ExecuteReader()
+                If oReader.Read() Then
+                    sReportName = oReader("ReportTitle")
+                    nReportType = oReader("ReportType")
+                    sFileName = sReportName
+                    sFileName = sFileName.Replace(" ", "_")
+                    sFileName = sFileName.Replace(":", "_")
+
+                    sFileName = sFileName + ".pdf"
+                    If nReportType = ReportType.DataReport Then
+                        sPathFileName = g_sAutoReportFileDir + "\DataReports\" + sDateFolderName
+                        CreateFolderIfNotThere(sPathFileName)
+                        sPathFileName = sPathFileName + "\" + sFileName
+                        GetAutoReportOutputPathName = True
+                    ElseIf nReportType = ReportType.AlarmReport Then
+                        sPathFileName = g_sAutoReportFileDir + "\AlarmReports\" + sDateFolderName
+                        CreateFolderIfNotThere(sPathFileName)
+                        sPathFileName = sPathFileName + "\" + sFileName
+                        GetAutoReportOutputPathName = True
+                    Else
+                        GetAutoReportOutputPathName = False
+                    End If
+
+                End If
+                oReader.Close()
+
+                oConnection.Close()
+
+            End Using
+        Catch ex As Exception
+
+        End Try
+
+    End Function
+    Public Function InsertNewAutoReportStatusRecord(ByVal nReportID As Integer, ByRef dtFrom As Date, ByRef dtTo As Date, ByRef nTimeInterval As Integer, ByRef sGeneratedUserName As String, Optional ByVal nChart As Integer = 0) As Long
+        InsertNewAutoReportStatusRecord = 0
+        Dim sQuery As String
+        Dim sFileName As String = ""
+        Dim sPathFileName As String = ""
+        Dim sReportName As String = ""
+
+        If GetAutoReportOutputPathName(nReportID, sReportName, sFileName, sPathFileName) = False Then
+            Exit Function
+        End If
+
+        sQuery = "INSERT INTO tbl_reportstatus (reportid, fromdate, todate, intervalmin, username, outputfilename, status, progress,filename,reporttitle,generatechart) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?) "
+        Try
+            Using oConnection As New OdbcConnection(g_sConString)
+                oConnection.Open()
+                Dim oCmd As New OdbcCommand(sQuery, oConnection)
+                oCmd.Parameters.Add("@0", OdbcType.Int).Value = nReportID
+                If g_bIsGMTTime Then
+                    oCmd.Parameters.Add(GetTimeODBCParam("@1", dtFrom.ToUniversalTime))
+                    oCmd.Parameters.Add(GetTimeODBCParam("@2", dtTo.ToUniversalTime))
+                Else
+                    oCmd.Parameters.Add(GetTimeODBCParam("@1", dtFrom))
+                    oCmd.Parameters.Add(GetTimeODBCParam("@2", dtTo))
+                End If
+                oCmd.Parameters.Add("@3", OdbcType.Int).Value = nTimeInterval
+                oCmd.Parameters.Add("@4", OdbcType.VarChar).Value = sGeneratedUserName
+                oCmd.Parameters.Add("@5", OdbcType.VarChar).Value = sPathFileName
+                oCmd.Parameters.Add("@6", OdbcType.Int).Value = 0
+                oCmd.Parameters.Add("@7", OdbcType.Int).Value = 0
+                oCmd.Parameters.Add("@8", OdbcType.VarChar).Value = sFileName
+                oCmd.Parameters.Add("@9", OdbcType.VarChar).Value = sReportName
+                oCmd.Parameters.Add("@10", OdbcType.Int).Value = nChart
+
+                oCmd.ExecuteNonQuery()
+
+                sQuery = "SELECT @@Identity "
+                oCmd.Parameters.Clear()
+                oCmd.CommandText = sQuery
+
+                InsertNewAutoReportStatusRecord = oCmd.ExecuteScalar()
+
+                oConnection.Close()
+            End Using
+        Catch ex As Exception
+
+        End Try
+    End Function
+
+
 
     Public Sub UpdateReportProgress(ByRef nReportStatusID As Long, ByRef dtfrom As Date, ByRef dtto As Date, ByRef odate As Date)
         Try
@@ -707,6 +851,7 @@ Public Module MactusReportLib
 
         Try
             While m_bStopThread = False
+                GenerateAutoReportRecords()
                 Using oConnection As New OdbcConnection(g_sConString)
                     oConnection.Open()
                     Dim oCmd As New OdbcCommand(sQuery, oConnection)
@@ -770,6 +915,51 @@ Public Module MactusReportLib
         Catch ex As Exception
             LogError(ex.Message)
         End Try
+    End Sub
+
+    Public Sub GenerateAutoReportRecords()
+        Static nReportGeneratedDay As Integer = -1
+
+
+        If g_bAutoReportRequired = False Then
+            Exit Sub
+        End If
+
+        If nReportGeneratedDay <> Now.Day And Now.Hour = g_nAutoReportStartHour Then
+
+            nReportGeneratedDay = Now.Day
+
+            Dim oFromDate As Date
+            Dim oToDate As Date
+            Dim nReportID As Integer
+            Dim nTimeInterval As Integer
+            Dim sQuery As String
+            Dim oReader As OdbcDataReader
+
+            oToDate = Now.AddMilliseconds(-Now.Millisecond)
+            oToDate = oToDate.AddSeconds(-oToDate.Second)
+            oToDate = oToDate.AddMinutes(-oToDate.Minute)
+            oToDate = oToDate.AddHours(-oToDate.Hour)
+            oFromDate = oToDate.AddDays(-1)
+            Try
+                sQuery = "SELECT * FROM  TBL_ReportsConfiguration WHERE ReportType=0 OR ReportType=2 "
+                Using oConnection As New OdbcConnection(g_sConString)
+                    oConnection.Open()
+                    Dim oCmd As New OdbcCommand(sQuery, oConnection)
+                    oReader = oCmd.ExecuteReader()
+                    While oReader.Read()
+                        nReportID = oReader("ReportID")
+                        nTimeInterval = oReader("TimeIntervalInMin")
+                        InsertNewAutoReportStatusRecord(nReportID, oFromDate, oToDate, nTimeInterval, "AutoReport")
+                    End While
+                    oConnection.Close()
+                End Using
+
+            Catch ex As Exception
+
+            End Try
+        End If
+
     End Sub
 
     Public Sub UpdateExceptionInDatabase(ByRef nReportStatusID As Long, ByRef sMessage As String)
@@ -1142,12 +1332,12 @@ Public Module MactusReportLib
                     nIndex = InStrRev(sTemp, "/")
                     sTemp = Strings.Right(sTemp, Len(sTemp) - nIndex)
                     'MsgBox(sTemp)
-                    nIndex = InStr(sTemp, " ")
-                    If nIndex > 0 Then
-                        sPointName = Strings.Left(sTemp, nIndex)
-                    Else
-                        sPointName = sTemp
-                    End If
+                    'nIndex = InStr(sTemp, " ")
+                    'If nIndex > 0 Then
+                    '    sPointName = Strings.Left(sTemp, nIndex)
+                    'Else
+                    sPointName = sTemp
+                    'End If
                     ' MsgBox(sPointName)
                     sQuery = "INSERT INTO tbl_pointidname (id,pointname) VALUES (" + nLogID.ToString() + ",'" + sPointName + "')"
                     ExecuteSQLInDb(sQuery)

@@ -298,4 +298,9 @@ Public Class DlgAlarmReportConfiguration
             End Try
         End If
     End Sub
+
+    Private Sub bConfigureColumns_Click(sender As Object, e As EventArgs) Handles bConfigureColumns.Click
+        Dim oDlg As New DlgConfigureAlarmReportColumns
+        oDlg.ShowDialog()
+    End Sub
 End Class

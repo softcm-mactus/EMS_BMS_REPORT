@@ -27,6 +27,10 @@ Partial Class dlgColumnsConfiguration
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.Cancel_Button = New System.Windows.Forms.Button()
         Me.oGrid = New System.Windows.Forms.DataGridView()
+        Me.bDeleteColumn = New System.Windows.Forms.Button()
+        Me.bAddNewColumn = New System.Windows.Forms.Button()
+        Me.bMoveUp = New System.Windows.Forms.Button()
+        Me.bMoveDown = New System.Windows.Forms.Button()
         Me.colID = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.ColNameInDB = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.ColType = New System.Windows.Forms.DataGridViewComboBoxColumn()
@@ -46,10 +50,6 @@ Partial Class dlgColumnsConfiguration
         Me.SVC = New System.Windows.Forms.DataGridViewCheckBoxColumn()
         Me.SVCT = New System.Windows.Forms.DataGridViewCheckBoxColumn()
         Me.SVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.bDeleteColumn = New System.Windows.Forms.Button()
-        Me.bAddNewColumn = New System.Windows.Forms.Button()
-        Me.bMoveUp = New System.Windows.Forms.Button()
-        Me.bMoveDown = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1.SuspendLayout()
         CType(Me.oGrid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -101,6 +101,42 @@ Partial Class dlgColumnsConfiguration
         Me.oGrid.Size = New System.Drawing.Size(1294, 402)
         Me.oGrid.TabIndex = 1
         '
+        'bDeleteColumn
+        '
+        Me.bDeleteColumn.Location = New System.Drawing.Point(256, 435)
+        Me.bDeleteColumn.Name = "bDeleteColumn"
+        Me.bDeleteColumn.Size = New System.Drawing.Size(175, 33)
+        Me.bDeleteColumn.TabIndex = 5
+        Me.bDeleteColumn.Text = "Delete Column"
+        Me.bDeleteColumn.UseVisualStyleBackColor = True
+        '
+        'bAddNewColumn
+        '
+        Me.bAddNewColumn.Location = New System.Drawing.Point(37, 434)
+        Me.bAddNewColumn.Name = "bAddNewColumn"
+        Me.bAddNewColumn.Size = New System.Drawing.Size(175, 33)
+        Me.bAddNewColumn.TabIndex = 4
+        Me.bAddNewColumn.Text = "Add New Column"
+        Me.bAddNewColumn.UseVisualStyleBackColor = True
+        '
+        'bMoveUp
+        '
+        Me.bMoveUp.Location = New System.Drawing.Point(555, 435)
+        Me.bMoveUp.Name = "bMoveUp"
+        Me.bMoveUp.Size = New System.Drawing.Size(175, 33)
+        Me.bMoveUp.TabIndex = 6
+        Me.bMoveUp.Text = "Move Row Up"
+        Me.bMoveUp.UseVisualStyleBackColor = True
+        '
+        'bMoveDown
+        '
+        Me.bMoveDown.Location = New System.Drawing.Point(753, 435)
+        Me.bMoveDown.Name = "bMoveDown"
+        Me.bMoveDown.Size = New System.Drawing.Size(175, 33)
+        Me.bMoveDown.TabIndex = 7
+        Me.bMoveDown.Text = "Move Row Down"
+        Me.bMoveDown.UseVisualStyleBackColor = True
+        '
         'colID
         '
         Me.colID.HeaderText = "colid"
@@ -135,7 +171,7 @@ Partial Class dlgColumnsConfiguration
         'ColJust
         '
         Me.ColJust.HeaderText = "Justification"
-        Me.ColJust.Items.AddRange(New Object() {"center", "left", "right"})
+        Me.ColJust.Items.AddRange(New Object() {"Center", "Left", "Right"})
         Me.ColJust.Name = "ColJust"
         '
         'ColHeader
@@ -222,42 +258,6 @@ Partial Class dlgColumnsConfiguration
         Me.SVV.Name = "SVV"
         Me.SVV.Width = 50
         '
-        'bDeleteColumn
-        '
-        Me.bDeleteColumn.Location = New System.Drawing.Point(256, 435)
-        Me.bDeleteColumn.Name = "bDeleteColumn"
-        Me.bDeleteColumn.Size = New System.Drawing.Size(175, 33)
-        Me.bDeleteColumn.TabIndex = 5
-        Me.bDeleteColumn.Text = "Delete Column"
-        Me.bDeleteColumn.UseVisualStyleBackColor = True
-        '
-        'bAddNewColumn
-        '
-        Me.bAddNewColumn.Location = New System.Drawing.Point(37, 434)
-        Me.bAddNewColumn.Name = "bAddNewColumn"
-        Me.bAddNewColumn.Size = New System.Drawing.Size(175, 33)
-        Me.bAddNewColumn.TabIndex = 4
-        Me.bAddNewColumn.Text = "Add New Column"
-        Me.bAddNewColumn.UseVisualStyleBackColor = True
-        '
-        'bMoveUp
-        '
-        Me.bMoveUp.Location = New System.Drawing.Point(555, 435)
-        Me.bMoveUp.Name = "bMoveUp"
-        Me.bMoveUp.Size = New System.Drawing.Size(175, 33)
-        Me.bMoveUp.TabIndex = 6
-        Me.bMoveUp.Text = "Move Row Up"
-        Me.bMoveUp.UseVisualStyleBackColor = True
-        '
-        'bMoveDown
-        '
-        Me.bMoveDown.Location = New System.Drawing.Point(753, 435)
-        Me.bMoveDown.Name = "bMoveDown"
-        Me.bMoveDown.Size = New System.Drawing.Size(175, 33)
-        Me.bMoveDown.TabIndex = 7
-        Me.bMoveDown.Text = "Move Row Down"
-        Me.bMoveDown.UseVisualStyleBackColor = True
-        '
         'dlgColumnsConfiguration
         '
         Me.AcceptButton = Me.OK_Button
@@ -291,6 +291,8 @@ Partial Class dlgColumnsConfiguration
     Friend WithEvents oGrid As DataGridView
     Friend WithEvents bDeleteColumn As Button
     Friend WithEvents bAddNewColumn As Button
+    Friend WithEvents bMoveUp As Button
+    Friend WithEvents bMoveDown As Button
     Friend WithEvents colID As DataGridViewTextBoxColumn
     Friend WithEvents ColNameInDB As DataGridViewTextBoxColumn
     Friend WithEvents ColType As DataGridViewComboBoxColumn
@@ -310,6 +312,4 @@ Partial Class dlgColumnsConfiguration
     Friend WithEvents SVC As DataGridViewCheckBoxColumn
     Friend WithEvents SVCT As DataGridViewCheckBoxColumn
     Friend WithEvents SVV As DataGridViewTextBoxColumn
-    Friend WithEvents bMoveUp As Button
-    Friend WithEvents bMoveDown As Button
 End Class

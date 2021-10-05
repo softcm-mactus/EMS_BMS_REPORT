@@ -53,7 +53,6 @@ D:\GitHub\EmsBMSReports\MactusReportWeb\bin\roslyn\VBCSCompiler.exe
 D:\GitHub\EmsBMSReports\MactusReportWeb\bin\roslyn\VBCSCompiler.exe.config
 D:\GitHub\EmsBMSReports\MactusReportWeb\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
 D:\GitHub\EmsBMSReports\MactusReportWeb\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-D:\GitHub\EmsBMSReports\MactusReportWeb\obj\Release\MactusReportWeb.vbprojAssemblyReference.cache
 D:\GitHub\EmsBMSReports\MactusReportWeb\obj\Release\MactusReportWeb.Resources.resources
 D:\GitHub\EmsBMSReports\MactusReportWeb\obj\Release\MactusReportWeb.vbproj.GenerateResource.cache
 D:\GitHub\EmsBMSReports\MactusReportWeb\obj\Release\MactusReportWeb.vbproj.CoreCompileInputs.cache
@@ -64,4 +63,6 @@ D:\GitHub\EmsBMSReports\MactusReportWeb\obj\Release\MactusReportWeb.pdb
 D:\GitHub\EmsBMSReports\MactusReportWeb\bin\MactusReportLib.dll
 D:\GitHub\EmsBMSReports\MactusReportWeb\bin\MactusReportLib.pdb
 D:\GitHub\EmsBMSReports\MactusReportWeb\bin\MactusReportLib.xml
+D:\GitHub\EmsBMSReports\MactusReportWeb\obj\Release\MactusReportWeb.vbproj.AssemblyReference.cache
 D:\GitHub\EmsBMSReports\MactusReportWeb\bin\itextsharp.dll
+D:\GitHub\EmsBMSReports\MactusReportWeb\bin\itextsharp.xml

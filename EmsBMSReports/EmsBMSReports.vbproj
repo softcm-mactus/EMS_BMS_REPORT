@@ -90,10 +90,22 @@
     <Compile Include="DlgAlarmReportConfiguration.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="DlgAppConfiguration.Designer.vb">
+      <DependentUpon>DlgAppConfiguration.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DlgAppConfiguration.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="dlgColumnsConfiguration.Designer.vb">
       <DependentUpon>dlgColumnsConfiguration.vb</DependentUpon>
     </Compile>
     <Compile Include="dlgColumnsConfiguration.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DlgConfigureAlarmReportColumns.Designer.vb">
+      <DependentUpon>DlgConfigureAlarmReportColumns.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DlgConfigureAlarmReportColumns.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="DlgNewGroup.Designer.vb">
@@ -162,8 +174,14 @@
     <EmbeddedResource Include="DlgAlarmReportConfiguration.resx">
       <DependentUpon>DlgAlarmReportConfiguration.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="DlgAppConfiguration.resx">
+      <DependentUpon>DlgAppConfiguration.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="dlgColumnsConfiguration.resx">
       <DependentUpon>dlgColumnsConfiguration.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DlgConfigureAlarmReportColumns.resx">
+      <DependentUpon>DlgConfigureAlarmReportColumns.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DlgNewGroup.resx">
       <DependentUpon>DlgNewGroup.vb</DependentUpon>

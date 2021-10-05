@@ -75,6 +75,7 @@ Partial Class DlgSelectEnumID
         Me.bUpdate.TabIndex = 1
         Me.bUpdate.Text = "Update"
         Me.bUpdate.UseVisualStyleBackColor = True
+        Me.bUpdate.Visible = False
         '
         'bSelect
         '

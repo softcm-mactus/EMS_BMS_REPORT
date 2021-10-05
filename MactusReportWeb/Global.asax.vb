@@ -9,7 +9,11 @@ Public Class Global_asax
             g_sOutputFileDir = Server.MapPath("Output")
             g_sInFileDir = Server.MapPath("~")
             g_bError = False
-            StartThread()
+
+            If g_bAutoReportRequired = False Then
+                StartThread()
+            End If
+
         Else
             g_bError = True
             g_sErrorText = sTemp

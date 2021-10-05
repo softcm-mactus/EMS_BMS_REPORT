@@ -2,6 +2,8 @@ D:\GitHub\EmsBMSReports\MactusReportLib\bin\Release\MactusReportLib.dll
 D:\GitHub\EmsBMSReports\MactusReportLib\bin\Release\MactusReportLib.pdb
 D:\GitHub\EmsBMSReports\MactusReportLib\bin\Release\MactusReportLib.xml
 D:\GitHub\EmsBMSReports\MactusReportLib\bin\Release\itextsharp.dll
+D:\GitHub\EmsBMSReports\MactusReportLib\bin\Release\itextsharp.xml
+D:\GitHub\EmsBMSReports\MactusReportLib\obj\Release\MactusReportLib.vbproj.AssemblyReference.cache
 D:\GitHub\EmsBMSReports\MactusReportLib\obj\Release\MactusReportLib.Resources.resources
 D:\GitHub\EmsBMSReports\MactusReportLib\obj\Release\MactusReportLib.vbproj.GenerateResource.cache
 D:\GitHub\EmsBMSReports\MactusReportLib\obj\Release\MactusReportLib.vbproj.CoreCompileInputs.cache
@@ -9,5 +11,3 @@ D:\GitHub\EmsBMSReports\MactusReportLib\obj\Release\MactusReportLib.vbproj.CopyC
 D:\GitHub\EmsBMSReports\MactusReportLib\obj\Release\MactusReportLib.dll
 D:\GitHub\EmsBMSReports\MactusReportLib\obj\Release\MactusReportLib.xml
 D:\GitHub\EmsBMSReports\MactusReportLib\obj\Release\MactusReportLib.pdb
-D:\GitHub\EmsBMSReports\MactusReportLib\bin\Release\itextsharp.xml
-D:\GitHub\EmsBMSReports\MactusReportLib\obj\Release\MactusReportLib.vbprojAssemblyReference.cache

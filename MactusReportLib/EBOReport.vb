@@ -1097,7 +1097,7 @@ Public Class EBOReport
                             Dim fValue As Single = 0.0
 
                             nPointID = CInt(g_oColList(nCol).m_sColumnNameinTable)
-                            If GetPointIDValue(nPointID, oTime, g_oColList(nCol).m_sColFormat, fValue, True) Then
+                            If GetPointIDValue(nPointID, oTime, fValue, True) Then
                                 bDataFound = True
                                 Try
                                     oTrendChartList(nCol).Series(g_oColList(nCol).m_nDataChartSeiries).Points.AddXY(oPrintTime, fValue)
@@ -1134,7 +1134,7 @@ Public Class EBOReport
                             If g_oColList(nCol).m_bHighCheck And nCounter = 0 Then
                                 If g_oColList(nCol).m_nHighCheckType = 1 Then
                                     nPointID = CInt(g_oColList(nCol).m_fHigh)
-                                    GetPointIDValue(nPointID, oTime, g_oColList(nCol).m_sColFormat, fValue, False)
+                                    GetPointIDValue(nPointID, oTime, fValue, False)
                                 Else
                                     fValue = g_oColList(nCol).m_fHigh
                                 End If
@@ -1144,7 +1144,7 @@ Public Class EBOReport
                             If g_oColList(nCol).m_bLowCheck And nCounter = 0 Then
                                 If g_oColList(nCol).m_nLowCheckType = 1 Then
                                     nPointID = CInt(g_oColList(nCol).m_fLow)
-                                    GetPointIDValue(nPointID, oTime, g_oColList(nCol).m_sColFormat, fValue, False)
+                                    GetPointIDValue(nPointID, oTime, fValue, False)
                                 Else
                                     fValue = g_oColList(nCol).m_fLow
                                 End If
@@ -1551,7 +1551,10 @@ Public Class EBOReport
                         bResult = GetColValues(oTime, nTimeInterval)
                     End If
 
-                    If bResult = True Or (bResult = False And g_bEanbleErrorTextPrint = True) Then
+
+                    If (bResult = True Or (bResult = False And g_bEanbleErrorTextPrint = True)) Then
+
+
 
                         Dim oTable = New PdfPTable(g_oColList.Count)
                         oTable.TotalWidth = g_oDoc.PageSize.Width - 3 * g_fSideMargin
@@ -1974,6 +1977,14 @@ Public Class EBOReport
                                 nEventTypeID = 0
                                 sValues(2) = ""
                             End Try
+
+                            If nEventTypeID >= 2 And nEventTypeID <= 10 Then
+                                Try
+                                    sValues(1) = oReader("description")
+                                Catch ex As Exception
+                                    sValues(1) = ""
+                                End Try
+                            End If
                             Try
                                 sValues(3) = oReader("valuebefore")
                             Catch
@@ -2795,7 +2806,7 @@ Public Class EBOReport
                     If g_oColList(nIndex).m_nLowCheckType = 1 Then
                         Try
                             Dim nPointID As Integer = CInt(g_oColList(nIndex).m_fLow)
-                            If GetPointIDValue(nPointID, oStartDate, g_oColList(nIndex).m_sColFormat, g_oColList(nIndex).m_fLow, False) = True Then
+                            If GetPointIDValue(nPointID, oStartDate, g_oColList(nIndex).m_fLow, False) = True Then
                                 sTemp = g_oColList(nIndex).m_fLow.ToString(g_oColList(nIndex).m_sColFormat)
                             End If
                         Catch ex As Exception
@@ -2834,7 +2845,7 @@ Public Class EBOReport
                     If g_oColList(nIndex).m_nSPCheckType = 1 Then
                         Try
                             Dim nPointID As Integer = CInt(g_oColList(nIndex).m_fSP)
-                            If GetPointIDValue(nPointID, oStartDate, g_oColList(nIndex).m_sColFormat, g_oColList(nIndex).m_fSP, False) Then
+                            If GetPointIDValue(nPointID, oStartDate, g_oColList(nIndex).m_fSP, False) Then
                                 sTemp = g_oColList(nIndex).m_fSP.ToString(g_oColList(nIndex).m_sColFormat)
                             End If
                         Catch ex As Exception
@@ -2872,7 +2883,7 @@ Public Class EBOReport
                     If g_oColList(nIndex).m_nHighCheckType = 1 Then
                         Try
                             Dim nPointID As Integer = CInt(g_oColList(nIndex).m_fHigh)
-                            If GetPointIDValue(nPointID, oStartDate, g_oColList(nIndex).m_sColFormat, g_oColList(nIndex).m_fHigh, False) = True Then
+                            If GetPointIDValue(nPointID, oStartDate, g_oColList(nIndex).m_fHigh, False) = True Then
                                 sTemp = g_oColList(nIndex).m_fHigh.ToString(g_oColList(nIndex).m_sColFormat)
                             End If
                         Catch ex As Exception
@@ -2897,7 +2908,49 @@ Public Class EBOReport
         g_oDoc.Add(oTable)
     End Sub
 
-    Public Function GetPointIDValue(ByRef nPointID As Integer, ByRef oStartDate As Date, ByRef sFormat As String, ByRef fValue As Single, ByRef bIsPoint As Boolean) As Boolean
+
+    Public Function IsPointDataAvailable(ByRef nPointID As Integer, ByRef oStartDate As Date) As Boolean
+        IsPointDataAvailable = False
+        Dim oFromDate As Date
+        Dim sQuery As String
+
+        Dim nCount As Integer
+
+        oFromDate = oStartDate.AddSeconds(-30)
+
+        sQuery = "SELECT count(*) FROM trend_data WHERE timestamp > ? AND  timestamp < ?  AND Value IS NOT NULL AND externallogid =" + nPointID.ToString()
+
+
+        Using oConnection As New OdbcConnection(g_sEMSDbConString)
+            Dim cmd As New OdbcCommand(sQuery, oConnection)
+            oConnection.Open()
+            cmd.Parameters.Add(GetTimeODBCParam("@0", oFromDate))
+
+            cmd.Parameters.Add(GetTimeODBCParam("@1", oFromDate.AddMinutes(1)))
+
+            Try
+                nCount = cmd.ExecuteScalar
+                IsPointDataAvailable = CBool(nCount)
+
+            Catch ex As Exception
+
+            End Try
+            oConnection.Close()
+
+
+        End Using
+
+
+
+
+
+    End Function
+
+
+
+
+
+    Public Function GetPointIDValue(ByRef nPointID As Integer, ByRef oStartDate As Date, ByRef fValue As Single, ByRef bIsPoint As Boolean) As Boolean
         GetPointIDValue = False
         Dim oFromDate As Date
         Dim sQuery As String
@@ -2905,7 +2958,7 @@ Public Class EBOReport
 
         oFromDate = oStartDate.AddSeconds(-30)
         If bIsPoint = False Then
-            sQuery = "SELECT Value FROM trend_data WHERE timestamp > ? AND  timestamp < ?  AND Value IS NOT NULL AND externallogid =" + nPointID.ToString() + " order by timestamp Limit 1"
+            sQuery = "SELECT Value FROM trend_data WHERE timestamp > ? AND  timestamp < ?  AND Value IS NOT NULL AND externallogid =" + nPointID.ToString() + " Limit 1"
         Else
             sQuery = "SELECT Value FROM trend_data WHERE timestamp > ? AND Value IS NOT NULL AND externallogid =" + nPointID.ToString() + " order by timestamp Limit 1"
         End If
@@ -2939,8 +2992,11 @@ Public Class EBOReport
                 oReader.Close()
             Catch ex As Exception
                 AddDebugMessageToReport(g_oDoc, ex.Message)
+                'MsgBox(ex.Message)
             End Try
             oConnection.Close()
+
+
         End Using
 
 

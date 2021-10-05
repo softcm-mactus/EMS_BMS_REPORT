@@ -68,190 +68,71 @@ Public Class DlgReportsConfiguration
 
     Private Function UpdateGridData() As Boolean
         Dim sQuery As String
-        Dim oReader As OdbcDataReader
         Dim nRow As Integer
-        Dim nReportType As ReportType
         Dim nReportID As Integer
 
         UpdateGridData = False
 
         Try
-            sQuery = "SELECT * FROM tbl_reportsconfiguration  ORDER BY reportid"
+            For nRow = 0 To oGrid.Rows.Count - 1
 
-            Using oConnection As New OdbcConnection(g_sConString)
-                oConnection.Open()
-                Dim oCmd As New OdbcCommand(sQuery, oConnection)
-                oReader = oCmd.ExecuteReader()
-                While oReader.Read()
-                    nReportType = oReader("reporttype")
-                    nReportID = oReader("reportid")
-                    If nReportType = MactusReportLib.ReportType.DataReport Then
-                        Dim bFound As Boolean = False
-                        For nRow = 0 To oGrid.Rows.Count - 1
-                            If oGrid.Rows(nRow).Cells(0).Value = oReader("reportid") Then
-                                sQuery = "UPDATE tbl_reportsconfiguration "
-                                sQuery += " SET templateid=" + GetTemplateID(oGrid.Rows(nRow).Cells(1).Value).ToString
-                                'sQuery += " SET reporttype=" + GetTemplateID(oGrid.Rows(nRow).Cells(2).Value).ToString
-                                sQuery += ", almgroupid=" + GetGroupID(oGrid.Rows(nRow).Cells(3).Value).ToString
-                                sQuery += ", reporttitle='" + oGrid.Rows(nRow).Cells(4).Value.ToString + "'"
-                                sQuery += ", reportheader='" + oGrid.Rows(nRow).Cells(5).Value.ToString + "'"
-                                If oGrid.Rows(nRow).Cells(6).Value Then
-                                    sQuery += ", generatedtime=1"
-                                Else
-                                    sQuery += ", generatedtime=0"
-                                End If
-                                If oGrid.Rows(nRow).Cells(7).Value Then
-                                    sQuery += ", generatedby=1"
-                                Else
-                                    sQuery += ", generatedby=0"
-                                End If
-                                If oGrid.Rows(nRow).Cells(8).Value Then
-                                    sQuery += ", fromtodatesprinted=1"
-                                Else
-                                    sQuery += ", fromtodatesprinted=0"
-                                End If
+                nReportID = oGrid.Rows(nRow).Cells(0).Value
 
-                                sQuery += ",  timeintervalinmin=" + oGrid.Rows(nRow).Cells(9).Value.ToString
+                sQuery = "UPDATE tbl_reportsconfiguration SET templateid=?, almgroupid=?,reporttitle=?,reportheader=?,generatedtime=?,generatedby=?,fromtodatesprinted=?,timeintervalinmin=?,dataaggregationtype=?,PrintMinMaxRows=?,PrintAlarmSpRows=? WHERE reportid=" + nReportID.ToString()
+                Using oUpdateConnection As New OdbcConnection(g_sConString)
+                    oUpdateConnection.Open()
+                    Dim oUpdateCmd As New OdbcCommand(sQuery, oUpdateConnection)
+                    oUpdateCmd.Parameters.Add("@0", OdbcType.Int).Value = GetTemplateID(oGrid.Rows(nRow).Cells(1).Value) 'templateid
+                    oUpdateCmd.Parameters.Add("@1", OdbcType.Int).Value = GetGroupID(oGrid.Rows(nRow).Cells(3).Value) 'almgroupid
+                    oUpdateCmd.Parameters.Add("@2", OdbcType.VarChar).Value = oGrid.Rows(nRow).Cells(4).Value 'reporttitle
+                    oUpdateCmd.Parameters.Add("@3", OdbcType.VarChar).Value = oGrid.Rows(nRow).Cells(5).Value 'reportheader
 
-                                Dim nAggtype As DataAgg = [Enum].Parse(GetType(DataAgg), oGrid.Rows(nRow).Cells(10).Value.ToString)
-                                sQuery += ",  dataaggregationtype=" + Str(nAggtype)
-
-                                If oGrid.Rows(nRow).Cells(12).Value Then
-                                    sQuery += ", PrintMinMaxRows=1"
-                                Else
-                                    sQuery += ", PrintMinMaxRows=0"
-                                End If
-                                If oGrid.Rows(nRow).Cells(13).Value Then
-                                    sQuery += ", PrintAlarmSpRows=1"
-                                Else
-                                    sQuery += ", PrintAlarmSpRows=0"
-                                End If
-
-                            sQuery += " where reportid=" + nReportID.ToString()
-                                ExecuteSQLInDb(sQuery)
-                                bFound = True
-                            End If
-                        Next
-
-                        If bFound = False Then
-                            sQuery = "DELETE FROM tbl_reportcolumns WHERE reportid=" + nReportID.ToString()
-                            ExecuteSQLInDb(sQuery)
-                            sQuery = "DELETE FROM tbl_reportsconfiguration WHERE reportid=" + nReportID.ToString()
-                            ExecuteSQLInDb(sQuery)
-                        End If
+                    If oGrid.Rows(nRow).Cells(6).Value Then
+                        oUpdateCmd.Parameters.Add("@4", OdbcType.Int).Value = 1 'generatedtime
+                    Else
+                        oUpdateCmd.Parameters.Add("@4", OdbcType.Int).Value = 0 'generatedtime
                     End If
-                End While
-                oConnection.Close()
-            End Using
+
+                    If oGrid.Rows(nRow).Cells(7).Value Then 'generatedby
+                        oUpdateCmd.Parameters.Add("@5", OdbcType.Int).Value = 1
+                    Else
+                        oUpdateCmd.Parameters.Add("@5", OdbcType.Int).Value = 1
+                    End If
+
+                    If oGrid.Rows(nRow).Cells(8).Value Then 'fromtodatesprinted
+                        oUpdateCmd.Parameters.Add("@6", OdbcType.Int).Value = 1
+                    Else
+                        oUpdateCmd.Parameters.Add("@6", OdbcType.Int).Value = 1
+                    End If
+
+                    oUpdateCmd.Parameters.Add("@7", OdbcType.Int).Value = oGrid.Rows(nRow).Cells(9).Value 'timeintervalinmin
+
+                    Dim nAggtype As DataAgg = [Enum].Parse(GetType(DataAgg), oGrid.Rows(nRow).Cells(10).Value.ToString)
+                    oUpdateCmd.Parameters.Add("@8", OdbcType.Int).Value = nAggtype 'dataaggregationtype
+
+
+                    If oGrid.Rows(nRow).Cells(12).Value Then 'PrintMinMaxRows
+                        oUpdateCmd.Parameters.Add("@9", OdbcType.Int).Value = 1
+                    Else
+                        oUpdateCmd.Parameters.Add("@9", OdbcType.Int).Value = 1
+                    End If
+
+                    If oGrid.Rows(nRow).Cells(13).Value Then 'PrintAlarmSpRows
+                        oUpdateCmd.Parameters.Add("@10", OdbcType.Int).Value = 1
+                    Else
+                        oUpdateCmd.Parameters.Add("@10", OdbcType.Int).Value = 1
+                    End If
+
+                    oUpdateCmd.ExecuteNonQuery()
+                    oUpdateConnection.Close()
+                End Using
+            Next
+
         Catch ex As Exception
             UpdateGridData = False
         End Try
 
-        Dim nTemp As Integer
-        Dim sTemp As String
 
-        For nRow = 0 To oGrid.Rows.Count - 1
-            Try
-                nReportID = oGrid.Rows(nRow).Cells(0).Value
-                If nReportID = 0 Then
-                    sQuery = "INSERT INTO tbl_reportsconfiguration (templateid, reporttype, almgroupid, reporttitle, reportheader, generatedtime, generatedby, fromtodatesprinted, datatablename, timeintervalinmin, dataaggregationtype,PrintAlarmSpRows,PrintMinMaxRows )VALUES ("
-                    Try
-                        sTemp = oGrid.Rows(nRow).Cells(1).Value
-                    Catch ex As Exception
-                        sTemp = ""
-                    End Try
-                    nTemp = GetTemplateID(sTemp)
-                    sQuery += nTemp.ToString + ",0," 'Template ID, Report Type
-
-                    Try
-                        sTemp = oGrid.Rows(nRow).Cells(3).Value
-                    Catch ex As Exception
-                        sTemp = 0
-                    End Try
-                    sQuery += GetGroupID(sTemp).ToString() + "," 'almgroupid
-
-                    Try
-                        sTemp = oGrid.Rows(nRow).Cells(4).Value.ToString() 'reporttitle
-                        If sTemp Is Nothing Then
-                            sTemp = ""
-                        End If
-                    Catch ex As Exception
-                        sTemp = ""
-                    End Try
-                    If sTemp.Length() <= 5 Then
-                        MsgBox("Title Should Be Minimum 5 characters")
-                        Exit For
-                    End If
-
-
-                    sQuery += "'" + sTemp + "',"    'reportheader
-
-                    Try
-                        sTemp = oGrid.Rows(nRow).Cells(5).Value
-                    Catch ex As Exception
-                        sTemp = ""
-                    End Try
-                    If sTemp Is Nothing Then
-                        sTemp = ""
-                    End If
-                    sQuery += "'" + sTemp + "',"
-
-                    If oGrid.Rows(nRow).Cells(6).Value Then
-                        sQuery += "1,"
-                    Else
-                        sQuery += "0,"
-                    End If
-
-                    If oGrid.Rows(nRow).Cells(7).Value Then
-                        sQuery += "1,"
-                    Else
-                        sQuery += "0,"
-                    End If
-                    If oGrid.Rows(nRow).Cells(8).Value Then
-                        sQuery += "1,"
-                    Else
-                        sQuery += "0,"
-                    End If
-                    If g_bIsBMS Then
-                        sQuery += "'trend_data',"
-                    Else
-                        sQuery += "'TREND001',"
-                    End If
-
-                    Dim nAggtype As DataAgg = [Enum].Parse(GetType(DataAgg), oGrid.Rows(nRow).Cells(10).Value.ToString)
-
-                    sQuery += oGrid.Rows(nRow).Cells(9).Value.ToString() + "," + Str(nAggtype) + ",0,0)"
-                    Try
-
-
-                            Using oConnection As New OdbcConnection(g_sConString)
-                                oConnection.Open()
-                                Dim oCmd As New OdbcCommand(sQuery, oConnection)
-                                oCmd.ExecuteNonQuery()
-                                sQuery = "SELECT @@Identity "
-                                oCmd.Parameters.Clear()
-                                oCmd.CommandText = sQuery
-                                nReportID = oCmd.ExecuteScalar
-
-                                oConnection.Close()
-                            End Using
-
-                        Catch ex As Exception
-                        nReportID = 0
-                        MsgBox(ex.Message)
-                    End Try
-                    If nReportID > 0 Then
-                        AddDateTimeColumnToReport(nReportID)
-                    End If
-
-                    UpdateGridData = True
-                    End If
-            Catch ex As Exception
-                nReportID = 0
-                UpdateGridData = False
-                MsgBox(ex.Message)
-            End Try
-        Next
     End Function
 
 
@@ -262,28 +143,69 @@ Public Class DlgReportsConfiguration
 
     Private Sub bAddNewReport_Click(sender As Object, e As EventArgs) Handles bAddNewReport.Click
         Dim nRow As Integer
+        Dim sQuery As String
+        Dim nReportID As Integer
 
         Dim oDlg As New DlgSelectReportGroupTemplate
 
         If oDlg.ShowDialog() = DialogResult.OK Then
 
-            nRow = oGrid.Rows.Add()
-            oGrid.Rows(nRow).Cells(0).Value = 0
-            oGrid.Rows(nRow).Cells(1).Value = oDlg.cTemplate.Text
-            oGrid.Rows(nRow).Cells(2).Value = "Data Report"
-            oGrid.Rows(nRow).Cells(3).Value = oDlg.cGroup.Text
-            oGrid.Rows(nRow).Cells(4).Value = oDlg.tReportTitle.Text
-            oGrid.Rows(nRow).Cells(5).Value = "New Report Second Title"
-            oGrid.Rows(nRow).Cells(6).Value = True
-            oGrid.Rows(nRow).Cells(7).Value = True
-            oGrid.Rows(nRow).Cells(8).Value = True
-            oGrid.Rows(nRow).Cells(9).Value = 1
-            Try
-                oGrid.Rows(nRow).Cells(10).Value = MactusReportLib.DataAgg.Instance.ToString()
-            Catch ex As Exception
+            sQuery = "INSERT INTO tbl_reportsconfiguration (templateid, reporttype, almgroupid, reporttitle, reportheader, generatedtime, generatedby, fromtodatesprinted, datatablename, timeintervalinmin, dataaggregationtype,PrintAlarmSpRows,PrintMinMaxRows )VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)"
 
-            End Try
+            Using oConnection As New OdbcConnection(g_sConString)
+                oConnection.Open()
+                Dim oCmd As New OdbcCommand(sQuery, oConnection)
+                oCmd.Parameters.Add("@0", OdbcType.Int).Value = GetTemplateID(oDlg.cTemplate.Text) 'templateid
+                oCmd.Parameters.Add("@1", OdbcType.Int).Value = MactusReportLib.ReportType.DataReport 'reporttype
+                oCmd.Parameters.Add("@2", OdbcType.Int).Value = GetGroupID(oDlg.cGroup.Text) 'almgroupid
+                oCmd.Parameters.Add("@3", OdbcType.VarChar).Value = oDlg.tReportTitle.Text 'reporttitle
+                oCmd.Parameters.Add("@4", OdbcType.VarChar).Value = "New Report Second Title" 'reportheader
+                oCmd.Parameters.Add("@5", OdbcType.Int).Value = 1 'generatedtime
+                oCmd.Parameters.Add("@6", OdbcType.Int).Value = 1 'generatedby
+                oCmd.Parameters.Add("@7", OdbcType.Int).Value = 1 'fromtodatesprinted
+                If g_bIsBMS Then 'datatablename
+                    oCmd.Parameters.Add("@8", OdbcType.VarChar).Value = "trend_data"
+                Else
+                    oCmd.Parameters.Add("@8", OdbcType.VarChar).Value = "TREND001"
+                End If
+                oCmd.Parameters.Add("@9", OdbcType.Int).Value = 1 'timeintervalinmin
+                oCmd.Parameters.Add("@10", OdbcType.Int).Value = MactusReportLib.DataAgg.Instance 'dataaggregationtype
+                oCmd.Parameters.Add("@11", OdbcType.Int).Value = 0 'PrintAlarmSpRows
+                oCmd.Parameters.Add("@12", OdbcType.Int).Value = 0 'PrintMinMaxRows
+                oCmd.ExecuteNonQuery()
+                sQuery = "SELECT @@Identity "
+                oCmd.Parameters.Clear()
+                oCmd.CommandText = sQuery
+                nReportID = oCmd.ExecuteScalar
+                If nReportID > 0 Then
+                    AddDateTimeColumnToReport(nReportID)
+                End If
+                oConnection.Close()
+
+
+                nRow = oGrid.Rows.Add()
+                oGrid.Rows(nRow).Cells(0).Value = nReportID
+                oGrid.Rows(nRow).Cells(1).Value = oDlg.cTemplate.Text
+                oGrid.Rows(nRow).Cells(2).Value = "Data Report"
+                oGrid.Rows(nRow).Cells(3).Value = oDlg.cGroup.Text
+                oGrid.Rows(nRow).Cells(4).Value = oDlg.tReportTitle.Text
+                oGrid.Rows(nRow).Cells(5).Value = "New Report Second Title"
+                oGrid.Rows(nRow).Cells(6).Value = True
+                oGrid.Rows(nRow).Cells(7).Value = True
+                oGrid.Rows(nRow).Cells(8).Value = True
+                oGrid.Rows(nRow).Cells(9).Value = 1
+                Try
+                    oGrid.Rows(nRow).Cells(10).Value = MactusReportLib.DataAgg.Instance.ToString()
+                Catch ex As Exception
+
+                End Try
+                oGrid.Rows(nRow).Cells(12).Value = False
+                oGrid.Rows(nRow).Cells(13).Value = False
+            End Using
         End If
+
+
+
     End Sub
 
     Private Sub oGrid_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles oGrid.CellClick

@@ -301,4 +301,9 @@ Public Class MainForm
         End If
         MsgBox("Data Synchronization Completed")
     End Sub
+
+    Private Sub bConfigure_Click(sender As Object, e As EventArgs) Handles bConfigure.Click
+        Dim oDlg As New DlgAppConfiguration()
+        oDlg.ShowDialog()
+    End Sub
 End Class

@@ -53,6 +53,7 @@ Partial Class MainForm
         Me.bConfigureAlarmReports = New System.Windows.Forms.Button()
         Me.bGenerateChart = New System.Windows.Forms.Button()
         Me.Button1 = New System.Windows.Forms.Button()
+        Me.bConfigure = New System.Windows.Forms.Button()
         CType(Me.oReportGrid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         CType(Me.oGrid, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -175,7 +176,7 @@ Partial Class MainForm
         Me.GroupBox1.Controls.Add(Me.bAlarmReports)
         Me.GroupBox1.Controls.Add(Me.bAreaReports)
         Me.GroupBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox1.Location = New System.Drawing.Point(22, 110)
+        Me.GroupBox1.Location = New System.Drawing.Point(22, 76)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(270, 195)
         Me.GroupBox1.TabIndex = 330
@@ -345,11 +346,22 @@ Partial Class MainForm
         Me.Button1.Text = "Synchronize Point Names"
         Me.Button1.UseVisualStyleBackColor = True
         '
+        'bConfigure
+        '
+        Me.bConfigure.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.bConfigure.Location = New System.Drawing.Point(32, 297)
+        Me.bConfigure.Name = "bConfigure"
+        Me.bConfigure.Size = New System.Drawing.Size(260, 37)
+        Me.bConfigure.TabIndex = 340
+        Me.bConfigure.Text = "Configure Main Parameters"
+        Me.bConfigure.UseVisualStyleBackColor = True
+        '
         'MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1091, 718)
+        Me.Controls.Add(Me.bConfigure)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.bConfigureAlarmReports)
         Me.Controls.Add(Me.bCOnfigureReports)
@@ -413,4 +425,5 @@ Partial Class MainForm
     Friend WithEvents bConfigureAlarmReports As Button
     Friend WithEvents bGenerateChart As Button
     Friend WithEvents Button1 As Button
+    Friend WithEvents bConfigure As Button
 End Class

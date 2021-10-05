@@ -1,0 +1,11 @@
+D:\GitHub\EmsBMSReports\PingErrorApp\bin\Release\PingErrorApp.exe.config
+D:\GitHub\EmsBMSReports\PingErrorApp\bin\Release\PingErrorApp.exe
+D:\GitHub\EmsBMSReports\PingErrorApp\bin\Release\PingErrorApp.pdb
+D:\GitHub\EmsBMSReports\PingErrorApp\bin\Release\PingErrorApp.xml
+D:\GitHub\EmsBMSReports\PingErrorApp\obj\Release\PingErrorApp.MainForm.resources
+D:\GitHub\EmsBMSReports\PingErrorApp\obj\Release\PingErrorApp.Resources.resources
+D:\GitHub\EmsBMSReports\PingErrorApp\obj\Release\PingErrorApp.vbproj.GenerateResource.cache
+D:\GitHub\EmsBMSReports\PingErrorApp\obj\Release\PingErrorApp.vbproj.CoreCompileInputs.cache
+D:\GitHub\EmsBMSReports\PingErrorApp\obj\Release\PingErrorApp.exe
+D:\GitHub\EmsBMSReports\PingErrorApp\obj\Release\PingErrorApp.xml
+D:\GitHub\EmsBMSReports\PingErrorApp\obj\Release\PingErrorApp.pdb

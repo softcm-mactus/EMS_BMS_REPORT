@@ -11,7 +11,6 @@ D:\GitHub\EmsBMSReports\EmsBMSReports\obj\Debug\EmsBMSReports.xml
 D:\GitHub\EmsBMSReports\EmsBMSReports\obj\Debug\EmsBMSReports.pdb
 D:\GitHub\EmsBMSReports\EmsBMSReports\bin\Debug\itextsharp.dll
 D:\GitHub\EmsBMSReports\EmsBMSReports\obj\Debug\EmsBMSReports.vbproj.CopyComplete
-D:\GitHub\EmsBMSReports\EmsBMSReports\obj\Debug\EmsBMSReports.vbprojAssemblyReference.cache
 D:\GitHub\EmsBMSReports\EmsBMSReports\bin\Debug\MactusReportLib.dll
 D:\GitHub\EmsBMSReports\EmsBMSReports\bin\Debug\MactusReportLib.pdb
 D:\GitHub\EmsBMSReports\EmsBMSReports\bin\Debug\MactusReportLib.xml
@@ -25,3 +24,6 @@ D:\GitHub\EmsBMSReports\EmsBMSReports\obj\Debug\EmsBMSReports.DlgSelectEnumID.re
 D:\GitHub\EmsBMSReports\EmsBMSReports\obj\Debug\EmsBMSReports.DlgAlarmReportConfiguration.resources
 D:\GitHub\EmsBMSReports\EmsBMSReports\obj\Debug\EmsBMSReports.DlgSelectBMSAlarmGroup.resources
 D:\GitHub\EmsBMSReports\EmsBMSReports\obj\Debug\EmsBMSReports.DataTrendChart.resources
+D:\GitHub\EmsBMSReports\EmsBMSReports\obj\Debug\EmsBMSReports.vbproj.AssemblyReference.cache
+D:\GitHub\EmsBMSReports\EmsBMSReports\obj\Debug\EmsBMSReports.DlgAppConfiguration.resources
+D:\GitHub\EmsBMSReports\EmsBMSReports\obj\Debug\EmsBMSReports.DlgConfigureAlarmReportColumns.resources
