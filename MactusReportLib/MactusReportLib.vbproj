@@ -73,6 +73,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EBOCombinedIndusoftReport.vb" />
     <Compile Include="EBOReport.vb" />
     <Compile Include="IndusoftCharReport.vb" />
     <Compile Include="IndusoftEMSReport.vb" />

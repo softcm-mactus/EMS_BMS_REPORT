@@ -14,7 +14,7 @@ Public Class DlgAlarmReportConfiguration
     End Sub
 
     Private Sub DlgAlarmReportConfiguration_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        If g_bIsBMS Then
+        If g_bIsBMS = 1 Then
             SynchronizeAlarmGroupName()
         End If
         RefreshGrid()
@@ -199,7 +199,7 @@ Public Class DlgAlarmReportConfiguration
                     Else
                         sQuery += "0,"
                     End If
-                    If g_bIsBMS Then
+                    If g_bIsBMS = 1 Then
                         sQuery += "'event_data',"
                     Else
                         sQuery += "'ALARMHISTORY',"

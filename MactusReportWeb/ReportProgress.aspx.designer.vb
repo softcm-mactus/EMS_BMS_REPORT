@@ -50,6 +50,15 @@ Partial Public Class ReportProgress
     Protected WithEvents tProgress As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
+    '''iFrameReport control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents iFrameReport As Global.System.Web.UI.HtmlControls.HtmlIframe
+
+    '''<summary>
     '''oTimer control.
     '''</summary>
     '''<remarks>

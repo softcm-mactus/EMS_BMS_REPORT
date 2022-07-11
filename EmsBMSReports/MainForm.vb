@@ -13,68 +13,80 @@ Public Class MainForm
 
 
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Dim sError As String = ""
-
-        Dim oTime As DateTime = DateTime.Now
-        If ReadDatabaseConnection(sError) = False Then
-            MsgBox(sError)
-            End
-        End If
-
-        bCOnfigureReports.Visible = g_bEnableConfiguration
-        bConfigureAlarmReports.Visible = g_bEnableConfiguration
-
-        Dim sQuery As String
-        sQuery = "UPDATE tbl_reportstatus SET status=4 where status=3"
-        ExecuteSQLInDb(sQuery)
-
-        m_oEBOReprots = New MactusReportLib.EBOReport()
-        m_oIndusoftReports = New MactusReportLib.NewInduSoftReport()
-
-        bAreaReports.Checked = True
-        bAlarmReports.Checked = False
-        bEventReport.Checked = False
-        LoadReportsIntoListBox(oReportGrid, ReportType.DataReport)
-        cInterval.SelectedIndex = 0
-        m_nSelectedReportType = ReportType.DataReport
-        oTime = oTime.AddMilliseconds(-oTime.Millisecond)
-        oTime = oTime.AddSeconds(-oTime.Second)
-        oTime = oTime.AddMinutes(-oTime.Minute)
-        oTime = oTime.AddHours(-oTime.Hour)
-        oTime = oTime.AddDays(-7)
-        tr_FromDate.Value = oTime
-        tr_ToDate.Value = oTime.AddDays(1)
-        bGenerate.Enabled = False
-
-        ' Dim sQuery As String
-        Dim oReader As OdbcDataReader
-        sQuery = "SELECT * FROM TBL_DataGroups WHERE grouptype=0 ORDER BY groupid"
 
         Try
-            Using oConnection As New OdbcConnection(g_sConString)
-                oConnection.Open()
-                Dim oCmd As New OdbcCommand(sQuery, oConnection)
-                oReader = oCmd.ExecuteReader()
-                While oReader.Read()
-                    cGroup.Items.Add(oReader("groupname"))
-                End While
-                oConnection.Close()
-            End Using
+            'If g_sCurrent_login_UserID.Length > 0 Then
+            Dim sError As String = ""
+
+                Dim oTime As DateTime = DateTime.Now
+                If ReadDatabaseConnection(sError) = False Then
+                    MsgBox(sError)
+                    End
+                End If
+
+                bCOnfigureReports.Visible = True
+                bConfigureAlarmReports.Visible = True 'g_bEnableConfiguration
+
+                Dim sQuery As String
+                sQuery = "UPDATE tbl_reportstatus SET status=4 where status=3"
+                ExecuteSQLInDb(sQuery)
+
+                m_oEBOReprots = New MactusReportLib.EBOReport()
+                m_oIndusoftReports = New MactusReportLib.NewInduSoftReport()
+
+                bAreaReports.Checked = True
+                bAlarmReports.Checked = False
+                bEventReport.Checked = False
+                LoadReportsIntoListBox(oReportGrid, ReportType.DataReport)
+                cInterval.SelectedIndex = 0
+                m_nSelectedReportType = ReportType.DataReport
+                oTime = oTime.AddMilliseconds(-oTime.Millisecond)
+                oTime = oTime.AddSeconds(-oTime.Second)
+                oTime = oTime.AddMinutes(-oTime.Minute)
+                oTime = oTime.AddHours(-oTime.Hour)
+                oTime = oTime.AddDays(-7)
+                tr_FromDate.Value = oTime
+                tr_ToDate.Value = oTime.AddDays(1)
+                bGenerate.Enabled = False
+
+                ' Dim sQuery As String
+                Dim oReader As OdbcDataReader
+                sQuery = "SELECT * FROM TBL_DataGroups WHERE grouptype=0 ORDER BY groupid"
+
+                Try
+                    Using oConnection As New OdbcConnection(g_sConString)
+                        oConnection.Open()
+                        Dim oCmd As New OdbcCommand(sQuery, oConnection)
+                        oReader = oCmd.ExecuteReader()
+                        While oReader.Read()
+                            cGroup.Items.Add(oReader("groupname"))
+                        End While
+                        oConnection.Close()
+                    End Using
+                Catch ex As Exception
+
+                End Try
+
+                Try
+                    cGroup.SelectedIndex = 0
+                Catch ex As Exception
+
+                End Try
+
+                UpdateGrid()
+                StartThread()
+
+
+                oTimer.Enabled = True
+
+            '  Else
+
+            '  End If
         Catch ex As Exception
 
         End Try
 
-        Try
-            cGroup.SelectedIndex = 0
-        Catch ex As Exception
 
-        End Try
-
-        UpdateGrid()
-        StartThread()
-
-
-        oTimer.Enabled = True
     End Sub
 
     Private Sub bGenerate_Click(sender As Object, e As EventArgs) Handles bGenerate.Click
@@ -87,7 +99,7 @@ Public Class MainForm
 
         nTimeInterval = Convert.ToInt16(cInterval.Text)
 
-        m_nReportStatusID = InsertNewReportStatusRecord(m_nReportID, tr_FromDate.Value, tr_ToDate.Value, nTimeInterval, "user Name")
+        m_nReportStatusID = InsertNewReportStatusRecord(m_nReportID, tr_FromDate.Value, tr_ToDate.Value, nTimeInterval, "user Name", m_nSelectedReportType)
 
 
 
@@ -294,8 +306,10 @@ Public Class MainForm
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        If g_bIsBMS Then
+        If g_bIsBMS = 1 Then
             MactusReportLib.MactusReportLib.SynchronizeEBOPointIDNamesTable()
+        ElseIf g_bIsBMS = 2 Then
+            SynchronizeWirelessCDUPointIDNamesTable()
         Else
             SynchronizeIndusoftPointIDNamesTable()
         End If

@@ -29,6 +29,7 @@
         <div>
         </div>
         <div>
+            <iframe visible="false" runat="server" id="iFrameReport" style="width:100%; height:900px"></iframe>
         </div>
         <asp:Timer ID="oTimer" runat="server" Interval="1000">
         </asp:Timer>

@@ -30,6 +30,7 @@
                         <asp:Label ID="Label7" runat="server" Text="To Date Time" Font-Size="X-Large"></asp:Label>
                     </td>
                 </tr>
+
                 <tr>
                     <td style="text-align: center">
                         <asp:TextBox ID="tFromDate" runat="server" Font-Size="X-Large" BorderStyle="Solid" TextMode="DateTime" Width="70%"></asp:TextBox></td>
@@ -40,9 +41,6 @@
                 </tr>
             </table>
         </div>
-
-
-
 
         <div style="text-align: center">
             <asp:Button ID="bGenerateReport" runat="server" Text="Generate Report" BorderColor="Black" BorderStyle="Solid" BackColor="#3399FF" Font-Bold="True" Font-Size="XX-Large" />

@@ -11,12 +11,13 @@ Public Class EMSBMSReportService2
         Dim oTime As DateTime = DateTime.Now
         If ReadDatabaseConnection(sError) = False Then
             Try
-                Dim file As System.IO.StreamWriter
-                file = My.Computer.FileSystem.OpenTextFileWriter("d:\emsbmsreportservice.txt", True)
-                file.WriteLine(sError)
-                file.Close()
+                LogError("EMSBMSReportService2", "OnStart()", sError)
+                'Dim file As System.IO.StreamWriter
+                'file = My.Computer.FileSystem.OpenTextFileWriter("d:\emsbmsreportservice.txt", True)
+                'file.WriteLine(sError)
+                'file.Close()
             Catch ex As Exception
-
+                LogError("EMSBMSReportService2", "OnStart()", ex.Message)
             End Try
 
             End
@@ -29,6 +30,7 @@ Public Class EMSBMSReportService2
     End Sub
 
     Protected Overrides Sub OnStop()
+        LogError("EMSBMSReportService2", "OnStop()", "Service Stopped")
         ' Add code here to perform any tear-down necessary to stop your service.
     End Sub
     Private Sub ElapsedTimer()

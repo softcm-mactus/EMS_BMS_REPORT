@@ -48,7 +48,7 @@ Public Class DataTrendReport
             oReader.Close()
             oConnection.Close()
         Catch ex As Exception
-            MsgBox(ex.Message)
+            LogError("DataTrendReport.aspx.vb", "LoadReportsCombo()", ex.Message)
             Exit Sub
         End Try
 
@@ -82,7 +82,7 @@ Public Class DataTrendReport
             oReader.Close()
             oConnection.Close()
         Catch ex As Exception
-            MsgBox(ex.Message)
+            LogError("DataTrendReport.aspx.vb", "LoadReportGroupCombo()", ex.Message)
             Exit Sub
         End Try
 
@@ -128,7 +128,7 @@ Public Class DataTrendReport
 
 
         Dim nReportStatusID As Long
-        nReportStatusID = InsertNewReportStatusRecord(nReportID, oFromDate, oToDate, nInterval, m_sUserName)
+        nReportStatusID = InsertNewReportStatusRecord(nReportID, oFromDate, oToDate, nInterval, m_sUserName, ReportType.DataReport)
         Response.Redirect("ReportProgress.aspx?ReportStatusID=" + nReportStatusID.ToString())
 
         'Dim sFileName As String = ""

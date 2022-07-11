@@ -163,7 +163,7 @@ Public Class DlgReportsConfiguration
                 oCmd.Parameters.Add("@5", OdbcType.Int).Value = 1 'generatedtime
                 oCmd.Parameters.Add("@6", OdbcType.Int).Value = 1 'generatedby
                 oCmd.Parameters.Add("@7", OdbcType.Int).Value = 1 'fromtodatesprinted
-                If g_bIsBMS Then 'datatablename
+                If g_bIsBMS = 1 Then 'datatablename
                     oCmd.Parameters.Add("@8", OdbcType.VarChar).Value = "trend_data"
                 Else
                     oCmd.Parameters.Add("@8", OdbcType.VarChar).Value = "TREND001"

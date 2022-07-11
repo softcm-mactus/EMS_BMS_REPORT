@@ -35,7 +35,7 @@ Public Class DlgSelectReportGroupTemplate
 
 
     Public Sub LoadGroupCombobox()
-        If m_bAlarmGroup And g_bIsBMS = False Then
+        If m_bAlarmGroup And g_bIsBMS = 0 Then
             LoadAlarmGroupComboboxIndusoft()
             Exit Sub
         End If

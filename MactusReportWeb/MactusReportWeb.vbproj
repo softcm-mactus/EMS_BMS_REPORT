@@ -34,6 +34,7 @@
     <OutputPath>bin\</OutputPath>
     <DocumentationFile>MactusReportWeb.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -97,14 +98,38 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AlarmReport.aspx" />
+    <Content Include="Content\bootstrap-grid.css" />
+    <Content Include="Content\bootstrap-grid.min.css" />
+    <Content Include="Content\bootstrap-grid.rtl.css" />
+    <Content Include="Content\bootstrap-grid.rtl.min.css" />
+    <Content Include="Content\bootstrap-reboot.css" />
+    <Content Include="Content\bootstrap-reboot.min.css" />
+    <Content Include="Content\bootstrap-reboot.rtl.css" />
+    <Content Include="Content\bootstrap-reboot.rtl.min.css" />
+    <Content Include="Content\bootstrap-utilities.css" />
+    <Content Include="Content\bootstrap-utilities.min.css" />
+    <Content Include="Content\bootstrap-utilities.rtl.css" />
+    <Content Include="Content\bootstrap-utilities.rtl.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\bootstrap.rtl.css" />
+    <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="DataTrendReport.aspx" />
     <Content Include="DBError.aspx" />
     <Content Include="EventReport.aspx" />
+    <Content Include="TrendDataAlarmReport.aspx" />
+    <Content Include="ExcursionReport.aspx" />
     <Content Include="Global.asax" />
-    <Content Include="MainPage.aspx" />
+    <Content Include="Default.aspx" />
     <Content Include="Images\ReportLogo.png" />
     <Content Include="Output\ReportLogo.png" />
     <Content Include="ReportProgress.aspx" />
+    <Content Include="Scripts\bootstrap.bundle.js" />
+    <Content Include="Scripts\bootstrap.bundle.min.js" />
+    <Content Include="Scripts\bootstrap.esm.js" />
+    <Content Include="Scripts\bootstrap.esm.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ViewPDF.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -114,38 +139,52 @@
     </Compile>
     <Compile Include="AlarmReport.aspx.vb">
       <DependentUpon>AlarmReport.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DataTrendReport.aspx.designer.vb">
       <DependentUpon>DataTrendReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="DataTrendReport.aspx.vb">
       <DependentUpon>DataTrendReport.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DBError.aspx.designer.vb">
       <DependentUpon>DBError.aspx</DependentUpon>
     </Compile>
     <Compile Include="DBError.aspx.vb">
       <DependentUpon>DBError.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="EventReport.aspx.designer.vb">
       <DependentUpon>EventReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="EventReport.aspx.vb">
       <DependentUpon>EventReport.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TrendDataAlarmReport.aspx.designer.vb">
+      <DependentUpon>TrendDataAlarmReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TrendDataAlarmReport.aspx.vb">
+      <DependentUpon>TrendDataAlarmReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ExcursionReport.aspx.designer.vb">
+      <DependentUpon>ExcursionReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ExcursionReport.aspx.vb">
+      <DependentUpon>ExcursionReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Global.asax.vb">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="MainPage.aspx.designer.vb">
-      <DependentUpon>MainPage.aspx</DependentUpon>
+    <Compile Include="Default.aspx.designer.vb">
+      <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="MainPage.aspx.vb">
-      <DependentUpon>MainPage.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
+    <Compile Include="Default.aspx.vb">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -171,14 +210,14 @@
     </Compile>
     <Compile Include="ReportProgress.aspx.vb">
       <DependentUpon>ReportProgress.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="ViewPDF.aspx.designer.vb">
       <DependentUpon>ViewPDF.aspx</DependentUpon>
     </Compile>
     <Compile Include="ViewPDF.aspx.vb">
       <DependentUpon>ViewPDF.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -190,6 +229,22 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap.rtl.min.css.map" />
+    <Content Include="Content\bootstrap.rtl.css.map" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-utilities.rtl.min.css.map" />
+    <Content Include="Content\bootstrap-utilities.rtl.css.map" />
+    <Content Include="Content\bootstrap-utilities.min.css.map" />
+    <Content Include="Content\bootstrap-utilities.css.map" />
+    <Content Include="Content\bootstrap-reboot.rtl.min.css.map" />
+    <Content Include="Content\bootstrap-reboot.rtl.css.map" />
+    <Content Include="Content\bootstrap-reboot.min.css.map" />
+    <Content Include="Content\bootstrap-reboot.css.map" />
+    <Content Include="Content\bootstrap-grid.rtl.min.css.map" />
+    <Content Include="Content\bootstrap-grid.rtl.css.map" />
+    <Content Include="Content\bootstrap-grid.min.css.map" />
+    <Content Include="Content\bootstrap-grid.css.map" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
@@ -201,6 +256,12 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="packages.config" />
+    <Content Include="Scripts\bootstrap.min.js.map" />
+    <Content Include="Scripts\bootstrap.js.map" />
+    <Content Include="Scripts\bootstrap.esm.min.js.map" />
+    <Content Include="Scripts\bootstrap.esm.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.min.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.js.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

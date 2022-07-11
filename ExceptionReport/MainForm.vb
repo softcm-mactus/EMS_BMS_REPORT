@@ -19,7 +19,7 @@ Public Class MainForm
 
     Private Sub bGenerate_Click(sender As Object, e As EventArgs) Handles bGenerate.Click
 
-        If g_bIsBMS = False Then
+        If g_bIsBMS = 0 Then
             MsgBox("Not Implemented For Indusoft")
             Exit Sub
         End If

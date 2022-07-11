@@ -84,7 +84,7 @@ Public Class AlarmReport
         End Try
 
         Dim nReportStatusID As Long
-        nReportStatusID = InsertNewReportStatusRecord(nReportID, oFromDate, oToDate, nInterval, m_sUserName)
+        nReportStatusID = InsertNewReportStatusRecord(nReportID, oFromDate, oToDate, nInterval, m_sUserName, ReportType.AlarmReport)
         Response.Redirect("ReportProgress.aspx?ReportStatusID=" + nReportStatusID.ToString())
 
 

@@ -9,13 +9,13 @@
     <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <LastActiveSolutionConfig>Debug|Any CPU</LastActiveSolutionConfig>
-    <NameOfLastUsedPublishProfile>D:\GitHub\EmsBMSReports\MactusReportWeb\My Project\PublishProfiles\IISProfile.pubxml</NameOfLastUsedPublishProfile>
+    <NameOfLastUsedPublishProfile>D:\Sources\EmsBMSReports\MactusReportWeb\My Project\PublishProfiles\FolderProfile.pubxml</NameOfLastUsedPublishProfile>
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <StartPageUrl>MainPage.aspx</StartPageUrl>
+          <StartPageUrl>Default.aspx</StartPageUrl>
           <StartAction>SpecificPage</StartAction>
           <AspNetDebugging>True</AspNetDebugging>
           <SilverlightDebugging>False</SilverlightDebugging>

@@ -32,7 +32,7 @@
         '
         'EMSBMSReportService
         '
-        Me.EMSBMSReportService.ServiceName = "EMSBMSReportService"
+        Me.EMSBMSReportService.ServiceName = "EMSReportServiceWirelessCDU"
         Me.EMSBMSReportService.StartType = System.ServiceProcess.ServiceStartMode.Automatic
         '
         'ProjectInstaller

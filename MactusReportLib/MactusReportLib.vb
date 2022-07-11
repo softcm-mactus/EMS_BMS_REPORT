@@ -5,8 +5,8 @@ Imports iTextSharp.text
 Imports iTextSharp.text.pdf
 
 Public Module MactusReportLib
-    Public g_sConString As String = "Data Source=DESKTOP-43PNM9G\SQLEXPRESS;Initial Catalog=Mactus_EMSReports_10; Integrated Security=True;"
-    Public g_sEMSDbConString As String = "Data Source=DESKTOP-43PNM9G\SQLEXPRESS;Initial Catalog=Wintac_EMS; Integrated Security=True;"
+    Public g_sConString As String = "Driver={PostgreSQL ANSI};Server=localhost;Port=5432;Database=ems_reportconfiguration_wirelesscdu;UID=postgres;PWD=Mactus@123"
+    Public g_sEMSDbConString As String = "Driver={PostgreSQL ANSI};Server=localhost;Port=5432;Database=ems_wirelesscdu;UID=postgres;PWD=Mactus@123"
 
     Public g_sAppName As String
     Public g_sSiteName As String
@@ -22,7 +22,7 @@ Public Module MactusReportLib
     Public g_sPspace As String
     Public g_bError As Boolean
     Public g_sErro As String
-    Public g_bIsBMS As Boolean = False
+    Public g_bIsBMS As Integer = 0
     Public g_bIsGMTTime As Boolean = False
     Public g_bEnableConfiguration As Boolean = False
     Public g_bGenerateTrendChart As Boolean = False
@@ -32,11 +32,11 @@ Public Module MactusReportLib
 
     Public m_oEBOReprots As New EBOReport
     Public m_oIndusoftReports As New NewInduSoftReport
-
+    Public m_oEBOCombinedIndusoftReport As New EBOCombinedIndusoftReport
     Public m_oThread As System.Threading.Thread
     Public m_bStopThread As Boolean = False
     Public g_bPrintAlmAckForAllAlarms As Boolean = False
-
+    Public g_IsUniversalTime As Boolean = False
     Public Enum MyFontFamily As Integer
         COURIER = 0
         HELVETICA = 1
@@ -68,7 +68,9 @@ Public Module MactusReportLib
     Public g_fBodyFontSize As Single = 9.0F
     Public g_fFooterFontSize As Single = 10.0F
     Public g_fBodyHeaderFontSize As Single = 10.0F
-
+    Public g_sCurrent_login_UserID As String
+    Public g_Current_MinVal As Single = 9999.0F
+    Public g_Current_MaxVal As Single = -9999.0F
     Public Class AlarmInfo
         Public m_sStartTime As String
         Public m_sEndTime As String
@@ -123,6 +125,8 @@ Public Module MactusReportLib
         EventReport = 1
         AlarmReport = 2
         DataChartReport = 3
+        ExcursionReport = 4
+        DataTrendAlarmReport = 5
     End Enum
 
     Public Enum ColJust As Integer
@@ -174,6 +178,23 @@ Public Module MactusReportLib
         Public m_bshowAlarmCol As Boolean
 
         Public m_nDataChartSeiries As Integer
+
+        Public m_bExcursion As Boolean
+        Public m_fExcursionLow As Single
+        Public m_fExcursionHigh As Single
+
+        Public m_sAlarmLowStartDate As String
+        Public m_sAlarmLowEndDate As String
+
+        Public m_sAlarmHighStartDate As String
+        Public m_sAlarmHighEndDate As String
+
+        Public m_bAlarmHighStart As Boolean
+        Public m_bAlarmHighEnd As Boolean
+
+        Public m_bAlarmLowStart As Boolean
+        Public m_bAlarmLowEnd As Boolean
+
     End Class
 
 
@@ -194,7 +215,7 @@ Public Module MactusReportLib
         End Try
     End Function
 
-    Public Sub LogError(ByRef sError As String)
+    Public Sub LogError(ByVal sPageName As String, ByVal sFunctionName As String, ByRef sError As String)
         Try
 
 
@@ -204,7 +225,7 @@ Public Module MactusReportLib
             Else
                 oWriter = New System.IO.StreamWriter(g_sOutputFileDir + "\ReportErrorLog.txt", FileMode.Create)
             End If
-            oWriter.WriteLine(sError)
+            oWriter.WriteLine("Page Name:: " + sPageName + "Function Name:: " + sFunctionName + "Date Time :: " + Now.ToString + " Error Message :: " + sError)
             oWriter.Close()
 
         Catch ex As Exception
@@ -303,7 +324,7 @@ Public Module MactusReportLib
                 ExecuteSQLInDb = True
             End Using
         Catch ex As Exception
-            LogError("ExecuteSQLinCRACDb Exceltion=" + ex.Message + " " + sQuery)
+            LogError("MactusReportLib.vb", "ExecuteSQLInDb", "ExecuteSQLinCRACDb Exceltion=" + ex.Message + " " + sQuery)
         Finally
 
         End Try
@@ -339,9 +360,9 @@ Public Module MactusReportLib
 
             Try
                 sTemp = ConfigurationManager.ConnectionStrings("IsBMS").ToString
-                g_bIsBMS = CBool(sTemp)
+                g_bIsBMS = CInt(sTemp)
             Catch ex As Exception
-                g_bIsBMS = False
+                g_bIsBMS = 0
             End Try
 
             Try
@@ -365,6 +386,8 @@ Public Module MactusReportLib
             Catch ex As Exception
                 g_bGenerateTrendChart = False
             End Try
+
+
         Catch ex As Exception
 
         End Try
@@ -426,6 +449,7 @@ Public Module MactusReportLib
         End If
 
         g_sAutoReportFileDir = g_sOutputFileDir
+        GetPlantConfigParamValue("AutoReportOutFileDir", g_sAutoReportFileDir)
 
         If GetPlantConfigParamValue("DateTimeForatString", g_sTimeFormatIndian) = False Then
             MsgBox("ReadConfiguration Parameter DateTimeForatString Not There")
@@ -584,7 +608,8 @@ Public Module MactusReportLib
 
     End Function
 
-    Public Function InsertNewReportStatusRecord(ByVal nReportID As Integer, ByRef dtFrom As Date, ByRef dtTo As Date, ByRef nTimeInterval As Integer, ByRef sGeneratedUserName As String, Optional ByVal nChart As Integer = 0) As Long
+    ' Insert new report data in tbl_reportstatus table to trace the report status
+    Public Function InsertNewReportStatusRecord(ByVal nReportID As Integer, ByRef dtFrom As Date, ByRef dtTo As Date, ByRef nTimeInterval As Integer, ByRef sGeneratedUserName As String, ByRef nReportType As Integer, Optional ByVal nChart As Integer = 0) As Long
         InsertNewReportStatusRecord = 0
         Dim sQuery As String
         Dim sFileName As String = ""
@@ -601,9 +626,15 @@ Public Module MactusReportLib
                 oConnection.Open()
                 Dim oCmd As New OdbcCommand(sQuery, oConnection)
                 oCmd.Parameters.Add("@0", OdbcType.Int).Value = nReportID
-                If g_bIsGMTTime Then
-                    oCmd.Parameters.Add(GetTimeODBCParam("@1", dtFrom.ToUniversalTime))
-                    oCmd.Parameters.Add(GetTimeODBCParam("@2", dtTo.ToUniversalTime))
+                If g_bIsGMTTime And nReportType > 0 Then
+                    If nReportType = 4 Or nReportType = 5 Then
+                        oCmd.Parameters.Add(GetTimeODBCParam("@1", dtFrom))
+                        oCmd.Parameters.Add(GetTimeODBCParam("@2", dtTo))
+                    Else
+                        oCmd.Parameters.Add(GetTimeODBCParam("@1", dtFrom.ToUniversalTime))
+                        oCmd.Parameters.Add(GetTimeODBCParam("@2", dtTo.ToUniversalTime))
+                    End If
+
                 Else
                     oCmd.Parameters.Add(GetTimeODBCParam("@1", dtFrom))
                     oCmd.Parameters.Add(GetTimeODBCParam("@2", dtTo))
@@ -644,7 +675,7 @@ Public Module MactusReportLib
             di.Create()
 
         Catch ex As Exception
-            LogError(ex.Message)
+            LogError("MactusReportLib.vb", "CreateFolderIfNotThere()", ex.Message)
         End Try
     End Sub
 
@@ -699,7 +730,7 @@ Public Module MactusReportLib
         End Try
 
     End Function
-    Public Function InsertNewAutoReportStatusRecord(ByVal nReportID As Integer, ByRef dtFrom As Date, ByRef dtTo As Date, ByRef nTimeInterval As Integer, ByRef sGeneratedUserName As String, Optional ByVal nChart As Integer = 0) As Long
+    Public Function InsertNewAutoReportStatusRecord(ByVal nReportID As Integer, ByRef dtFrom As Date, ByRef dtTo As Date, ByRef nTimeInterval As Integer, ByRef sGeneratedUserName As String, ByRef nReportType As Integer, Optional ByVal nChart As Integer = 0) As Long
         InsertNewAutoReportStatusRecord = 0
         Dim sQuery As String
         Dim sFileName As String = ""
@@ -716,7 +747,7 @@ Public Module MactusReportLib
                 oConnection.Open()
                 Dim oCmd As New OdbcCommand(sQuery, oConnection)
                 oCmd.Parameters.Add("@0", OdbcType.Int).Value = nReportID
-                If g_bIsGMTTime Then
+                If g_bIsGMTTime And nReportType > 0 Then
                     oCmd.Parameters.Add(GetTimeODBCParam("@1", dtFrom.ToUniversalTime))
                     oCmd.Parameters.Add(GetTimeODBCParam("@2", dtTo.ToUniversalTime))
                 Else
@@ -753,7 +784,7 @@ Public Module MactusReportLib
         Try
             Dim nProgress As Integer
             Dim nProgressSec As Integer
-            Dim nTotalSec As Integer
+            Dim nTotalSec As ULong
 
             nProgressSec = odate.Subtract(dtfrom).TotalSeconds
             nTotalSec = dtto.Subtract(dtfrom).TotalSeconds
@@ -875,7 +906,8 @@ Public Module MactusReportLib
                         UpdateReportProgress(nReportStatusID, dtFrom, dtTo, dtFrom)
 
                         Try
-                            If g_bIsBMS Then
+                            'bIsBMS Configurations is from Web.Config or App.config 
+                            If g_bIsBMS = 1 Then ' 
                                 m_oEBOReprots.ReadReportConfiguration(nReportID)
                                 If m_oEBOReprots.g_nReportType = ReportType.DataReport Then
                                     If bGenerateTrendChart Then
@@ -890,6 +922,26 @@ Public Module MactusReportLib
                                 ElseIf m_oEBOReprots.g_nReportType = ReportType.EventReport Then
                                     m_oEBOReprots.GenerateEventReport(nReportStatusID, dtFrom, dtTo, sPathFileName)
                                 End If
+                            ElseIf g_bIsBMS = 2 Then
+                                m_oEBOCombinedIndusoftReport.ReadReportConfiguration(nReportID)
+                                If m_oEBOCombinedIndusoftReport.g_nReportType = ReportType.DataReport Then
+                                    If bGenerateTrendChart Then
+                                        m_oEBOCombinedIndusoftReport.GenerateTrendChartReport(nReportStatusID, dtFrom, dtTo, sPathFileName, 1)
+                                    Else
+                                        m_oEBOCombinedIndusoftReport.GenerateTrendReport(nReportStatusID, dtFrom, dtTo, sPathFileName, nInternal)
+                                    End If
+                                ElseIf m_oEBOCombinedIndusoftReport.g_nReportType = ReportType.DataChartReport Then
+                                    m_oEBOCombinedIndusoftReport.GenerateTrendChartReport(nReportStatusID, dtFrom, dtTo, sPathFileName, 1)
+                                ElseIf m_oEBOCombinedIndusoftReport.g_nReportType = ReportType.AlarmReport Then
+                                    m_oEBOCombinedIndusoftReport.GenerateAlarmReport(nReportStatusID, dtFrom, dtTo, sPathFileName)
+                                ElseIf m_oEBOCombinedIndusoftReport.g_nReportType = ReportType.EventReport Then
+                                    m_oEBOCombinedIndusoftReport.GenerateEventReport(nReportStatusID, dtFrom, dtTo, sPathFileName)
+                                ElseIf m_oEBOCombinedIndusoftReport.g_nReportType = ReportType.ExcursionReport Then
+                                    m_oEBOCombinedIndusoftReport.GenerateExcursionReport(nReportStatusID, dtFrom, dtTo, sPathFileName, nInternal)
+                                ElseIf m_oEBOCombinedIndusoftReport.g_nReportType = ReportType.DataTrendAlarmReport Then
+                                    m_oEBOCombinedIndusoftReport.GenerateAlarmReportUsingTrendData(nReportStatusID, dtFrom, dtTo, sPathFileName, nInternal)
+                                End If
+
                             Else
                                 m_oIndusoftReports.ReadReportConfiguration(nReportID)
                                 If m_oIndusoftReports.g_nReportType = ReportType.DataReport Then
@@ -913,7 +965,7 @@ Public Module MactusReportLib
                 Threading.Thread.Sleep(100)
             End While
         Catch ex As Exception
-            LogError(ex.Message)
+            LogError("MactusReportLib.vb", "GenerateReport", ex.Message)
         End Try
     End Sub
 
@@ -935,6 +987,7 @@ Public Module MactusReportLib
             Dim nTimeInterval As Integer
             Dim sQuery As String
             Dim oReader As OdbcDataReader
+            Dim nReportType As Integer = -1
 
             oToDate = Now.AddMilliseconds(-Now.Millisecond)
             oToDate = oToDate.AddSeconds(-oToDate.Second)
@@ -950,7 +1003,8 @@ Public Module MactusReportLib
                     While oReader.Read()
                         nReportID = oReader("ReportID")
                         nTimeInterval = oReader("TimeIntervalInMin")
-                        InsertNewAutoReportStatusRecord(nReportID, oFromDate, oToDate, nTimeInterval, "AutoReport")
+                        nReportType = oReader("ReportType")
+                        InsertNewAutoReportStatusRecord(nReportID, oFromDate, oToDate, nTimeInterval, "AutoReport", nReportType)
                     End While
                     oConnection.Close()
                 End Using
@@ -984,7 +1038,7 @@ Public Module MactusReportLib
         Try
             Dim oTime As Date
             If g_bIsGMTTime Then
-                oTime = oAlmTime.ToLocalTime()
+                oTime = oAlmTime.ToLocalTime
             Else
                 oTime = oAlmTime
             End If
@@ -995,18 +1049,21 @@ Public Module MactusReportLib
 
     End Function
 
-    Public Function GetReportFileName(ByRef nRepotStatusID As Long) As String
+    Public Function GetReportFileName(ByRef nRepotStatusID As Long, ByRef sReportFilePath As String) As String
         GetReportFileName = ""
         Dim sQuery As String
-
-        sQuery = "SELECT filename FROM tbl_reportstatus WHERE id=" + nRepotStatusID.ToString()
+        Dim oReader As OdbcDataReader
+        sQuery = "SELECT filename,outputfilename FROM tbl_reportstatus WHERE id=" + nRepotStatusID.ToString()
 
         Try
             Using oConnection As New OdbcConnection(g_sConString)
                 oConnection.Open()
                 Dim oCmd As New OdbcCommand(sQuery, oConnection)
-
-                GetReportFileName = oCmd.ExecuteScalar()
+                oReader = oCmd.ExecuteReader()
+                If oReader.Read() Then
+                    GetReportFileName = oReader("filename")
+                    sReportFilePath = oReader("outputfilename")
+                End If
                 oConnection.Close()
             End Using
         Catch ex As Exception
@@ -1057,7 +1114,7 @@ Public Module MactusReportLib
         Dim sQuery As String
         Dim nColID As Integer
         Dim sTimeCol As String
-        If g_bIsBMS Then
+        If g_bIsBMS = 1 Then
             sTimeCol = "timestamp"
         Else
             sTimeCol = "Time_Stamp"
@@ -1100,7 +1157,7 @@ Public Module MactusReportLib
 
     Public Function GetGroupName(ByVal nGroupID As Integer, Optional ByVal nReportType As ReportType = ReportType.DataReport) As String
 
-        If g_bIsBMS = False And nReportType = ReportType.AlarmReport Then
+        If g_bIsBMS = 0 And nReportType = ReportType.AlarmReport Then
             GetGroupName = nGroupID.ToString()
             Exit Function
         End If
@@ -1128,7 +1185,7 @@ Public Module MactusReportLib
 
     Public Function GetGroupID(ByRef sGroupName As String, Optional ByVal nReportType As ReportType = ReportType.DataReport) As Integer
 
-        If g_bIsBMS = False And nReportType = ReportType.AlarmReport Then
+        If g_bIsBMS = 0 And nReportType = ReportType.AlarmReport Then
             GetGroupID = CInt(sGroupName)
             Exit Function
         End If
@@ -1245,7 +1302,7 @@ Public Module MactusReportLib
                 oConnenction.Close()
             End Using
         Catch ex As Exception
-            LogError(ex.Message + "  " + sQuery)
+            LogError("MactusReportLib.vb", "GetEnumStringFromValue()", ex.Message + "  " + sQuery)
             GetEnumStringFromValue = nEnumValue.ToString()
         End Try
 
@@ -1283,7 +1340,7 @@ Public Module MactusReportLib
         ExecuteSQLInDb(sQuery)
         Try
 
-            sQuery = "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'TREND001' AND ORDINAL_POSITION >2 AND COLUMN_NAME NOT LIKE '%HiHi%' AND COLUMN_NAME NOT LIKE '%LoLo%' "
+            sQuery = "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'TREND001' AND ORDINAL_POSITION >2  "
             Using oConnection As New OdbcConnection(g_sEMSDbConString)
                 oConnection.Open()
                 Dim oCmd As New OdbcCommand(sQuery, oConnection)
@@ -1303,6 +1360,36 @@ Public Module MactusReportLib
 
     End Sub
 
+    '
+    Public Sub SynchronizeWirelessCDUPointIDNamesTable()
+        Dim oReader As OdbcDataReader
+        Dim sQuery As String
+        Dim nLogID As Integer
+        Dim sPointName As String
+
+        sQuery = "TRUNCATE TABLE tbl_pointidname"
+        ExecuteSQLInDb(sQuery)
+        Try
+
+            sQuery = "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'alldata' AND ORDINAL_POSITION >2  "
+            Using oConnection As New OdbcConnection(g_sEMSDbConString)
+                oConnection.Open()
+                Dim oCmd As New OdbcCommand(sQuery, oConnection)
+                oReader = oCmd.ExecuteReader()
+                While oReader.Read()
+                    nLogID = oReader("ORDINAL_POSITION")
+                    sPointName = oReader("COLUMN_NAME")
+                    sQuery = "INSERT INTO tbl_pointidname (id,pointname) VALUES (" + nLogID.ToString() + ",'" + sPointName + "')"
+                    ExecuteSQLInDb(sQuery)
+
+                End While
+                oConnection.Close()
+            End Using
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
 
     Public Sub SynchronizeEBOPointIDNamesTable()
         Dim oReader As OdbcDataReader

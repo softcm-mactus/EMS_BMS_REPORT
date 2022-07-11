@@ -1,4 +1,6 @@
-﻿Public Class EventReport
+﻿Imports MactusReportLib.MactusReportLib
+
+Public Class EventReport
     Inherits System.Web.UI.Page
     Private m_sUserName As String
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -43,7 +45,7 @@
         End Try
 
         Dim nReportStatusID As Long
-        nReportStatusID = MactusReportLib.InsertNewReportStatusRecord(nReportID, oFromDate, oToDate, nInterval, m_sUserName)
+        nReportStatusID = MactusReportLib.InsertNewReportStatusRecord(nReportID, oFromDate, oToDate, nInterval, m_sUserName, ReportType.EventReport)
         Response.Redirect("ReportProgress.aspx?ReportStatusID=" + nReportStatusID.ToString())
 
         'Dim sFileName As String = ""

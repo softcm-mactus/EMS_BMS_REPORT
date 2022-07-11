@@ -434,7 +434,6 @@ Public Class EBOReport
 
     End Class
 
-
     Public Sub ReadReportConfiguration(ByVal nReportID As Integer)
         g_nReportID = nReportID
         g_nHeaderCount = 2
@@ -904,7 +903,6 @@ Public Class EBOReport
         End Try
     End Sub
 
-
     Public Sub FormatCharts(ByRef oTrendChartList As List(Of Charting.Chart), ByRef oFromDate As Date, ByRef oToDate As Date, ByRef sAreaName As String)
 
         Try
@@ -1034,7 +1032,6 @@ Public Class EBOReport
             MsgBox(ex.Message)
         End Try
     End Sub
-
 
     Public Function GenerateTrendChartReport(ByVal nReportStatusID As Integer, ByVal dtFrom As Date, ByVal dtTo As Date, ByRef sOutFileName As String, ByRef nTimeInterval As Integer) As Boolean
 
@@ -1245,7 +1242,7 @@ Public Class EBOReport
                                 sValues(0) = FormatTimeToString(oAlmTime, g_oColList(0).m_sColFormat)
                             End If
                         Catch ex As Exception
-                            LogError(ex.Message)
+                            LogError("EBOReport.vb", "GetPointAlarmList()", ex.Message)
                         End Try
                         Try
                             sValues(1) = oReader("alarmtext")
@@ -1313,7 +1310,6 @@ Public Class EBOReport
         End Try
 
     End Sub
-
 
     Public Sub AddAlarmTableAndImageToDocument(ByRef ncol As Integer, ByRef oFrom As Date, ByRef oToDate As Date, ByRef oImage As itextsharp.text.image, ByRef nTopMargin As Integer, ByRef Writer As pdfwriter)
 
@@ -1503,8 +1499,6 @@ Public Class EBOReport
 
     End Function
 
-
-
     Public Function GenerateTrendReport(ByVal nReportStatusID As Integer, ByVal dtFrom As Date, ByVal dtTo As Date, ByRef sOutFileName As String, ByRef nTimeInterval As Integer) As Boolean
 
         GenerateTrendReport = False
@@ -1670,7 +1664,6 @@ Public Class EBOReport
         End Try
     End Sub
 
-
     Public Sub AddExceptionToReport(ByRef oDoc As Document, ByRef sMessage As String)
         Try
             Dim oExTable = New PdfPTable(1)
@@ -1694,7 +1687,6 @@ Public Class EBOReport
         End Try
     End Sub
 
-
     Private Function GetColValues(ByRef oTime As Date, Optional ByVal nIntervalMin As Integer = 1) As Boolean
         Dim sQuery As String
         Dim oReader As OdbcDataReader
@@ -1716,7 +1708,7 @@ Public Class EBOReport
         For nCol = 1 To g_oColList.Count - 1
 
 
-            sQuery = "SELECT AVG(Value) as avgvalue, MIN(Value) as minvalue, MAX(Value) as maxvalue FROM " + g_sDataTableName + " WHERE timestamp < ? AND timestamp > ? AND externallogid =" + g_oColList(nCol).m_sColumnNameinTable
+            sQuery = "SELECT AVG(Value) as avgvalue, MIN(Value) as minvalue, MAX(Value) as maxvalue FROM " + g_sDataTableName + " WHERE time_stamp < ? AND time_stamp > ? AND externallogid =" + g_oColList(nCol).m_sColumnNameinTable
             ' LogError(sQuery + " " + oFromDate.ToString() + " " + oToDate.ToString())
             Using oConnection As New OdbcConnection(g_sEMSDbConString)
                 Dim cmd As New OdbcCommand(sQuery, oConnection)
@@ -1924,7 +1916,7 @@ Public Class EBOReport
                     Next
                     oTable.SetWidths(sColWidths)
                 Catch ex As Exception
-                    LogError(ex.Message)
+                    LogError("EBOReport.vb", "GenerateEventReport()", ex.Message)
                 End Try
 
                 Dim sTimeField As String
@@ -2087,6 +2079,7 @@ Public Class EBOReport
         UpdateReportProgress(nReportStatusID, dtFrom, dtTo, dtTo)
 
     End Function
+
     Public Function GetEventTypeFromEventEnum(ByRef nEventTypeID As Integer) As String
         Dim sQuery As String
         GetEventTypeFromEventEnum = ""
@@ -2185,7 +2178,7 @@ Public Class EBOReport
                     Next
                     oTable.SetWidths(sColWidths)
                 Catch ex As Exception
-                    LogError(ex.Message)
+                    LogError("EBOReport.vb", "GenerateAlarmReport()", ex.Message)
                 End Try
 
 
@@ -2237,7 +2230,7 @@ Public Class EBOReport
                                     sValues(0) = FormatTimeToString(oAlmTime, g_oColList(0).m_sColFormat)
                                 End If
                             Catch ex As Exception
-                                LogError(ex.Message)
+                                LogError("EBOReport.vb", "GenerateAlarmReport()", ex.Message)
                             End Try
                             Try
                                 sValues(1) = oReader("alarmtext")
@@ -2337,10 +2330,6 @@ Public Class EBOReport
 
     End Function
 
-
-
-
-
     Private Function GetNextAlarmTime(ByRef oAlmGUID As Guid, ByRef nAlmID As ULong, ByRef nNxtAlmID As ULong) As Boolean
         GetNextAlarmTime = False
         Dim sQuery As String
@@ -2362,7 +2351,7 @@ Public Class EBOReport
             End Using
 
         Catch ex As Exception
-            LogError(ex.Message)
+            LogError("EBOReport.vb", "GetNextAlarmTime()", ex.Message)
         End Try
 
 
@@ -2517,7 +2506,7 @@ Public Class EBOReport
 
 
         Catch ex As Exception
-            LogError(ex.Message)
+            LogError("EBOReport.vb", "GetAlarmGroupName()", ex.Message)
         End Try
     End Function
 
@@ -2707,7 +2696,6 @@ Public Class EBOReport
         g_oDoc.Add(oTable)
 
     End Sub
-
 
     Private Sub PrintKMT()
         If g_bAddMeanKineticTempRow Then
@@ -2908,7 +2896,6 @@ Public Class EBOReport
         g_oDoc.Add(oTable)
     End Sub
 
-
     Public Function IsPointDataAvailable(ByRef nPointID As Integer, ByRef oStartDate As Date) As Boolean
         IsPointDataAvailable = False
         Dim oFromDate As Date
@@ -2945,10 +2932,6 @@ Public Class EBOReport
 
 
     End Function
-
-
-
-
 
     Public Function GetPointIDValue(ByRef nPointID As Integer, ByRef oStartDate As Date, ByRef fValue As Single, ByRef bIsPoint As Boolean) As Boolean
         GetPointIDValue = False
@@ -3004,7 +2987,6 @@ Public Class EBOReport
 
 
     End Function
-
 
     Private Sub CalcualteTopBottomBodyMargins(ByRef nTopMargin As Integer, ByRef nBottomMargin As Integer, ByRef nReporttype As ReportType)
         Dim nBodyDeaderYPos As Integer

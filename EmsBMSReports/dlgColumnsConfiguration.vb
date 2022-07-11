@@ -12,7 +12,7 @@ Public Class dlgColumnsConfiguration
                 nTemp = nRow + 1
                 nColID = oGrid.Rows(nRow).Cells(0).Value
                 If nColID <= 0 Then
-                    nColID = InsertNewColumn(nRow)
+                    nColID = InsertNewColumn(nRow, m_nReportID)
                     oGrid.Rows(nRow).Cells(0).Value = nColID
                 Else
                     UpdateColumnData(nRow)
@@ -126,7 +126,7 @@ Public Class dlgColumnsConfiguration
 
 
 
-        sQuery = "INSERT INTO tbl_reportcolumns(colnameindb, colseq, coltype, colwidth, colformat, coljust, colheader, coltitle, lowcheck,lowchecktype, lowcheckvalue, highcheck,highchecktype, highcheckvalue,setpointcheck,setpointtype,setpointvalue, enumid, colmerge,columnid) "
+        sQuery = "INSERT INTO tbl_reportcolumns(columnid, ReportID, colnameindb, colseq, coltype, colwidth, colformat, coljust, colheader, coltitle, lowcheck,lowchecktype, lowcheckvalue, highcheck,highchecktype, highcheckvalue,setpointcheck,setpointtype,setpointvalue, enumid, colmerge,columnid) "
         sQuery += "	VALUES ( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
 
         Try
@@ -209,6 +209,101 @@ Public Class dlgColumnsConfiguration
         End Try
     End Function
 
+
+    Private Function InsertNewColumn(ByRef nRow As Integer, ByRef nReportId As Integer) As Integer
+        InsertNewColumn = 0
+        Dim sQuery As String
+        Dim nColID As Integer
+        Dim nColType As ColType
+        Dim nColJust As ColJust
+        nColID = GetNewColumnID()
+
+
+
+        sQuery = "INSERT INTO tbl_reportcolumns(columnid, ReportID, colnameindb, colseq, coltype, colwidth, colformat, coljust, colheader, coltitle, lowcheck,lowchecktype, lowcheckvalue, highcheck,highchecktype, highcheckvalue,setpointcheck,setpointtype,setpointvalue, enumid, colmerge) "
+        sQuery += "	VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+
+        Try
+            Using oConnection As New OdbcConnection(g_sConString)
+                oConnection.Open()
+                Dim oCmd As New OdbcCommand(sQuery, oConnection)
+                oCmd.Parameters.Add("@0", OdbcType.Int).Value = nColID
+                oCmd.Parameters.Add("@1", OdbcType.Int).Value = nReportId
+
+                oCmd.Parameters.Add("@2", OdbcType.VarChar).Value = oGrid.Rows(nRow).Cells(1).Value 'ColNameInDB
+                oCmd.Parameters.Add("@3", OdbcType.Int).Value = nRow + 2 'colseq
+                nColType = [Enum].Parse(GetType(ColType), oGrid.Rows(nRow).Cells(2).Value.ToString())
+                oCmd.Parameters.Add("@4", OdbcType.Int).Value = nColType 'coltype
+                oCmd.Parameters.Add("@5", OdbcType.Int).Value = oGrid.Rows(nRow).Cells(3).Value 'colwidth
+                oCmd.Parameters.Add("@6", OdbcType.VarChar).Value = oGrid.Rows(nRow).Cells(4).Value 'colformat
+                nColJust = [Enum].Parse(GetType(ColJust), oGrid.Rows(nRow).Cells(5).Value.ToString())
+                oCmd.Parameters.Add("@7", OdbcType.Int).Value = nColJust 'coljust
+
+                oCmd.Parameters.Add("@8", OdbcType.VarChar).Value = oGrid.Rows(nRow).Cells(6).Value 'colheader
+                oCmd.Parameters.Add("@9", OdbcType.VarChar).Value = oGrid.Rows(nRow).Cells(7).Value 'coltitle
+
+                If oGrid.Rows(nRow).Cells(8).Value Then
+                    If oGrid.Rows(nRow).Cells(9).Value Then
+                        oCmd.Parameters.Add("@10", OdbcType.Int).Value = 1 '
+                        oCmd.Parameters.Add("@11", OdbcType.Int).Value = 1 '
+                        oCmd.Parameters.Add("@12", OdbcType.Int).Value = oGrid.Rows(nRow).Cells(10).Value '
+                    Else
+
+                        oCmd.Parameters.Add("@10", OdbcType.Int).Value = 1 '
+                        oCmd.Parameters.Add("@11", OdbcType.Int).Value = 0 '
+                        oCmd.Parameters.Add("@12", OdbcType.Int).Value = oGrid.Rows(nRow).Cells(10).Value '
+                    End If
+                Else
+                    oCmd.Parameters.Add("@10", OdbcType.Int).Value = 0 '
+                    oCmd.Parameters.Add("@11", OdbcType.Int).Value = 0 '
+                    oCmd.Parameters.Add("@12", OdbcType.Int).Value = 0 '
+                End If
+
+                If oGrid.Rows(nRow).Cells(11).Value Then
+                    If oGrid.Rows(nRow).Cells(12).Value Then
+                        oCmd.Parameters.Add("@13", OdbcType.Int).Value = 1 '
+                        oCmd.Parameters.Add("@14", OdbcType.Int).Value = 1 '
+                        oCmd.Parameters.Add("@15", OdbcType.Int).Value = oGrid.Rows(nRow).Cells(13).Value '
+                    Else
+                        oCmd.Parameters.Add("@13", OdbcType.Int).Value = 1 '
+                        oCmd.Parameters.Add("@14", OdbcType.Int).Value = 0 '
+                        oCmd.Parameters.Add("@15", OdbcType.Int).Value = oGrid.Rows(nRow).Cells(13).Value '
+                    End If
+                Else
+                    oCmd.Parameters.Add("@13", OdbcType.Int).Value = 0 '
+                    oCmd.Parameters.Add("@14", OdbcType.Int).Value = 0 '
+                    oCmd.Parameters.Add("@15", OdbcType.Int).Value = 0 '
+
+                End If
+
+                If oGrid.Rows(nRow).Cells(16).Value Then
+                    If oGrid.Rows(nRow).Cells(17).Value Then
+                        oCmd.Parameters.Add("@16", OdbcType.Int).Value = 1 '
+                        oCmd.Parameters.Add("@17", OdbcType.Int).Value = 1 '
+                        oCmd.Parameters.Add("@18", OdbcType.Int).Value = oGrid.Rows(nRow).Cells(18).Value '
+                    Else
+                        oCmd.Parameters.Add("@16", OdbcType.Int).Value = 1 '
+                        oCmd.Parameters.Add("@17", OdbcType.Int).Value = 0 '
+                        oCmd.Parameters.Add("@18", OdbcType.Int).Value = oGrid.Rows(nRow).Cells(18).Value '
+                    End If
+                Else
+                    oCmd.Parameters.Add("@16", OdbcType.Int).Value = 0 '
+                    oCmd.Parameters.Add("@17", OdbcType.Int).Value = 0 '
+                    oCmd.Parameters.Add("@18", OdbcType.Int).Value = 0 '
+
+                End If
+
+                oCmd.Parameters.Add("@19", OdbcType.Int).Value = oGrid.Rows(nRow).Cells(15).Value '
+                oCmd.Parameters.Add("@20", OdbcType.Int).Value = oGrid.Rows(nRow).Cells(14).Value '
+
+
+                oCmd.ExecuteNonQuery()
+                oConnection.Close()
+            End Using
+        Catch ex As Exception
+
+        End Try
+    End Function
 
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
@@ -316,7 +411,7 @@ Public Class dlgColumnsConfiguration
         If oDlg.ShowDialog() = DialogResult.OK And oDlg.m_nLogID > 0 Then
 
             Dim bFound As Boolean = False
-            If g_bIsBMS Then
+            If g_bIsBMS = 1 Then
                 For nRow = 0 To oGrid.Rows.Count - 1
                     If oDlg.m_nLogID = oGrid.Rows(nRow).Cells(1).Value Then
                         bFound = True
@@ -334,7 +429,7 @@ Public Class dlgColumnsConfiguration
             If bFound = False Then
                 nRow = oGrid.Rows.Add
                 oGrid.Rows(nRow).Cells(0).Value = 0
-                If g_bIsBMS Then
+                If g_bIsBMS = 1 Then
                     oGrid.Rows(nRow).Cells(1).Value = oDlg.m_nLogID
                 Else
                     oGrid.Rows(nRow).Cells(1).Value = oDlg.m_sPointName
@@ -408,7 +503,7 @@ Public Class dlgColumnsConfiguration
         ElseIf e.ColumnIndex = 1 Then
             Dim oDlg As New DlgSelectTrentDataPoint
             If oDlg.ShowDialog() = DialogResult.OK Then
-                If g_bIsBMS Then
+                If g_bIsBMS = 1 Then
                     oGrid.Rows(e.RowIndex).Cells(1).Value = oDlg.m_nLogID
                 Else
                     oGrid.Rows(e.RowIndex).Cells(1).Value = oDlg.m_sPointName

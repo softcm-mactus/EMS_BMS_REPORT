@@ -411,7 +411,7 @@ Public Class NewInduSoftReport
                 End If
 
             Catch ex As Exception
-                MsgBox("OnEndPage" + ex.Message)
+                LogError("MactusReportLib.vb", "OnEndPage", ex.Message)
             End Try
 
         End Sub
@@ -436,6 +436,7 @@ Public Class NewInduSoftReport
 
 
     Public Sub ReadReportConfiguration(ByVal nReportID As Integer)
+
         g_nReportID = nReportID
         g_nHeaderCount = 2
 
@@ -549,29 +550,34 @@ Public Class NewInduSoftReport
             oReader.Close()
             oConnection.Close()
         Catch ex As Exception
-            MsgBox(ex.Message)
+            UpdateExceptionInDatabase(nReportID, ex.Message)
+            LogError("NewIndusoftReport.vb", "ReadReportConfiguration()", ex.Message)
             Exit Sub
         End Try
 
         ReadReportTemplateConfiguration(nTemplateID)
 
         ReadReportColumnConfiguration(nReportID)
+        Try
+            g_oH1Font = New iTextSharp.text.Font(g_oReportFontName, g_fH1FontSize, iTextSharp.text.Font.BOLD, iTextSharp.text.Color.BLACK)
+            g_oH2Font = New iTextSharp.text.Font(g_oReportFontName, g_fH2FontSize, iTextSharp.text.Font.BOLD, iTextSharp.text.Color.BLACK)
+            g_oHFont = New iTextSharp.text.Font(g_oReportFontName, g_fHFontSize, iTextSharp.text.Font.BOLD, iTextSharp.text.Color.BLACK)
 
-        g_oH1Font = New iTextSharp.text.Font(g_oReportFontName, g_fH1FontSize, iTextSharp.text.Font.BOLD, iTextSharp.text.Color.BLACK)
-        g_oH2Font = New iTextSharp.text.Font(g_oReportFontName, g_fH2FontSize, iTextSharp.text.Font.BOLD, iTextSharp.text.Color.BLACK)
-        g_oHFont = New iTextSharp.text.Font(g_oReportFontName, g_fHFontSize, iTextSharp.text.Font.BOLD, iTextSharp.text.Color.BLACK)
+            'Body Font
+            g_oBodyFont = New iTextSharp.text.Font(g_oReportFontName, g_fBodyFontSize, iTextSharp.text.Font.NORMAL, iTextSharp.text.Color.BLACK)
+            g_oBodyFontLow = New iTextSharp.text.Font(g_oReportFontName, g_fBodyFontSize, iTextSharp.text.Font.UNDERLINE, iTextSharp.text.Color.RED)
+            g_oBodyFontHigh = New iTextSharp.text.Font(g_oReportFontName, g_fBodyFontSize, iTextSharp.text.Font.UNDERLINE, iTextSharp.text.Color.RED)
+            g_oBodyHeaderFont = New iTextSharp.text.Font(g_oReportFontName, g_fBodyFontSize, iTextSharp.text.Font.NORMAL, iTextSharp.text.Color.BLACK)
+            g_oNoAlarmBoxFont = New iTextSharp.text.Font(g_oReportFontName, 30, iTextSharp.text.Font.NORMAL, iTextSharp.text.Color.BLUE)
+            g_oNextPageFont = New iTextSharp.text.Font(g_oReportFontName, 20, iTextSharp.text.Font.NORMAL, iTextSharp.text.Color.BLUE)
 
-        'Body Font
-        g_oBodyFont = New iTextSharp.text.Font(g_oReportFontName, g_fBodyFontSize, iTextSharp.text.Font.NORMAL, iTextSharp.text.Color.BLACK)
-        g_oBodyFontLow = New iTextSharp.text.Font(g_oReportFontName, g_fBodyFontSize, iTextSharp.text.Font.UNDERLINE, iTextSharp.text.Color.RED)
-        g_oBodyFontHigh = New iTextSharp.text.Font(g_oReportFontName, g_fBodyFontSize, iTextSharp.text.Font.UNDERLINE, iTextSharp.text.Color.RED)
-        g_oBodyHeaderFont = New iTextSharp.text.Font(g_oReportFontName, g_fBodyFontSize, iTextSharp.text.Font.NORMAL, iTextSharp.text.Color.BLACK)
-        g_oNoAlarmBoxFont = New iTextSharp.text.Font(g_oReportFontName, 30, iTextSharp.text.Font.NORMAL, iTextSharp.text.Color.BLUE)
-        g_oNextPageFont = New iTextSharp.text.Font(g_oReportFontName, 20, iTextSharp.text.Font.NORMAL, iTextSharp.text.Color.BLUE)
+            'Footer Font
+            g_oFooterFont = New iTextSharp.text.Font(g_oReportFontName, g_fFooterFontSize, iTextSharp.text.Font.NORMAL, iTextSharp.text.Color.BLACK)
 
-        'Footer Font
-        g_oFooterFont = New iTextSharp.text.Font(g_oReportFontName, g_fFooterFontSize, iTextSharp.text.Font.NORMAL, iTextSharp.text.Color.BLACK)
 
+        Catch ex As Exception
+            LogError("NewIndusoftReport.vb", "ReadReportColumnConfiguration()", ex.Message)
+        End Try
 
     End Sub
 
@@ -706,7 +712,8 @@ Public Class NewInduSoftReport
             oReader.Close()
             oConnection.Close()
         Catch ex As Exception
-            MsgBox(ex.Message)
+            LogError("NewIndusoftReport.vb", "ReadReportTemplateConfiguration()", ex.Message)
+
         End Try
     End Sub
 
@@ -849,9 +856,18 @@ Public Class NewInduSoftReport
 
                 If oCol.m_nHighCheckType = 1 Then
                     oCol.m_sHighCheckPointName = GetPointName(CInt(oCol.m_fHigh))
-                    If oCol.m_sHighCheckPointName.Length <= 0 Then
+                    'If oCol.m_sHighCheckPointName IsNot Nothing Then
+                    Try
+                        If oCol.m_sHighCheckPointName = "" Then
+                            oCol.m_nHighCheckType = 0
+                        End If
+                    Catch ex As Exception
                         oCol.m_nHighCheckType = 0
-                    End If
+                    End Try
+
+                    'Else
+                    'oCol.m_nHighCheckType = 0
+                    'End If
                 End If
 
 
@@ -923,7 +939,7 @@ Public Class NewInduSoftReport
             oReader.Close()
             oConnection.Close()
         Catch ex As Exception
-
+            LogError("NewIndusoftReport.vb", "ReadReportColumnConfiguration()", ex.Message)
         End Try
     End Sub
 
@@ -1054,7 +1070,7 @@ Public Class NewInduSoftReport
             Next
 
         Catch ex As Exception
-            MsgBox(ex.Message)
+            LogError("NewIndusoftReport.vb", "FormatCharts()", ex.Message)
         End Try
     End Sub
 
@@ -1125,7 +1141,7 @@ Public Class NewInduSoftReport
                                 Try
                                     oTrendChartList(nCol).Series(g_oColList(nCol).m_nDataChartSeiries).Points.AddXY(oPrintTime, fValue)
                                 Catch ex As Exception
-                                    MsgBox(ex.Message)
+                                    LogError("NewIndusoftReport.vb", "GenerateTrendChartReport()", ex.Message)
                                 End Try
 
 
@@ -1149,7 +1165,7 @@ Public Class NewInduSoftReport
                                     oSeries.IsVisibleInLegend = True
                                     g_oColList(nCol).m_nDataChartSeiries = oTrendChartList(nCol).Series.Count - 1
                                 Catch ex As Exception
-                                    MsgBox(ex.Message)
+                                    LogError("NewIndusoftReport.vb", "GenerateTrendChartReport()", ex.Message)
                                 End Try
 
                             End If
@@ -1263,7 +1279,7 @@ Public Class NewInduSoftReport
                                 sValues(0) = FormatTimeToString(oAlmTime, g_oColList(0).m_sColFormat)
                             End If
                         Catch ex As Exception
-                            LogError(ex.Message)
+                            LogError("NewIndusoftReport.vb", "GetPointAlarmList()", ex.Message)
                         End Try
                         Try
                             sValues(1) = oReader("Al_Message")
@@ -1325,14 +1341,14 @@ Public Class NewInduSoftReport
                     oReader.Close()
 
                 Catch ex As Exception
-                    MsgBox(ex.Message)
+                    LogError("NewIndusoftReport.vb", "GetPointAlarmList()", ex.Message)
                 End Try
                 oConnection.Close()
 
             End Using
 
         Catch ex As Exception
-            MsgBox(ex.Message)
+            LogError("NewIndusoftReport.vb", "GetPointAlarmList()", ex.Message)
         Finally
 
         End Try
@@ -1499,6 +1515,8 @@ Public Class NewInduSoftReport
         GenerateTrendReport = False
         Dim nTopMargin As Integer = 0
         Dim nBottomMargin As Integer = 0
+        g_Current_MinVal = 999.0
+        g_Current_MaxVal = -999.0
 
 
         Try
@@ -1562,6 +1580,7 @@ Public Class NewInduSoftReport
                             Else
                                 oPdfCel = New PdfPCell(New Paragraph(g_oColList(nCol).m_sValue, g_oBodyFont))
                             End If
+
                             If g_oColList(nCol).m_nColJust = ColJust.Left Then
                                 oPdfCel.HorizontalAlignment = Element.ALIGN_LEFT
                             ElseIf g_oColList(nCol).m_nColJust = ColJust.Right Then
@@ -1574,6 +1593,31 @@ Public Class NewInduSoftReport
 
                             oTable.AddCell(oPdfCel)
 
+                            Try
+
+                                'get min value of each column And assign to m_freportmin
+                                If g_oColList(nCol).m_nColType = ColType.Temperature Or g_oColList(nCol).m_nColType = ColType.Humidity Or g_oColList(nCol).m_nColType = ColType.DP Then
+                                    If g_oColList(nCol).m_sValue = "****" Then
+
+                                    Else
+                                        If g_oColList(nCol).m_sValue <= g_oColList(nCol).m_fReportMin Then
+                                            g_oColList(nCol).m_fReportMin = g_oColList(nCol).m_sValue
+                                            'g_Current_MinVal = g_oColList(nCol).m_fValue
+                                            g_oColList(nCol).m_bReportMinAdded = True
+                                        End If
+                                        ' get max value of each column and assign to m_freportmin
+                                        If g_oColList(nCol).m_sValue >= g_oColList(nCol).m_fReportMax Then
+                                            g_oColList(nCol).m_fReportMax = g_oColList(nCol).m_sValue
+                                            'g_Current_MaxVal = g_oColList(nCol).m_fValue
+                                            g_oColList(nCol).m_bReportMaxAdded = True
+                                        End If
+                                    End If
+
+                                End If
+                            Catch ex As Exception
+
+                            End Try
+
                         Next
                         g_oDoc.Add(oTable)
                     End If
@@ -1584,7 +1628,7 @@ Public Class NewInduSoftReport
                 End While
 
                 If g_bPrintMinMaxRows Then
-                    PrintMinMaxRows()
+                    PrintMinMaxRows(dtFrom, dtTo)
                 End If
 
                 PrintKMT()
@@ -1604,7 +1648,7 @@ Public Class NewInduSoftReport
             Try
                 g_oDoc.Close()
             Catch ex As Exception
-
+                UpdateExceptionInDatabase(nReportStatusID, ex.Message)
             End Try
         End Try
 
@@ -1689,6 +1733,7 @@ Public Class NewInduSoftReport
         sTimeField = g_oColList(0).m_sColumnNameinTable
         sQuery = "SELECT * FROM " + g_sDataTableName + " WHERE " + sTimeField + " = ?"
 
+
         Using oConnection As New OdbcConnection(g_sEMSDbConString)
             Dim cmd As New OdbcCommand(sQuery, oConnection)
             oConnection.Open()
@@ -1725,12 +1770,27 @@ Public Class NewInduSoftReport
                             g_oColList(nCol).m_sValue = fTemp.ToString(g_oColList(nCol).m_sColFormat)
 
                             If g_oColList(nCol).m_bLowCheck And g_oColList(nCol).m_fLow <> 0 Then
-                                If fTemp <= g_oColList(nCol).m_fLow Then
-                                    g_oColList(nCol).m_bError = True
+                                If g_oColList(nCol).m_nColType = ColType.Temperature Then
+                                    If g_oColList(nCol).m_sValue < g_oColList(nCol).m_fLow Then
+                                        g_oColList(nCol).m_bError = True
+                                    End If
+                                Else
+                                    If g_oColList(nCol).m_sValue < g_oColList(nCol).m_fLow Then
+                                        g_oColList(nCol).m_bError = True
+                                    End If
                                 End If
-                            ElseIf g_oColList(nCol).m_bHighCheck And g_oColList(nCol).m_fHigh <> 0 Then
-                                If fTemp >= g_oColList(nCol).m_fHigh Then
-                                    g_oColList(nCol).m_bError = True
+
+
+                            End If
+                            If g_oColList(nCol).m_bHighCheck And g_oColList(nCol).m_fHigh <> 0 Then
+                                If g_oColList(nCol).m_nColType = ColType.Temperature Then
+                                    If g_oColList(nCol).m_sValue > g_oColList(nCol).m_fHigh Then
+                                        g_oColList(nCol).m_bError = True
+                                    End If
+                                Else
+                                    If g_oColList(nCol).m_sValue > g_oColList(nCol).m_fHigh Then
+                                        g_oColList(nCol).m_bError = True
+                                    End If
                                 End If
                             End If
                         End If
@@ -1748,7 +1808,7 @@ Public Class NewInduSoftReport
                 End If
                 oReader.Close()
             Catch ex As Exception
-
+                LogError("NewIndusoftReport.vb", "GetColInstanceValues()", ex.Message)
             End Try
             oConnection.Close()
         End Using
@@ -1776,6 +1836,10 @@ Public Class NewInduSoftReport
                 g_oColList(nCol).m_fValue = 0
                 g_oColList(nCol).m_fMax = -10000
                 g_oColList(nCol).m_fMin = 10000
+                g_Current_MinVal = 999.0
+                g_Current_MaxVal = -999.0
+                'g_oColList(nCol).m_fReportMin = 999
+                'g_oColList(nCol).m_fReportMax = -999
             Next
 
 
@@ -1799,12 +1863,15 @@ Public Class NewInduSoftReport
                             If fTemp > g_oColList(nCol).m_fMax Then
                                 g_oColList(nCol).m_fMax = fTemp
                             End If
+
                             g_oColList(nCol).m_fValue = g_oColList(nCol).m_fValue + fTemp
+
                         ElseIf g_oColList(nCol).m_nColType = ColType.Enumtype Then
                             Try
                                 Dim nValue As Integer
                                 nValue = oReader(g_oColList(nCol).m_sColumnNameinTable)
                                 g_oColList(nCol).m_sValue = GetEnumStringFromValue(g_oColList(nCol).m_nEnumID, nValue)
+
                             Catch ex As Exception
                                 g_oColList(nCol).m_sValue = g_sErrorText
                                 g_oColList(nCol).m_bError = True
@@ -1813,7 +1880,9 @@ Public Class NewInduSoftReport
                             g_oColList(nCol).m_sValue = oTime.ToString(g_oColList(nCol).m_sColFormat)
                         ElseIf nRecords = 0 Then
                             g_oColList(nCol).m_sValue = oReader(g_oColList(nCol).m_sColumnNameinTable)
+
                         End If
+
                     Next
                     nRecords = nRecords + 1
                 End While
@@ -1834,9 +1903,9 @@ Public Class NewInduSoftReport
                     For nCol = 0 To g_oColList.Count - 1
                         If g_oColList(nCol).m_nColType = ColType.Temperature Or g_oColList(nCol).m_nColType = ColType.Humidity Or g_oColList(nCol).m_nColType = ColType.DP Then
                             g_oColList(nCol).m_fValue = g_oColList(nCol).m_fValue / nRecords
-                            If g_oColList(nCol).m_bLowCheck And g_oColList(nCol).m_fValue <= g_oColList(nCol).m_fLow Then
+                            If g_oColList(nCol).m_bLowCheck And g_oColList(nCol).m_fValue < g_oColList(nCol).m_fLow Then
                                 g_oColList(nCol).m_bError = True
-                            ElseIf g_oColList(nCol).m_bHighCheck And g_oColList(nCol).m_fValue >= g_oColList(nCol).m_fHigh Then
+                            ElseIf g_oColList(nCol).m_bHighCheck And g_oColList(nCol).m_fValue > g_oColList(nCol).m_fHigh Then
                                 g_oColList(nCol).m_bError = True
                             End If
 
@@ -1863,7 +1932,7 @@ Public Class NewInduSoftReport
             End Using
 
         Catch ex As Exception
-
+            LogError("NewIndusoftReport.vb", "GetColAverageMinMaxValues()", ex.Message)
         End Try
 
 
@@ -1985,11 +2054,11 @@ Public Class NewInduSoftReport
                                     sValue = fTemp.ToString(g_oColList(nCol).m_sColFormat)
 
                                     If g_oColList(nCol).m_bLowCheck And g_oColList(nCol).m_fLow <> 0 Then
-                                        If fTemp <= g_oColList(nCol).m_fLow Then
+                                        If fTemp < g_oColList(nCol).m_fLow Then
                                             bLow = True
                                         End If
                                     ElseIf g_oColList(nCol).m_bHighCheck And g_oColList(nCol).m_fHigh <> 0 Then
-                                        If fTemp >= g_oColList(nCol).m_fHigh Then
+                                        If fTemp > g_oColList(nCol).m_fHigh Then
                                             bHigh = True
                                         End If
                                     End If
@@ -2207,151 +2276,142 @@ Public Class NewInduSoftReport
 
 
     Private Sub SetPageEventParameters(ByRef oPageEvent As IEntryExitReportEvents)
-        oPageEvent.g_oFooterFont = g_oFooterFont
+        Try
+            oPageEvent.g_oFooterFont = g_oFooterFont
 
-        oPageEvent.g_oH1Font = g_oH1Font
-        oPageEvent.g_oH2Font = g_oH2Font
-        oPageEvent.g_oHFont = g_oHFont
-        oPageEvent.g_bIconNeeded = g_bIconNeeded
-        oPageEvent.g_bGeneratedTime = g_bGeneratedTime
-        oPageEvent.g_bGeneratedBy = g_bGeneratedBy
-        oPageEvent.g_fSideMargin = g_fSideMargin
-        oPageEvent.g_fTopBottomMargin = g_fTopBottomMargin
-        oPageEvent.g_fSideFactor = g_fSideFactor
-        oPageEvent.g_nHeaderPad = g_nHeaderPad
-        oPageEvent.g_nFooterPad = g_nFooterPad
-        oPageEvent.g_nBodyPad = g_nBodyPad
-        oPageEvent.g_nBodyHeaderPad = g_nBodyHeaderPad
-        oPageEvent.g_sGeneratedUserName = g_sGeneratedUserName
-        oPageEvent.g_bLandScape = g_bLandScape
-        oPageEvent.g_oBodyHeaderFont = g_oBodyHeaderFont
-        oPageEvent.g_oFooterRowList = g_oFooterRowList
-        oPageEvent.g_sReportFontName = g_sReportFontName
-        oPageEvent.g_nReportType = g_nReportType
+            oPageEvent.g_oH1Font = g_oH1Font
+            oPageEvent.g_oH2Font = g_oH2Font
+            oPageEvent.g_oHFont = g_oHFont
+            oPageEvent.g_bIconNeeded = g_bIconNeeded
+            oPageEvent.g_bGeneratedTime = g_bGeneratedTime
+            oPageEvent.g_bGeneratedBy = g_bGeneratedBy
+            oPageEvent.g_fSideMargin = g_fSideMargin
+            oPageEvent.g_fTopBottomMargin = g_fTopBottomMargin
+            oPageEvent.g_fSideFactor = g_fSideFactor
+            oPageEvent.g_nHeaderPad = g_nHeaderPad
+            oPageEvent.g_nFooterPad = g_nFooterPad
+            oPageEvent.g_nBodyPad = g_nBodyPad
+            oPageEvent.g_nBodyHeaderPad = g_nBodyHeaderPad
+            oPageEvent.g_sGeneratedUserName = g_sGeneratedUserName
+            oPageEvent.g_bLandScape = g_bLandScape
+            oPageEvent.g_oBodyHeaderFont = g_oBodyHeaderFont
+            oPageEvent.g_oFooterRowList = g_oFooterRowList
+            oPageEvent.g_sReportFontName = g_sReportFontName
+            oPageEvent.g_nReportType = g_nReportType
+        Catch ex As Exception
+            LogError("NewIndusoftReport.vb", "SetPageEventParameters()", ex.Message)
+        End Try
+
     End Sub
 
     Private Sub PrintEndOfReport(ByVal oStartTime As Date, ByVal oEndTime As Date)
 
-        If g_bIsGMTTime Then
-            oStartTime = oStartTime.ToLocalTime()
-            oEndTime = oEndTime.ToLocalTime()
-        End If
+        Try
+            If g_bIsGMTTime Then
+                oStartTime = oStartTime.ToLocalTime()
+                oEndTime = oEndTime.ToLocalTime()
+            End If
 
-        If g_bFRomToDatesPrinted Then
+            If g_bFRomToDatesPrinted Then
 
-            Dim oTable As New PdfPTable(1)
-            oTable.TotalWidth = g_oDoc.PageSize.Width - 3 * g_fSideMargin
+                Dim oTable As New PdfPTable(1)
+                oTable.TotalWidth = g_oDoc.PageSize.Width - 3 * g_fSideMargin
 
 
-            Dim oPdfCel As PdfPCell = New PdfPCell(New Paragraph("           ", g_oHFont))
-            oPdfCel.Border = 0
-            oTable.AddCell(oPdfCel)
+                Dim oPdfCel As PdfPCell = New PdfPCell(New Paragraph("           ", g_oHFont))
+                oPdfCel.Border = 0
+                oTable.AddCell(oPdfCel)
 
-            Dim sTemp As String
-            sTemp = "End Of Report :  From " + oStartTime.ToString(g_sTimeFormatIndian, CultureInfo.InvariantCulture) + "  To " + oEndTime.ToString(g_sTimeFormatIndian, CultureInfo.InvariantCulture)
+                Dim sTemp As String
+                sTemp = "End Of Report :  From " + oStartTime.ToString(g_sTimeFormatIndian, CultureInfo.InvariantCulture) + "  To " + oEndTime.ToString(g_sTimeFormatIndian, CultureInfo.InvariantCulture)
 
-            oPdfCel = New PdfPCell(New Paragraph(sTemp, g_oFooterFont))
-            oPdfCel.BackgroundColor = iTextSharp.text.Color.LIGHT_GRAY
-            oPdfCel.HorizontalAlignment = Element.ALIGN_CENTER
-            oPdfCel.VerticalAlignment = Element.ALIGN_MIDDLE
-            oPdfCel.PaddingBottom = g_nBodyPad
-            oPdfCel.ExtraParagraphSpace = 5
-            oTable.AddCell(oPdfCel)
-            g_oDoc.Add(oTable)
-        End If
+                oPdfCel = New PdfPCell(New Paragraph(sTemp, g_oFooterFont))
+                oPdfCel.BackgroundColor = iTextSharp.text.Color.LIGHT_GRAY
+                oPdfCel.HorizontalAlignment = Element.ALIGN_CENTER
+                oPdfCel.VerticalAlignment = Element.ALIGN_MIDDLE
+                oPdfCel.PaddingBottom = g_nBodyPad
+                oPdfCel.ExtraParagraphSpace = 5
+                oTable.AddCell(oPdfCel)
+                g_oDoc.Add(oTable)
+            End If
 
-        If g_bPrintReviewTableEveryPage = False Then
+            If g_bPrintReviewTableEveryPage = False Then
 
-            Dim oTable As New PdfPTable(1)
-            oTable.TotalWidth = g_oDoc.PageSize.Width - 3 * g_fSideMargin
+                Dim oTable As New PdfPTable(1)
+                oTable.TotalWidth = g_oDoc.PageSize.Width - 3 * g_fSideMargin
 
-            Dim oPdfCel As PdfPCell = New PdfPCell(New Paragraph("           ", g_oHFont))
-            oPdfCel.Border = 0
-            oTable.AddCell(oPdfCel)
-            g_oDoc.Add(oTable)
+                Dim oPdfCel As PdfPCell = New PdfPCell(New Paragraph("           ", g_oHFont))
+                oPdfCel.Border = 0
+                oTable.AddCell(oPdfCel)
+                g_oDoc.Add(oTable)
 
-            'Write Footer Table
-            Dim oFooterTable As PdfPTable = New PdfPTable(3)
-            oFooterTable.TotalWidth = g_oDoc.PageSize.Width - 3 * g_fSideMargin
-            oFooterTable.HorizontalAlignment = Element.ALIGN_CENTER
+                'Write Footer Table
+                Dim oFooterTable As PdfPTable = New PdfPTable(3)
+                oFooterTable.TotalWidth = g_oDoc.PageSize.Width - 3 * g_fSideMargin
+                oFooterTable.HorizontalAlignment = Element.ALIGN_CENTER
 
-            Dim oFooterCell As PdfPCell
-            For nCol = 0 To g_oFooterRowList.Count - 1
-                oFooterCell = New PdfPCell(New Phrase(g_oFooterRowList(nCol).m_sCol1, g_oFooterFont))
-                oFooterCell.PaddingTop = g_nFooterPad
-                oFooterCell.PaddingBottom = g_nFooterPad
-                If g_oFooterRowList(nCol).m_bHeader Then
-                    oFooterCell.BackgroundColor = iTextSharp.text.Color.LIGHT_GRAY
-                End If
-                oFooterCell.HorizontalAlignment = Element.ALIGN_CENTER
-                oFooterCell.VerticalAlignment = Element.ALIGN_MIDDLE
-                oFooterTable.AddCell(oFooterCell)
+                Dim oFooterCell As PdfPCell
+                For nCol = 0 To g_oFooterRowList.Count - 1
+                    oFooterCell = New PdfPCell(New Phrase(g_oFooterRowList(nCol).m_sCol1, g_oFooterFont))
+                    oFooterCell.PaddingTop = g_nFooterPad
+                    oFooterCell.PaddingBottom = g_nFooterPad
+                    If g_oFooterRowList(nCol).m_bHeader Then
+                        oFooterCell.BackgroundColor = iTextSharp.text.Color.LIGHT_GRAY
+                    End If
+                    oFooterCell.HorizontalAlignment = Element.ALIGN_CENTER
+                    oFooterCell.VerticalAlignment = Element.ALIGN_MIDDLE
+                    oFooterTable.AddCell(oFooterCell)
 
-                oFooterCell = New PdfPCell(New Phrase(g_oFooterRowList(nCol).m_sCol2, g_oFooterFont))
-                oFooterCell.PaddingTop = g_nFooterPad
-                oFooterCell.PaddingBottom = g_nFooterPad
-                If g_oFooterRowList(nCol).m_bHeader Then
-                    oFooterCell.BackgroundColor = iTextSharp.text.Color.LIGHT_GRAY
-                End If
-                oFooterCell.HorizontalAlignment = Element.ALIGN_CENTER
-                oFooterCell.VerticalAlignment = Element.ALIGN_MIDDLE
-                oFooterTable.AddCell(oFooterCell)
+                    oFooterCell = New PdfPCell(New Phrase(g_oFooterRowList(nCol).m_sCol2, g_oFooterFont))
+                    oFooterCell.PaddingTop = g_nFooterPad
+                    oFooterCell.PaddingBottom = g_nFooterPad
+                    If g_oFooterRowList(nCol).m_bHeader Then
+                        oFooterCell.BackgroundColor = iTextSharp.text.Color.LIGHT_GRAY
+                    End If
+                    oFooterCell.HorizontalAlignment = Element.ALIGN_CENTER
+                    oFooterCell.VerticalAlignment = Element.ALIGN_MIDDLE
+                    oFooterTable.AddCell(oFooterCell)
 
-                oFooterCell = New PdfPCell(New Phrase(g_oFooterRowList(nCol).m_sCol3, g_oFooterFont))
-                oFooterCell.PaddingTop = g_nFooterPad
-                oFooterCell.PaddingBottom = g_nFooterPad
-                If g_oFooterRowList(nCol).m_bHeader Then
-                    oFooterCell.BackgroundColor = iTextSharp.text.Color.LIGHT_GRAY
-                End If
-                oFooterCell.HorizontalAlignment = Element.ALIGN_CENTER
-                oFooterCell.VerticalAlignment = Element.ALIGN_MIDDLE
-                oFooterTable.AddCell(oFooterCell)
-            Next
-            g_oDoc.Add(oFooterTable)
-        End If
+                    oFooterCell = New PdfPCell(New Phrase(g_oFooterRowList(nCol).m_sCol3, g_oFooterFont))
+                    oFooterCell.PaddingTop = g_nFooterPad
+                    oFooterCell.PaddingBottom = g_nFooterPad
+                    If g_oFooterRowList(nCol).m_bHeader Then
+                        oFooterCell.BackgroundColor = iTextSharp.text.Color.LIGHT_GRAY
+                    End If
+                    oFooterCell.HorizontalAlignment = Element.ALIGN_CENTER
+                    oFooterCell.VerticalAlignment = Element.ALIGN_MIDDLE
+                    oFooterTable.AddCell(oFooterCell)
+                Next
+                g_oDoc.Add(oFooterTable)
+            End If
+        Catch ex As Exception
+            LogError("NewIndusoftReport.vb", "PrintEndOfReport()", ex.Message)
+        End Try
 
 
     End Sub
 
-    Private Sub PrintMinMaxRows()
+    Private Sub PrintMinMaxRows(ByVal oStartDate As Date, ByVal oEndDate As Date)
 
-        Dim oCell As PdfPCell
-        Dim sTemp As String
+        Try
+            Dim oCell As PdfPCell
+            Dim sTemp As String
+
+            Dim oTable = New PdfPTable(g_oColList.Count)
+            oTable.TotalWidth = g_oDoc.PageSize.Width - 3 * g_fSideMargin
+
+            oTable.WidthPercentage = g_fSideFactor
+
+            oTable.HorizontalAlignment = Element.ALIGN_CENTER
+            Dim nCol As Integer
+            Dim sColWidths(g_oColList.Count - 1) As Single
+            For nCol = 0 To g_oColList.Count - 1
+                sColWidths(nCol) = g_oColList(nCol).m_sColWidth
+            Next
+            oTable.SetWidths(sColWidths)
 
 
-        Dim oTable = New PdfPTable(g_oColList.Count)
-        oTable.TotalWidth = g_oDoc.PageSize.Width - 3 * g_fSideMargin
-
-        oTable.WidthPercentage = g_fSideFactor
-
-        oTable.HorizontalAlignment = Element.ALIGN_CENTER
-        Dim nCol As Integer
-        Dim sColWidths(g_oColList.Count - 1) As Single
-        For nCol = 0 To g_oColList.Count - 1
-            sColWidths(nCol) = g_oColList(nCol).m_sColWidth
-        Next
-        oTable.SetWidths(sColWidths)
-
-
-        sTemp = "Min Value"
-        oCell = New PdfPCell(New Phrase(sTemp, g_oBodyHeaderFont))
-        oCell.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
-        oCell.PaddingTop = g_nBodyPad
-        oCell.PaddingBottom = g_nBodyPad
-        oCell.HorizontalAlignment = Element.ALIGN_CENTER
-        oCell.VerticalAlignment = Element.ALIGN_MIDDLE
-        oTable.AddCell(oCell)
-
-        For nIndex = 1 To g_oColList.Count - 1
-
-            sTemp = ""
-            If g_oColList(nIndex).m_nColType = ColType.DP Or g_oColList(nIndex).m_nColType = ColType.Temperature Or g_oColList(nIndex).m_nColType = ColType.Humidity Then
-                If g_oColList(nIndex).m_bReportMinAdded = True Then
-                    sTemp = g_oColList(nIndex).m_fReportMin.ToString(g_oColList(nIndex).m_sColFormat)
-                Else
-                    sTemp = g_sErrorText
-                End If
-            End If
+            sTemp = "Min Value"
             oCell = New PdfPCell(New Phrase(sTemp, g_oBodyHeaderFont))
             oCell.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
             oCell.PaddingTop = g_nBodyPad
@@ -2359,44 +2419,139 @@ Public Class NewInduSoftReport
             oCell.HorizontalAlignment = Element.ALIGN_CENTER
             oCell.VerticalAlignment = Element.ALIGN_MIDDLE
             oTable.AddCell(oCell)
-        Next
 
-        oCell = New PdfPCell(New Phrase("Max Value", g_oBodyHeaderFont))
-        oCell.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
-        oCell.PaddingTop = g_nBodyPad
-        oCell.PaddingBottom = g_nBodyPad
-        oCell.HorizontalAlignment = Element.ALIGN_CENTER
-        oCell.VerticalAlignment = Element.ALIGN_MIDDLE
-        oTable.AddCell(oCell)
 
-        For nIndex = 1 To g_oColList.Count - 1
 
-            sTemp = ""
-            If g_oColList(nIndex).m_nColType = ColType.DP Or g_oColList(nIndex).m_nColType = ColType.Temperature Or g_oColList(nIndex).m_nColType = ColType.Humidity Then
-                If g_oColList(nIndex).m_bReportMaxAdded = True Then
-                    sTemp = g_oColList(nIndex).m_fReportMax.ToString(g_oColList(nIndex).m_sColFormat)
-                Else
-                    sTemp = g_sErrorText
+            For nIndex = 1 To g_oColList.Count - 1
+
+                sTemp = ""
+                If g_oColList(nIndex).m_nColType = ColType.DP Or g_oColList(nIndex).m_nColType = ColType.Temperature Or g_oColList(nIndex).m_nColType = ColType.Humidity Then
+                    If g_oColList(nIndex).m_bReportMinAdded = True Then
+                        sTemp = g_oColList(nIndex).m_fReportMin.ToString(g_oColList(nIndex).m_sColFormat)
+                    Else
+                        sTemp = g_sErrorText
+                    End If
                 End If
-            End If
 
-            oCell = New PdfPCell(New Phrase(sTemp, g_oBodyHeaderFont))
+                oCell = New PdfPCell(New Phrase(sTemp, g_oBodyHeaderFont))
+                oCell.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
+                oCell.PaddingTop = g_nBodyPad
+                oCell.PaddingBottom = g_nBodyPad
+                oCell.HorizontalAlignment = Element.ALIGN_CENTER
+                oCell.VerticalAlignment = Element.ALIGN_MIDDLE
+                oTable.AddCell(oCell)
+
+            Next
+
+            oCell = New PdfPCell(New Phrase("Max Value", g_oBodyHeaderFont))
             oCell.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
             oCell.PaddingTop = g_nBodyPad
             oCell.PaddingBottom = g_nBodyPad
             oCell.HorizontalAlignment = Element.ALIGN_CENTER
             oCell.VerticalAlignment = Element.ALIGN_MIDDLE
             oTable.AddCell(oCell)
-        Next
 
-        g_oDoc.Add(oTable)
+            For nIndex = 1 To g_oColList.Count - 1
+
+                sTemp = ""
+                If g_oColList(nIndex).m_nColType = ColType.DP Or g_oColList(nIndex).m_nColType = ColType.Temperature Or g_oColList(nIndex).m_nColType = ColType.Humidity Then
+                    If g_oColList(nIndex).m_bReportMaxAdded = True Then
+                        sTemp = g_oColList(nIndex).m_fReportMax.ToString(g_oColList(nIndex).m_sColFormat)
+                    Else
+                        sTemp = g_sErrorText
+                    End If
+                End If
+
+                oCell = New PdfPCell(New Phrase(sTemp, g_oBodyHeaderFont))
+                oCell.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
+                oCell.PaddingTop = g_nBodyPad
+                oCell.PaddingBottom = g_nBodyPad
+                oCell.HorizontalAlignment = Element.ALIGN_CENTER
+                oCell.VerticalAlignment = Element.ALIGN_MIDDLE
+                oTable.AddCell(oCell)
+            Next
+
+
+            g_oDoc.Add(oTable)
+        Catch ex As Exception
+            LogError("NewIndusoftReport.vb", "PrintMinMaxRows()", ex.Message)
+        End Try
 
     End Sub
 
 
     Private Sub PrintKMT()
-        If g_bAddMeanKineticTempRow Then
 
+        Try
+            If g_bAddMeanKineticTempRow Then
+
+                Dim oCell As PdfPCell
+                Dim sTemp As String
+
+
+                Dim oTable = New PdfPTable(g_oColList.Count)
+                oTable.TotalWidth = g_oDoc.PageSize.Width - 3 * g_fSideMargin
+
+                oTable.WidthPercentage = g_fSideFactor
+
+                oTable.HorizontalAlignment = Element.ALIGN_CENTER
+                Dim nCol As Integer
+                Dim sColWidths(g_oColList.Count - 1) As Single
+                For nCol = 0 To g_oColList.Count - 1
+                    sColWidths(nCol) = g_oColList(nCol).m_sColWidth
+                Next
+                oTable.SetWidths(sColWidths)
+
+                oCell = New PdfPCell(New Phrase("MKT Value", g_oBodyHeaderFont))
+                oCell.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
+                oCell.PaddingTop = g_nBodyPad
+                oCell.PaddingBottom = g_nBodyPad
+                oCell.HorizontalAlignment = Element.ALIGN_CENTER
+                oCell.VerticalAlignment = Element.ALIGN_MIDDLE
+                oTable.AddCell(oCell)
+
+                For nIndex = 1 To g_oColList.Count - 1
+
+                    sTemp = ""
+                    If g_oColList(nIndex).m_nColType = ColType.Temperature Then
+                        If g_oColList(nIndex).m_nKMTCount > 0 Then
+                            Dim dTemp As Double
+                            dTemp = g_oColList(nIndex).m_dKMT / g_oColList(nIndex).m_nKMTCount
+                            dTemp = Math.Log(dTemp) * -1
+                            dTemp = 10000 / dTemp
+                            dTemp = dTemp - 273.15
+
+                            sTemp = dTemp.ToString(g_oColList(nIndex).m_sColFormat)
+                        Else
+                            sTemp = "No Records"
+                        End If
+                    End If
+
+                    oCell = New PdfPCell(New Phrase(sTemp, g_oBodyHeaderFont))
+                    oCell.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
+                    oCell.PaddingTop = g_nBodyPad
+                    oCell.PaddingBottom = g_nBodyPad
+                    oCell.HorizontalAlignment = Element.ALIGN_CENTER
+                    oCell.VerticalAlignment = Element.ALIGN_MIDDLE
+                    oTable.AddCell(oCell)
+                Next
+                g_oDoc.Add(oTable)
+            End If
+
+        Catch ex As Exception
+            LogError("NewIndusoftReport.vb", "PrintKMT()", ex.Message)
+        End Try
+
+
+
+
+    End Sub
+
+    Private Sub PrintLimitSetPointRows(ByRef oStartDate As Date, ByRef oEndDate As Date)
+
+        Try
+
+            Dim bAddTable As Boolean = False
             Dim oCell As PdfPCell
             Dim sTemp As String
 
@@ -2414,7 +2569,10 @@ Public Class NewInduSoftReport
             Next
             oTable.SetWidths(sColWidths)
 
-            oCell = New PdfPCell(New Phrase("MKT Value", g_oBodyHeaderFont))
+
+
+            sTemp = "Alarm Low Limit"
+            oCell = New PdfPCell(New Paragraph(sTemp, g_oBodyHeaderFont))
             oCell.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
             oCell.PaddingTop = g_nBodyPad
             oCell.PaddingBottom = g_nBodyPad
@@ -2422,318 +2580,353 @@ Public Class NewInduSoftReport
             oCell.VerticalAlignment = Element.ALIGN_MIDDLE
             oTable.AddCell(oCell)
 
-            For nIndex = 1 To g_oColList.Count - 1
+            If g_bPrintMinMaxRows = True Then
+                For nIndex = 1 To g_oColList.Count - 1
 
-                sTemp = ""
-                If g_oColList(nIndex).m_nColType = ColType.Temperature Then
-                    If g_oColList(nIndex).m_nKMTCount > 0 Then
-                        Dim dTemp As Double
-                        dTemp = g_oColList(nIndex).m_dKMT / g_oColList(nIndex).m_nKMTCount
-                        dTemp = Math.Log(dTemp) * -1
-                        dTemp = 10000 / dTemp
-                        dTemp = dTemp - 273.15
+                    sTemp = ""
+                    If g_oColList(nIndex).m_bLowCheck Then
+                        If g_oColList(nIndex).m_nLowCheckType = 1 Then
+                            Try
+                                If GetPointNameValue(g_oColList(nIndex).m_sLowCheckPointName, oStartDate, g_oColList(nIndex).m_sColFormat, g_oColList(nIndex).m_fLow, False) = True Then
+                                    sTemp = g_oColList(nIndex).m_fLow.ToString(g_oColList(nIndex).m_sColFormat)
+                                End If
+                            Catch ex As Exception
 
-                        sTemp = dTemp.ToString(g_oColList(nIndex).m_sColFormat)
-                    Else
-                        sTemp = "No Records"
+                            End Try
+                        Else
+                            sTemp = g_oColList(nIndex).m_fLow.ToString(g_oColList(nIndex).m_sColFormat)
+                        End If
                     End If
-                End If
 
-                oCell = New PdfPCell(New Phrase(sTemp, g_oBodyHeaderFont))
+                    oCell = New PdfPCell(New Phrase(sTemp, g_oBodyHeaderFont))
+                    oCell.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
+                    oCell.PaddingTop = g_nBodyPad
+                    oCell.PaddingBottom = g_nBodyPad
+                    oCell.HorizontalAlignment = Element.ALIGN_CENTER
+                    oCell.VerticalAlignment = Element.ALIGN_MIDDLE
+                    oTable.AddCell(oCell)
+                Next
+            End If
+
+            If g_bPrintAlarmSpRows = True Then
+
+                oCell = New PdfPCell(New Paragraph("Set Value", g_oBodyHeaderFont))
                 oCell.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
                 oCell.PaddingTop = g_nBodyPad
                 oCell.PaddingBottom = g_nBodyPad
                 oCell.HorizontalAlignment = Element.ALIGN_CENTER
                 oCell.VerticalAlignment = Element.ALIGN_MIDDLE
                 oTable.AddCell(oCell)
-            Next
+
+                For nIndex = 1 To g_oColList.Count - 1
+
+                    sTemp = ""
+
+                    If g_oColList(nIndex).m_bSPCheck Then
+                        If g_oColList(nIndex).m_nSPCheckType = 1 Then
+                            Try
+                                If GetPointNameValue(g_oColList(nIndex).m_sSPCheckPointName, oStartDate, g_oColList(nIndex).m_sColFormat, g_oColList(nIndex).m_fSP, False) Then
+                                    sTemp = g_oColList(nIndex).m_fSP.ToString(g_oColList(nIndex).m_sColFormat)
+                                End If
+                            Catch ex As Exception
+
+                            End Try
+                        Else
+                            sTemp = g_oColList(nIndex).m_fSP.ToString(g_oColList(nIndex).m_sColFormat)
+                        End If
+                    End If
+
+                    oCell = New PdfPCell(New Phrase(sTemp, g_oBodyHeaderFont))
+                    oCell.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
+                    oCell.PaddingTop = g_nBodyPad
+                    oCell.PaddingBottom = g_nBodyPad
+                    oCell.HorizontalAlignment = Element.ALIGN_CENTER
+                    oCell.VerticalAlignment = Element.ALIGN_MIDDLE
+                    oTable.AddCell(oCell)
+                Next
+            End If
+
+            oCell = New PdfPCell(New Paragraph("Alarm High Limit", g_oBodyHeaderFont))
+            oCell.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
+            oCell.PaddingTop = g_nBodyPad
+            oCell.PaddingBottom = g_nBodyPad
+            oCell.HorizontalAlignment = Element.ALIGN_CENTER
+            oCell.VerticalAlignment = Element.ALIGN_MIDDLE
+            oTable.AddCell(oCell)
+
+
+            If g_bPrintMinMaxRows = True Then
+                For nIndex = 1 To g_oColList.Count - 1
+                    sTemp = ""
+                    If g_oColList(nIndex).m_bHighCheck Then
+                        If g_oColList(nIndex).m_nHighCheckType = 1 Then
+                            Try
+                                If GetPointNameValue(g_oColList(nIndex).m_sHighCheckPointName, oStartDate, g_oColList(nIndex).m_sColFormat, g_oColList(nIndex).m_fHigh, False) = True Then
+                                    sTemp = g_oColList(nIndex).m_fHigh.ToString(g_oColList(nIndex).m_sColFormat)
+                                End If
+                            Catch ex As Exception
+
+                            End Try
+                        Else
+                            sTemp = g_oColList(nIndex).m_fHigh.ToString(g_oColList(nIndex).m_sColFormat)
+                        End If
+                    End If
+
+                    oCell = New PdfPCell(New Phrase(sTemp, g_oBodyHeaderFont))
+                    oCell.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
+                    oCell.PaddingTop = g_nBodyPad
+                    oCell.PaddingBottom = g_nBodyPad
+                    oCell.HorizontalAlignment = Element.ALIGN_CENTER
+                    oCell.VerticalAlignment = Element.ALIGN_MIDDLE
+                    oTable.AddCell(oCell)
+                Next
+
+            End If
+
             g_oDoc.Add(oTable)
-        End If
+        Catch ex As Exception
+            LogError("NewIndusoftReport.vb", "PrintLimitSetPointRows()", ex.Message)
+        End Try
 
-
-    End Sub
-
-    Private Sub PrintLimitSetPointRows(ByRef oStartDate As Date, ByRef oEndDate As Date)
-        Dim bAddTable As Boolean = False
-        Dim oCell As PdfPCell
-        Dim sTemp As String
-
-
-        Dim oTable = New PdfPTable(g_oColList.Count)
-        oTable.TotalWidth = g_oDoc.PageSize.Width - 3 * g_fSideMargin
-
-        oTable.WidthPercentage = g_fSideFactor
-
-        oTable.HorizontalAlignment = Element.ALIGN_CENTER
-        Dim nCol As Integer
-        Dim sColWidths(g_oColList.Count - 1) As Single
-        For nCol = 0 To g_oColList.Count - 1
-            sColWidths(nCol) = g_oColList(nCol).m_sColWidth
-        Next
-        oTable.SetWidths(sColWidths)
-
-
-
-        sTemp = "Alarm Low Limit"
-        oCell = New PdfPCell(New Paragraph(sTemp, g_oBodyHeaderFont))
-        oCell.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
-        oCell.PaddingTop = g_nBodyPad
-        oCell.PaddingBottom = g_nBodyPad
-        oCell.HorizontalAlignment = Element.ALIGN_CENTER
-        oCell.VerticalAlignment = Element.ALIGN_MIDDLE
-        oTable.AddCell(oCell)
-
-        If g_bPrintMinMaxRows = True Then
-            For nIndex = 1 To g_oColList.Count - 1
-
-                sTemp = ""
-                If g_oColList(nIndex).m_bLowCheck Then
-                    If g_oColList(nIndex).m_nLowCheckType = 1 Then
-                        Try
-                            If GetPointNameValue(g_oColList(nIndex).m_sLowCheckPointName, oStartDate, g_oColList(nIndex).m_sColFormat, g_oColList(nIndex).m_fLow, False) = True Then
-                                sTemp = g_oColList(nIndex).m_fLow.ToString(g_oColList(nIndex).m_sColFormat)
-                            End If
-                        Catch ex As Exception
-
-                        End Try
-                    Else
-                        sTemp = g_oColList(nIndex).m_fLow.ToString(g_oColList(nIndex).m_sColFormat)
-                    End If
-                End If
-
-                oCell = New PdfPCell(New Phrase(sTemp, g_oBodyHeaderFont))
-                oCell.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
-                oCell.PaddingTop = g_nBodyPad
-                oCell.PaddingBottom = g_nBodyPad
-                oCell.HorizontalAlignment = Element.ALIGN_CENTER
-                oCell.VerticalAlignment = Element.ALIGN_MIDDLE
-                oTable.AddCell(oCell)
-            Next
-        End If
-
-        If g_bPrintAlarmSpRows = True Then
-
-            oCell = New PdfPCell(New Paragraph("Set Value", g_oBodyHeaderFont))
-            oCell.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
-            oCell.PaddingTop = g_nBodyPad
-            oCell.PaddingBottom = g_nBodyPad
-            oCell.HorizontalAlignment = Element.ALIGN_CENTER
-            oCell.VerticalAlignment = Element.ALIGN_MIDDLE
-            oTable.AddCell(oCell)
-
-            For nIndex = 1 To g_oColList.Count - 1
-
-                sTemp = ""
-
-                If g_oColList(nIndex).m_bSPCheck Then
-                    If g_oColList(nIndex).m_nSPCheckType = 1 Then
-                        Try
-                            If GetPointNameValue(g_oColList(nIndex).m_sSPCheckPointName, oStartDate, g_oColList(nIndex).m_sColFormat, g_oColList(nIndex).m_fSP, False) Then
-                                sTemp = g_oColList(nIndex).m_fSP.ToString(g_oColList(nIndex).m_sColFormat)
-                            End If
-                        Catch ex As Exception
-
-                        End Try
-                    Else
-                        sTemp = g_oColList(nIndex).m_fSP.ToString(g_oColList(nIndex).m_sColFormat)
-                    End If
-                End If
-
-                oCell = New PdfPCell(New Phrase(sTemp, g_oBodyHeaderFont))
-                oCell.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
-                oCell.PaddingTop = g_nBodyPad
-                oCell.PaddingBottom = g_nBodyPad
-                oCell.HorizontalAlignment = Element.ALIGN_CENTER
-                oCell.VerticalAlignment = Element.ALIGN_MIDDLE
-                oTable.AddCell(oCell)
-            Next
-        End If
-
-        oCell = New PdfPCell(New Paragraph("Alarm High Limit", g_oBodyHeaderFont))
-        oCell.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
-        oCell.PaddingTop = g_nBodyPad
-        oCell.PaddingBottom = g_nBodyPad
-        oCell.HorizontalAlignment = Element.ALIGN_CENTER
-        oCell.VerticalAlignment = Element.ALIGN_MIDDLE
-        oTable.AddCell(oCell)
-
-
-        If g_bPrintMinMaxRows = True Then
-            For nIndex = 1 To g_oColList.Count - 1
-                sTemp = ""
-                If g_oColList(nIndex).m_bHighCheck Then
-                    If g_oColList(nIndex).m_nHighCheckType = 1 Then
-                        Try
-                            If GetPointNameValue(g_oColList(nIndex).m_sHighCheckPointName, oStartDate, g_oColList(nIndex).m_sColFormat, g_oColList(nIndex).m_fHigh, False) = True Then
-                                sTemp = g_oColList(nIndex).m_fHigh.ToString(g_oColList(nIndex).m_sColFormat)
-                            End If
-                        Catch ex As Exception
-
-                        End Try
-                    Else
-                        sTemp = g_oColList(nIndex).m_fHigh.ToString(g_oColList(nIndex).m_sColFormat)
-                    End If
-                End If
-
-                oCell = New PdfPCell(New Phrase(sTemp, g_oBodyHeaderFont))
-                oCell.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
-                oCell.PaddingTop = g_nBodyPad
-                oCell.PaddingBottom = g_nBodyPad
-                oCell.HorizontalAlignment = Element.ALIGN_CENTER
-                oCell.VerticalAlignment = Element.ALIGN_MIDDLE
-                oTable.AddCell(oCell)
-            Next
-
-        End If
-
-        g_oDoc.Add(oTable)
     End Sub
 
     Public Function GetPointNameValue(ByRef sPointName As String, ByRef oStartDate As Date, ByRef sFormat As String, ByRef fValue As Single, ByRef bIsPoint As Boolean) As Boolean
-        GetPointNameValue = False
-        Dim oFromDate As Date
-        Dim sQuery As String
-        Dim oReader As OdbcDataReader
+        Try
+            GetPointNameValue = False
+            Dim oFromDate As Date
+            Dim sQuery As String
+            Dim oReader As OdbcDataReader
 
-        oFromDate = oStartDate.AddSeconds(-30)
-        If bIsPoint = True Then
-            sQuery = "SELECT TOP(1) " + sPointName + " FROM TREND001 WHERE Time_Stamp > ? AND  Time_Stamp < ?  AND " + sPointName + " IS NOT NULL  order by Time_Stamp"
-        Else
-            sQuery = "SELECT TOP(1) " + sPointName + " FROM TREND001 WHERE Time_Stamp > ? AND " + sPointName + " IS NOT NULL order by Time_Stamp"
-        End If
-
-        Using oConnection As New OdbcConnection(g_sEMSDbConString)
-            Dim cmd As New OdbcCommand(sQuery, oConnection)
-            oConnection.Open()
-            cmd.Parameters.Add(GetTimeODBCParam("@0", oFromDate))
+            oFromDate = oStartDate.AddSeconds(-30)
             If bIsPoint = True Then
-                cmd.Parameters.Add(GetTimeODBCParam("@1", oFromDate.AddDays(1)))
+                sQuery = "SELECT TOP(1) " + sPointName + " FROM TREND001 WHERE Time_Stamp > ? AND  Time_Stamp < ?  AND " + sPointName + " IS NOT NULL  order by Time_Stamp"
+            Else
+                sQuery = "SELECT TOP(1) " + sPointName + " FROM TREND001 WHERE Time_Stamp > ? AND " + sPointName + " IS NOT NULL order by Time_Stamp"
             End If
-            Try
-                oReader = cmd.ExecuteReader()
-                If oReader.Read() Then
-                    Try
-                        fValue = Convert.ToSingle(oReader(sPointName))
-                        If fValue < 0 Then
-                            fValue = 0
-                            GetPointNameValue = False
-                        Else
-                            GetPointNameValue = True
-                        End If
-                    Catch ex As Exception
-                        fValue = 0.0
-                        GetPointNameValue = False
-                    End Try
+
+            Using oConnection As New OdbcConnection(g_sEMSDbConString)
+                Dim cmd As New OdbcCommand(sQuery, oConnection)
+                oConnection.Open()
+                cmd.Parameters.Add(GetTimeODBCParam("@0", oFromDate))
+                If bIsPoint = True Then
+                    cmd.Parameters.Add(GetTimeODBCParam("@1", oFromDate.AddDays(1)))
                 End If
-                oReader.Close()
-            Catch ex As Exception
-                AddDebugMessageToReport(g_oDoc, ex.Message)
-            End Try
-            oConnection.Close()
-        End Using
+                Try
+                    oReader = cmd.ExecuteReader()
+                    If oReader.Read() Then
+                        Try
+                            fValue = Convert.ToSingle(oReader(sPointName))
+                            If fValue < 0 Then
+                                fValue = 0
+                                GetPointNameValue = False
+                            Else
+                                GetPointNameValue = True
+                            End If
+                        Catch ex As Exception
+                            fValue = 0.0
+                            GetPointNameValue = False
+                        End Try
+                    End If
+                    oReader.Close()
+                Catch ex As Exception
+                    AddDebugMessageToReport(g_oDoc, ex.Message)
+                End Try
+                oConnection.Close()
+            End Using
 
+        Catch ex As Exception
 
-
-
+            LogError("NewIndusoftReport.vb", "GetPointNameValue()", ex.Message)
+            Return GetPointNameValue
+        End Try
 
     End Function
 
 
     Private Sub CalcualteTopBottomBodyMargins(ByRef nTopMargin As Integer, ByRef nBottomMargin As Integer, ByRef nReporttype As ReportType)
-        Dim nBodyDeaderYPos As Integer
 
-        Dim oHeaderTable As PdfPTable
-        If g_bIconNeeded Then
-            Try
-                oHeaderTable = New PdfPTable(2)
-                oHeaderTable.TotalWidth = g_oDoc.PageSize.Width - 2 * g_fSideMargin
-                Dim widths2 = {0.25F, 0.75F}
-                oHeaderTable.SetWidths(widths2)
-                Dim oImage As iTextSharp.text.Image = iTextSharp.text.Image.GetInstance(g_sInFileDir + "\\Images\\ReportLogo.png")
-                Dim oImageCell As PdfPCell = New PdfPCell(oImage)
-                oImageCell.Rowspan = g_nHeaderCount
-                oImageCell.HorizontalAlignment = Element.ALIGN_CENTER
-                oImageCell.VerticalAlignment = Element.ALIGN_MIDDLE
-                oHeaderTable.AddCell(oImageCell)
-            Catch ex As Exception
+        Try
+            Dim nBodyDeaderYPos As Integer
+
+            Dim oHeaderTable As PdfPTable
+            If g_bIconNeeded Then
+                Try
+                    oHeaderTable = New PdfPTable(2)
+                    oHeaderTable.TotalWidth = g_oDoc.PageSize.Width - 2 * g_fSideMargin
+                    Dim widths2 = {0.25F, 0.75F}
+                    oHeaderTable.SetWidths(widths2)
+                    Dim oImage As iTextSharp.text.Image = iTextSharp.text.Image.GetInstance(g_sInFileDir + "\\Images\\ReportLogo.png")
+                    Dim oImageCell As PdfPCell = New PdfPCell(oImage)
+                    oImageCell.Rowspan = g_nHeaderCount
+                    oImageCell.HorizontalAlignment = Element.ALIGN_CENTER
+                    oImageCell.VerticalAlignment = Element.ALIGN_MIDDLE
+                    oHeaderTable.AddCell(oImageCell)
+                Catch ex As Exception
+                    oHeaderTable = New PdfPTable(1)
+                    oHeaderTable.TotalWidth = g_oDoc.PageSize.Width - 2 * g_fSideMargin
+                End Try
+            Else
                 oHeaderTable = New PdfPTable(1)
                 oHeaderTable.TotalWidth = g_oDoc.PageSize.Width - 2 * g_fSideMargin
-            End Try
-        Else
-            oHeaderTable = New PdfPTable(1)
-            oHeaderTable.TotalWidth = g_oDoc.PageSize.Width - 2 * g_fSideMargin
-        End If
+            End If
 
-        If g_bHeader1 Then
-            Dim oHeaderCell As PdfPCell = New PdfPCell(New Phrase(g_sHeader1, g_oH1Font))
-            oHeaderCell.PaddingTop = g_nBodyPad
-            oHeaderCell.PaddingBottom = g_nBodyPad
-            oHeaderCell.HorizontalAlignment = Element.ALIGN_CENTER
-            oHeaderCell.VerticalAlignment = Element.ALIGN_MIDDLE
-            oHeaderTable.AddCell(oHeaderCell)
-        End If
-        If g_bHeaderAddress Then
-            Dim oHeaderCell As PdfPCell = New PdfPCell(New Phrase(g_sHeaderAddress, g_oBodyHeaderFont))
-            oHeaderCell.PaddingTop = g_nHeaderPad
-            oHeaderCell.PaddingBottom = g_nHeaderPad
-            oHeaderCell.HorizontalAlignment = Element.ALIGN_CENTER
-            oHeaderCell.VerticalAlignment = Element.ALIGN_MIDDLE
-            oHeaderTable.AddCell(oHeaderCell)
-        End If
-        If g_bHeader2 Then
-            Dim oHeaderCell As PdfPCell = New PdfPCell(New Phrase(g_sHeader2, g_oH2Font))
-            oHeaderCell.PaddingTop = g_nHeaderPad
-            oHeaderCell.PaddingBottom = g_nHeaderPad
-            oHeaderCell.HorizontalAlignment = Element.ALIGN_CENTER
-            oHeaderCell.VerticalAlignment = Element.ALIGN_CENTER
-            oHeaderTable.AddCell(oHeaderCell)
-        End If
-        If g_bHeader3 Then
-            Dim oHeaderCell As PdfPCell = New PdfPCell(New Phrase(g_sHeader3, g_oHFont))
-            oHeaderCell.PaddingTop = g_nHeaderPad
-            oHeaderCell.PaddingBottom = g_nHeaderPad
-            oHeaderCell.HorizontalAlignment = Element.ALIGN_CENTER
-            oHeaderCell.VerticalAlignment = Element.ALIGN_MIDDLE
-            oHeaderTable.AddCell(oHeaderCell)
-        End If
+            If g_bHeader1 Then
+                Dim oHeaderCell As PdfPCell = New PdfPCell(New Phrase(g_sHeader1, g_oH1Font))
+                oHeaderCell.PaddingTop = g_nBodyPad
+                oHeaderCell.PaddingBottom = g_nBodyPad
+                oHeaderCell.HorizontalAlignment = Element.ALIGN_CENTER
+                oHeaderCell.VerticalAlignment = Element.ALIGN_MIDDLE
+                oHeaderTable.AddCell(oHeaderCell)
+            End If
+            If g_bHeaderAddress Then
+                Dim oHeaderCell As PdfPCell = New PdfPCell(New Phrase(g_sHeaderAddress, g_oBodyHeaderFont))
+                oHeaderCell.PaddingTop = g_nHeaderPad
+                oHeaderCell.PaddingBottom = g_nHeaderPad
+                oHeaderCell.HorizontalAlignment = Element.ALIGN_CENTER
+                oHeaderCell.VerticalAlignment = Element.ALIGN_MIDDLE
+                oHeaderTable.AddCell(oHeaderCell)
+            End If
+            If g_bHeader2 Then
+                Dim oHeaderCell As PdfPCell = New PdfPCell(New Phrase(g_sHeader2, g_oH2Font))
+                oHeaderCell.PaddingTop = g_nHeaderPad
+                oHeaderCell.PaddingBottom = g_nHeaderPad
+                oHeaderCell.HorizontalAlignment = Element.ALIGN_CENTER
+                oHeaderCell.VerticalAlignment = Element.ALIGN_CENTER
+                oHeaderTable.AddCell(oHeaderCell)
+            End If
+            If g_bHeader3 Then
+                Dim oHeaderCell As PdfPCell = New PdfPCell(New Phrase(g_sHeader3, g_oHFont))
+                oHeaderCell.PaddingTop = g_nHeaderPad
+                oHeaderCell.PaddingBottom = g_nHeaderPad
+                oHeaderCell.HorizontalAlignment = Element.ALIGN_CENTER
+                oHeaderCell.VerticalAlignment = Element.ALIGN_MIDDLE
+                oHeaderTable.AddCell(oHeaderCell)
+            End If
 
-        nTopMargin = oHeaderTable.TotalHeight
+            nTopMargin = oHeaderTable.TotalHeight
 
 
-        Dim oBodyHeaderTable As PdfPTable
-        Dim oBodyHeaderTable2 As PdfPTable
+            Dim oBodyHeaderTable As PdfPTable
+            Dim oBodyHeaderTable2 As PdfPTable
 
-        If g_nReportType <> ReportType.DataChartReport Then
+            If g_nReportType <> ReportType.DataChartReport Then
 
-            If g_nReportType = ReportType.AlarmReport Or g_nReportType = ReportType.EventReport Then
-                Dim nAlarmColCount As Integer = 0
+                If g_nReportType = ReportType.AlarmReport Or g_nReportType = ReportType.EventReport Then
+                    Dim nAlarmColCount As Integer = 0
 
-                For nCol = 0 To g_oColList.Count - 1
-                    If g_oColList(nCol).m_bshowAlarmCol Then
-                        nAlarmColCount = nAlarmColCount + 1
+                    For nCol = 0 To g_oColList.Count - 1
+                        If g_oColList(nCol).m_bshowAlarmCol Then
+                            nAlarmColCount = nAlarmColCount + 1
+                        End If
+                    Next
+
+                    oBodyHeaderTable = New PdfPTable(nAlarmColCount)
+                    oBodyHeaderTable.TotalWidth = g_oDoc.PageSize.Width - 3 * g_fSideMargin
+                    oBodyHeaderTable.WidthPercentage = 90
+                    oBodyHeaderTable.HorizontalAlignment = Element.ALIGN_CENTER
+
+
+                    Dim sColWidths(nAlarmColCount - 1) As Single
+                    nAlarmColCount = 0
+
+                    For nCol = 0 To g_oColList.Count - 1
+                        If g_oColList(nCol).m_bshowAlarmCol Then
+                            sColWidths(nAlarmColCount) = g_oColList(nCol).m_sColWidth
+                            nAlarmColCount = nAlarmColCount + 1
+                        End If
+                    Next
+                    oBodyHeaderTable.SetWidths(sColWidths)
+
+                    For nCol = 0 To g_oColList.Count - 1
+                        If g_oColList(nCol).m_bshowAlarmCol Then
+
+                            Dim oColHeader As PdfPCell
+                            oColHeader = New PdfPCell(New Paragraph(g_oColList(nCol).m_sColTitle, g_oBodyHeaderFont))
+
+                            oColHeader.PaddingBottom = g_nBodyPad
+                            oColHeader.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
+                            oColHeader.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
+                            If g_oColList(nCol).m_nColJust = ColJust.Left Then
+                                oColHeader.HorizontalAlignment = Element.ALIGN_LEFT
+                            ElseIf g_oColList(nCol).m_nColJust = ColJust.Right Then
+                                oColHeader.HorizontalAlignment = Element.ALIGN_RIGHT
+                            Else
+                                oColHeader.HorizontalAlignment = Element.ALIGN_CENTER
+                            End If
+
+                            oColHeader.VerticalAlignment = Element.ALIGN_MIDDLE
+                            oBodyHeaderTable.AddCell(oColHeader)
+                        End If
+                    Next
+                    '  oBodyHeaderTable.WriteSelectedRows(0, -1, g_fSideMargin * 1.5, nBodyDeaderYPos, writer.DirectContent)
+                    nTopMargin = nTopMargin + oBodyHeaderTable.TotalHeight + g_fTopBottomMargin + g_nFooterPad
+                Else
+
+                    oBodyHeaderTable = New PdfPTable(g_oColList.Count)
+                    oBodyHeaderTable.TotalWidth = g_oDoc.PageSize.Width - 3 * g_fSideMargin
+                    oBodyHeaderTable.WidthPercentage = 90
+                    oBodyHeaderTable.HorizontalAlignment = Element.ALIGN_CENTER
+
+                    Dim nCol As Integer
+                    Dim sColWidths(g_oColList.Count - 1) As Single
+                    For nCol = 0 To g_oColList.Count - 1
+                        sColWidths(nCol) = g_oColList(nCol).m_sColWidth
+                    Next
+                    oBodyHeaderTable.SetWidths(sColWidths)
+
+
+                    Dim nH1Cols As Integer = g_oColList.Count
+                    For nCol = 0 To g_oColList.Count - 1
+                        nH1Cols = nH1Cols - g_oColList(nCol).m_nColMerge
+                    Next
+                    oBodyHeaderTable2 = New PdfPTable(nH1Cols)
+                    oBodyHeaderTable2.TotalWidth = g_oDoc.PageSize.Width - 3 * g_fSideMargin
+                    oBodyHeaderTable2.WidthPercentage = 90
+                    oBodyHeaderTable2.HorizontalAlignment = Element.ALIGN_CENTER
+
+                    Dim sColWidths2(nH1Cols - 1) As Single
+                    nH1Cols = 0
+                    For nCol = 0 To g_oColList.Count - 1
+                        Dim sTemp1 As Single = 0
+                        For nMerge = 0 To g_oColList(nCol).m_nColMerge
+                            sTemp1 += g_oColList(nCol + nMerge).m_sColWidth
+                        Next
+                        sColWidths2(nH1Cols) = sTemp1
+                        nCol += g_oColList(nCol).m_nColMerge
+                        nH1Cols += 1
+                    Next
+                    oBodyHeaderTable2.SetWidths(sColWidths2)
+
+
+
+                    If g_nReportType = ReportType.DataReport Then
+                        For nCol = 0 To g_oColList.Count - 1
+
+
+                            Dim oColHeader As PdfPCell = New PdfPCell(New Phrase(g_oColList(nCol).m_sColType, g_oBodyHeaderFont))
+                            oColHeader.PaddingBottom = g_nBodyPad
+                            oColHeader.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
+                            If g_oColList(nCol).m_nColJust = ColJust.Left Then
+                                oColHeader.HorizontalAlignment = Element.ALIGN_LEFT
+                            ElseIf g_oColList(nCol).m_nColJust = ColJust.Right Then
+                                oColHeader.HorizontalAlignment = Element.ALIGN_RIGHT
+                            Else
+                                oColHeader.HorizontalAlignment = Element.ALIGN_CENTER
+                            End If
+
+                            oColHeader.VerticalAlignment = Element.ALIGN_MIDDLE
+
+                            oBodyHeaderTable2.AddCell(oColHeader)
+                            nCol += g_oColList(nCol).m_nColMerge
+
+                        Next
                     End If
-                Next
-
-                oBodyHeaderTable = New PdfPTable(nAlarmColCount)
-                oBodyHeaderTable.TotalWidth = g_oDoc.PageSize.Width - 3 * g_fSideMargin
-                oBodyHeaderTable.WidthPercentage = 90
-                oBodyHeaderTable.HorizontalAlignment = Element.ALIGN_CENTER
+                    '      oBodyHeaderTable2.WriteSelectedRows(0, -1, g_fSideMargin * 1.5, nBodyDeaderYPos, writer.DirectContent)
+                    nBodyDeaderYPos -= oBodyHeaderTable2.TotalHeight
 
 
-                Dim sColWidths(nAlarmColCount - 1) As Single
-                nAlarmColCount = 0
 
-                For nCol = 0 To g_oColList.Count - 1
-                    If g_oColList(nCol).m_bshowAlarmCol Then
-                        sColWidths(nAlarmColCount) = g_oColList(nCol).m_sColWidth
-                        nAlarmColCount = nAlarmColCount + 1
-                    End If
-                Next
-                oBodyHeaderTable.SetWidths(sColWidths)
-
-                For nCol = 0 To g_oColList.Count - 1
-                    If g_oColList(nCol).m_bshowAlarmCol Then
-
+                    For nCol = 0 To g_oColList.Count - 1
                         Dim oColHeader As PdfPCell
                         oColHeader = New PdfPCell(New Paragraph(g_oColList(nCol).m_sColTitle, g_oBodyHeaderFont))
 
@@ -2750,148 +2943,64 @@ Public Class NewInduSoftReport
 
                         oColHeader.VerticalAlignment = Element.ALIGN_MIDDLE
                         oBodyHeaderTable.AddCell(oColHeader)
-                    End If
-                Next
-                '  oBodyHeaderTable.WriteSelectedRows(0, -1, g_fSideMargin * 1.5, nBodyDeaderYPos, writer.DirectContent)
-                nTopMargin = nTopMargin + oBodyHeaderTable.TotalHeight + g_fTopBottomMargin + g_nFooterPad
-            Else
-
-                oBodyHeaderTable = New PdfPTable(g_oColList.Count)
-                oBodyHeaderTable.TotalWidth = g_oDoc.PageSize.Width - 3 * g_fSideMargin
-                oBodyHeaderTable.WidthPercentage = 90
-                oBodyHeaderTable.HorizontalAlignment = Element.ALIGN_CENTER
-
-                Dim nCol As Integer
-                Dim sColWidths(g_oColList.Count - 1) As Single
-                For nCol = 0 To g_oColList.Count - 1
-                    sColWidths(nCol) = g_oColList(nCol).m_sColWidth
-                Next
-                oBodyHeaderTable.SetWidths(sColWidths)
-
-
-                Dim nH1Cols As Integer = g_oColList.Count
-                For nCol = 0 To g_oColList.Count - 1
-                    nH1Cols = nH1Cols - g_oColList(nCol).m_nColMerge
-                Next
-                oBodyHeaderTable2 = New PdfPTable(nH1Cols)
-                oBodyHeaderTable2.TotalWidth = g_oDoc.PageSize.Width - 3 * g_fSideMargin
-                oBodyHeaderTable2.WidthPercentage = 90
-                oBodyHeaderTable2.HorizontalAlignment = Element.ALIGN_CENTER
-
-                Dim sColWidths2(nH1Cols - 1) As Single
-                nH1Cols = 0
-                For nCol = 0 To g_oColList.Count - 1
-                    Dim sTemp1 As Single = 0
-                    For nMerge = 0 To g_oColList(nCol).m_nColMerge
-                        sTemp1 += g_oColList(nCol + nMerge).m_sColWidth
                     Next
-                    sColWidths2(nH1Cols) = sTemp1
-                    nCol += g_oColList(nCol).m_nColMerge
-                    nH1Cols += 1
-                Next
-                oBodyHeaderTable2.SetWidths(sColWidths2)
+                    nTopMargin = nTopMargin + oBodyHeaderTable.TotalHeight + oBodyHeaderTable2.TotalHeight + g_fTopBottomMargin + g_nFooterPad
 
 
-
-                If g_nReportType = ReportType.DataReport Then
-                    For nCol = 0 To g_oColList.Count - 1
-
-
-                        Dim oColHeader As PdfPCell = New PdfPCell(New Phrase(g_oColList(nCol).m_sColType, g_oBodyHeaderFont))
-                        oColHeader.PaddingBottom = g_nBodyPad
-                        oColHeader.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
-                        If g_oColList(nCol).m_nColJust = ColJust.Left Then
-                            oColHeader.HorizontalAlignment = Element.ALIGN_LEFT
-                        ElseIf g_oColList(nCol).m_nColJust = ColJust.Right Then
-                            oColHeader.HorizontalAlignment = Element.ALIGN_RIGHT
-                        Else
-                            oColHeader.HorizontalAlignment = Element.ALIGN_CENTER
-                        End If
-
-                        oColHeader.VerticalAlignment = Element.ALIGN_MIDDLE
-
-                        oBodyHeaderTable2.AddCell(oColHeader)
-                        nCol += g_oColList(nCol).m_nColMerge
-
-                    Next
                 End If
-                '      oBodyHeaderTable2.WriteSelectedRows(0, -1, g_fSideMargin * 1.5, nBodyDeaderYPos, writer.DirectContent)
-                nBodyDeaderYPos -= oBodyHeaderTable2.TotalHeight
-
-
-
-                For nCol = 0 To g_oColList.Count - 1
-                    Dim oColHeader As PdfPCell
-                    oColHeader = New PdfPCell(New Paragraph(g_oColList(nCol).m_sColTitle, g_oBodyHeaderFont))
-
-                    oColHeader.PaddingBottom = g_nBodyPad
-                    oColHeader.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
-                    oColHeader.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
-                    If g_oColList(nCol).m_nColJust = ColJust.Left Then
-                        oColHeader.HorizontalAlignment = Element.ALIGN_LEFT
-                    ElseIf g_oColList(nCol).m_nColJust = ColJust.Right Then
-                        oColHeader.HorizontalAlignment = Element.ALIGN_RIGHT
-                    Else
-                        oColHeader.HorizontalAlignment = Element.ALIGN_CENTER
-                    End If
-
-                    oColHeader.VerticalAlignment = Element.ALIGN_MIDDLE
-                    oBodyHeaderTable.AddCell(oColHeader)
-                Next
-                nTopMargin = nTopMargin + oBodyHeaderTable.TotalHeight + oBodyHeaderTable2.TotalHeight + g_fTopBottomMargin + g_nFooterPad
-
 
             End If
 
-        End If
+            nTopMargin = nTopMargin + g_nbodyheadermargin
 
-        nTopMargin = nTopMargin + g_nbodyheadermargin
+            If g_bPrintReviewTableEveryPage = True Then
 
-        If g_bPrintReviewTableEveryPage = True Then
+                'Write Footer Table
+                Dim oFooterTable As PdfPTable = New PdfPTable(3)
+                oFooterTable.TotalWidth = g_oDoc.PageSize.Width - 3 * g_fSideMargin
+                oFooterTable.HorizontalAlignment = Element.ALIGN_CENTER
 
-            'Write Footer Table
-            Dim oFooterTable As PdfPTable = New PdfPTable(3)
-            oFooterTable.TotalWidth = g_oDoc.PageSize.Width - 3 * g_fSideMargin
-            oFooterTable.HorizontalAlignment = Element.ALIGN_CENTER
+                Dim oFooterCell As PdfPCell
+                For nCol = 0 To g_oFooterRowList.Count - 1
+                    oFooterCell = New PdfPCell(New Phrase(g_oFooterRowList(nCol).m_sCol1, g_oFooterFont))
+                    oFooterCell.PaddingTop = g_nFooterPad
+                    oFooterCell.PaddingBottom = g_nFooterPad
+                    If g_oFooterRowList(nCol).m_bHeader Then
+                        oFooterCell.BackgroundColor = iTextSharp.text.Color.LIGHT_GRAY
+                    End If
+                    oFooterCell.HorizontalAlignment = Element.ALIGN_CENTER
+                    oFooterCell.VerticalAlignment = Element.ALIGN_MIDDLE
+                    oFooterTable.AddCell(oFooterCell)
 
-            Dim oFooterCell As PdfPCell
-            For nCol = 0 To g_oFooterRowList.Count - 1
-                oFooterCell = New PdfPCell(New Phrase(g_oFooterRowList(nCol).m_sCol1, g_oFooterFont))
-                oFooterCell.PaddingTop = g_nFooterPad
-                oFooterCell.PaddingBottom = g_nFooterPad
-                If g_oFooterRowList(nCol).m_bHeader Then
-                    oFooterCell.BackgroundColor = iTextSharp.text.Color.LIGHT_GRAY
-                End If
-                oFooterCell.HorizontalAlignment = Element.ALIGN_CENTER
-                oFooterCell.VerticalAlignment = Element.ALIGN_MIDDLE
-                oFooterTable.AddCell(oFooterCell)
+                    oFooterCell = New PdfPCell(New Phrase(g_oFooterRowList(nCol).m_sCol2, g_oFooterFont))
+                    oFooterCell.PaddingTop = g_nFooterPad
+                    oFooterCell.PaddingBottom = g_nFooterPad
+                    If g_oFooterRowList(nCol).m_bHeader Then
+                        oFooterCell.BackgroundColor = iTextSharp.text.Color.LIGHT_GRAY
+                    End If
+                    oFooterCell.HorizontalAlignment = Element.ALIGN_CENTER
+                    oFooterCell.VerticalAlignment = Element.ALIGN_MIDDLE
+                    oFooterTable.AddCell(oFooterCell)
 
-                oFooterCell = New PdfPCell(New Phrase(g_oFooterRowList(nCol).m_sCol2, g_oFooterFont))
-                oFooterCell.PaddingTop = g_nFooterPad
-                oFooterCell.PaddingBottom = g_nFooterPad
-                If g_oFooterRowList(nCol).m_bHeader Then
-                    oFooterCell.BackgroundColor = iTextSharp.text.Color.LIGHT_GRAY
-                End If
-                oFooterCell.HorizontalAlignment = Element.ALIGN_CENTER
-                oFooterCell.VerticalAlignment = Element.ALIGN_MIDDLE
-                oFooterTable.AddCell(oFooterCell)
+                    oFooterCell = New PdfPCell(New Phrase(g_oFooterRowList(nCol).m_sCol3, g_oFooterFont))
+                    oFooterCell.PaddingTop = g_nFooterPad
+                    oFooterCell.PaddingBottom = g_nFooterPad
+                    If g_oFooterRowList(nCol).m_bHeader Then
+                        oFooterCell.BackgroundColor = iTextSharp.text.Color.LIGHT_GRAY
+                    End If
+                    oFooterCell.HorizontalAlignment = Element.ALIGN_CENTER
+                    oFooterCell.VerticalAlignment = Element.ALIGN_MIDDLE
+                    oFooterTable.AddCell(oFooterCell)
+                Next
 
-                oFooterCell = New PdfPCell(New Phrase(g_oFooterRowList(nCol).m_sCol3, g_oFooterFont))
-                oFooterCell.PaddingTop = g_nFooterPad
-                oFooterCell.PaddingBottom = g_nFooterPad
-                If g_oFooterRowList(nCol).m_bHeader Then
-                    oFooterCell.BackgroundColor = iTextSharp.text.Color.LIGHT_GRAY
-                End If
-                oFooterCell.HorizontalAlignment = Element.ALIGN_CENTER
-                oFooterCell.VerticalAlignment = Element.ALIGN_MIDDLE
-                oFooterTable.AddCell(oFooterCell)
-            Next
+                nBottomMargin = oFooterTable.TotalHeight + g_fTopBottomMargin + 20
+            Else
+                nBottomMargin = g_fTopBottomMargin + 20
+            End If
 
-            nBottomMargin = oFooterTable.TotalHeight + g_fTopBottomMargin + 20
-        Else
-            nBottomMargin = g_fTopBottomMargin + 20
-        End If
-
+        Catch ex As Exception
+            LogError("NewIndusoftReport.vb", "CalcualteTopBottomBodyMargins()", ex.Message)
+        End Try
 
     End Sub
 
