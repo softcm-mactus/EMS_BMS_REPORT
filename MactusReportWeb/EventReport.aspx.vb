@@ -46,7 +46,7 @@ Public Class EventReport
 
         Dim nReportStatusID As Long
         nReportStatusID = MactusReportLib.InsertNewReportStatusRecord(nReportID, oFromDate, oToDate, nInterval, m_sUserName, ReportType.EventReport)
-        Response.Redirect("ReportProgress.aspx?ReportStatusID=" + nReportStatusID.ToString())
+        Response.Redirect("ReportProgress.aspx?ReportStatusID=" + nReportStatusID.ToString(), False)
 
         'Dim sFileName As String = ""
         'Dim sPathName As String = ""

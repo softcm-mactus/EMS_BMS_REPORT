@@ -42,6 +42,7 @@ Public Class DlgAppConfiguration
                 oGrid.Rows(nRow).Cells(0).Value = oReader("ID")
                 oGrid.Rows(nRow).Cells(1).Value = oReader("Description")
                 oGrid.Rows(nRow).Cells(2).Value = nType
+
                 'Try
                 '    oGrid.Rows(nRow).Cells(4).Value = oReader("MinValue")
                 'Catch ex As Exception

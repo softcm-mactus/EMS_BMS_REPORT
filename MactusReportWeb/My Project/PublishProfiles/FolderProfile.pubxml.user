@@ -5,32 +5,32 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <_PublishTargetUrl>D:\Sources\EmsBMSReports\MactusReportWeb\bin\app.publish\</_PublishTargetUrl>
-    <History>True|2022-07-09T06:34:08.9620550Z;True|2022-07-09T12:03:50.6501559+05:30;True|2022-07-09T09:54:56.8853987+05:30;True|2022-07-04T17:49:33.8790751+05:30;True|2022-07-01T15:37:22.1346184+05:30;True|2022-07-01T10:08:43.5278220+05:30;True|2022-06-22T09:59:41.8868137+05:30;True|2022-06-22T09:55:12.6913384+05:30;True|2022-06-10T12:57:51.8559079+05:30;True|2022-06-09T18:33:19.1715747+05:30;True|2022-06-09T18:01:22.1993916+05:30;True|2022-06-09T18:01:05.8988273+05:30;True|2022-06-09T17:58:02.2993619+05:30;True|2022-06-09T17:57:43.4227666+05:30;True|2022-06-09T17:43:28.8575414+05:30;True|2022-06-09T17:43:00.9761482+05:30;True|2022-06-09T16:39:58.3161578+05:30;True|2022-06-07T15:51:19.4627261+05:30;True|2022-05-25T15:29:06.0695788+05:30;True|2022-05-11T18:03:32.7192812+05:30;True|2022-05-11T13:21:59.6078487+05:30;True|2022-05-11T13:08:55.8270522+05:30;True|2022-05-11T13:08:35.8922954+05:30;True|2022-05-09T18:06:27.7311409+05:30;True|2022-05-09T18:05:21.1279627+05:30;True|2022-05-09T16:10:24.9301785+05:30;True|2022-05-09T16:00:05.9513343+05:30;True|2022-05-09T15:30:02.8227470+05:30;True|2022-05-09T15:06:11.4027725+05:30;True|2022-05-09T15:05:55.6113717+05:30;True|2022-05-07T16:10:48.7642472+05:30;True|2022-03-14T17:51:35.0662973+05:30;True|2022-03-08T17:13:54.4531815+05:30;True|2022-02-28T16:14:49.7187627+05:30;</History>
+    <History>True|2022-11-29T06:27:12.8672869Z;True|2022-11-28T16:18:10.0324315+05:30;True|2022-11-08T18:24:42.6531304+05:30;True|2022-07-08T17:26:06.7939381+05:30;True|2022-07-27T11:12:35.6944231+05:30;True|2022-07-22T15:17:48.4067262+05:30;True|2022-07-21T18:37:17.4851346+05:30;True|2022-07-18T11:45:00.1239913+05:30;True|2022-07-18T10:46:48.0187189+05:30;True|2022-07-18T09:44:10.0893894+05:30;True|2022-07-15T18:52:50.1533871+05:30;True|2022-07-15T15:25:34.9709831+05:30;True|2022-07-15T14:06:02.7460994+05:30;True|2022-07-13T12:18:20.0510003+05:30;True|2022-07-12T10:41:45.2010617+05:30;True|2022-07-09T12:04:08.9620550+05:30;True|2022-07-09T12:03:50.6501559+05:30;True|2022-07-09T09:54:56.8853987+05:30;True|2022-07-04T17:49:33.8790751+05:30;True|2022-07-01T15:37:22.1346184+05:30;True|2022-07-01T10:08:43.5278220+05:30;True|2022-06-22T09:59:41.8868137+05:30;True|2022-06-22T09:55:12.6913384+05:30;True|2022-06-10T12:57:51.8559079+05:30;True|2022-06-09T18:33:19.1715747+05:30;True|2022-06-09T18:01:22.1993916+05:30;True|2022-06-09T18:01:05.8988273+05:30;True|2022-06-09T17:58:02.2993619+05:30;True|2022-06-09T17:57:43.4227666+05:30;True|2022-06-09T17:43:28.8575414+05:30;True|2022-06-09T17:43:00.9761482+05:30;True|2022-06-09T16:39:58.3161578+05:30;True|2022-06-07T15:51:19.4627261+05:30;True|2022-05-25T15:29:06.0695788+05:30;True|2022-05-11T18:03:32.7192812+05:30;True|2022-05-11T13:21:59.6078487+05:30;True|2022-05-11T13:08:55.8270522+05:30;True|2022-05-11T13:08:35.8922954+05:30;True|2022-05-09T18:06:27.7311409+05:30;True|2022-05-09T18:05:21.1279627+05:30;True|2022-05-09T16:10:24.9301785+05:30;True|2022-05-09T16:00:05.9513343+05:30;True|2022-05-09T15:30:02.8227470+05:30;True|2022-05-09T15:06:11.4027725+05:30;True|2022-05-09T15:05:55.6113717+05:30;True|2022-05-07T16:10:48.7642472+05:30;True|2022-03-14T17:51:35.0662973+05:30;True|2022-03-08T17:13:54.4531815+05:30;True|2022-02-28T16:14:49.7187627+05:30;</History>
   </PropertyGroup>
   <ItemGroup>
     <File Include="AlarmReport.aspx">
       <publishTime>06/20/2022 18:51:48</publishTime>
     </File>
     <File Include="bin/itextsharp.dll">
-      <publishTime>10/06/2021 10:11:39</publishTime>
+      <publishTime>06/10/2021 10:11:39</publishTime>
     </File>
     <File Include="bin/MactusReportLib.dll">
-      <publishTime>07/09/2022 12:03:48</publishTime>
+      <publishTime>11/29/2022 11:57:10</publishTime>
     </File>
     <File Include="bin/MactusReportLib.pdb">
-      <publishTime>07/09/2022 12:03:48</publishTime>
+      <publishTime>11/29/2022 11:57:10</publishTime>
     </File>
     <File Include="bin/MactusReportWeb.dll">
-      <publishTime>07/09/2022 12:04:08</publishTime>
+      <publishTime>11/29/2022 11:57:11</publishTime>
     </File>
     <File Include="bin/MactusReportWeb.pdb">
-      <publishTime>07/09/2022 12:04:08</publishTime>
+      <publishTime>11/29/2022 11:57:11</publishTime>
     </File>
     <File Include="bin/MactusReportWeb.xml">
-      <publishTime>07/09/2022 12:04:08</publishTime>
+      <publishTime>11/29/2022 11:57:11</publishTime>
     </File>
     <File Include="bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll">
-      <publishTime>09/05/2018 16:10:50</publishTime>
+      <publishTime>05/09/2018 16:10:50</publishTime>
     </File>
     <File Include="bin/roslyn/csc.exe">
       <publishTime>08/08/2018 05:38:48</publishTime>
@@ -72,10 +72,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>08/08/2018 12:09:42</publishTime>
     </File>
     <File Include="bin/roslyn/Microsoft.DiaSymReader.Native.amd64.dll">
-      <publishTime>12/05/2017 09:36:44</publishTime>
+      <publishTime>05/12/2017 09:36:44</publishTime>
     </File>
     <File Include="bin/roslyn/Microsoft.DiaSymReader.Native.x86.dll">
-      <publishTime>12/05/2017 09:36:44</publishTime>
+      <publishTime>05/12/2017 09:36:44</publishTime>
     </File>
     <File Include="bin/roslyn/Microsoft.Managed.Core.targets">
       <publishTime>08/08/2018 12:09:42</publishTime>
@@ -84,85 +84,85 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>08/08/2018 12:09:42</publishTime>
     </File>
     <File Include="bin/roslyn/Microsoft.Win32.Primitives.dll">
-      <publishTime>11/05/2016 18:55:32</publishTime>
+      <publishTime>05/11/2016 18:55:32</publishTime>
     </File>
     <File Include="bin/roslyn/System.AppContext.dll">
-      <publishTime>11/05/2016 18:55:34</publishTime>
+      <publishTime>05/11/2016 18:55:34</publishTime>
     </File>
     <File Include="bin/roslyn/System.Collections.Immutable.dll">
       <publishTime>05/16/2018 03:29:34</publishTime>
     </File>
     <File Include="bin/roslyn/System.Console.dll">
-      <publishTime>11/05/2016 18:55:48</publishTime>
+      <publishTime>05/11/2016 18:55:48</publishTime>
     </File>
     <File Include="bin/roslyn/System.Diagnostics.DiagnosticSource.dll">
-      <publishTime>11/05/2016 18:55:52</publishTime>
+      <publishTime>05/11/2016 18:55:52</publishTime>
     </File>
     <File Include="bin/roslyn/System.Diagnostics.FileVersionInfo.dll">
-      <publishTime>11/05/2016 18:55:56</publishTime>
+      <publishTime>05/11/2016 18:55:56</publishTime>
     </File>
     <File Include="bin/roslyn/System.Diagnostics.StackTrace.dll">
-      <publishTime>11/05/2016 18:55:52</publishTime>
+      <publishTime>05/11/2016 18:55:52</publishTime>
     </File>
     <File Include="bin/roslyn/System.Globalization.Calendars.dll">
-      <publishTime>11/05/2016 18:56:02</publishTime>
+      <publishTime>05/11/2016 18:56:02</publishTime>
     </File>
     <File Include="bin/roslyn/System.IO.Compression.dll">
-      <publishTime>11/05/2016 18:56:08</publishTime>
+      <publishTime>05/11/2016 18:56:08</publishTime>
     </File>
     <File Include="bin/roslyn/System.IO.Compression.ZipFile.dll">
-      <publishTime>11/05/2016 18:56:04</publishTime>
+      <publishTime>05/11/2016 18:56:04</publishTime>
     </File>
     <File Include="bin/roslyn/System.IO.FileSystem.dll">
-      <publishTime>11/05/2016 18:56:08</publishTime>
+      <publishTime>05/11/2016 18:56:08</publishTime>
     </File>
     <File Include="bin/roslyn/System.IO.FileSystem.Primitives.dll">
-      <publishTime>11/05/2016 18:56:08</publishTime>
+      <publishTime>05/11/2016 18:56:08</publishTime>
     </File>
     <File Include="bin/roslyn/System.Net.Http.dll">
-      <publishTime>11/05/2016 18:56:30</publishTime>
+      <publishTime>05/11/2016 18:56:30</publishTime>
     </File>
     <File Include="bin/roslyn/System.Net.Sockets.dll">
-      <publishTime>11/05/2016 18:56:34</publishTime>
+      <publishTime>05/11/2016 18:56:34</publishTime>
     </File>
     <File Include="bin/roslyn/System.Reflection.Metadata.dll">
       <publishTime>05/16/2018 03:29:44</publishTime>
     </File>
     <File Include="bin/roslyn/System.Runtime.InteropServices.RuntimeInformation.dll">
-      <publishTime>11/05/2016 18:57:00</publishTime>
+      <publishTime>05/11/2016 18:57:00</publishTime>
     </File>
     <File Include="bin/roslyn/System.Security.Cryptography.Algorithms.dll">
-      <publishTime>11/05/2016 18:57:14</publishTime>
+      <publishTime>05/11/2016 18:57:14</publishTime>
     </File>
     <File Include="bin/roslyn/System.Security.Cryptography.Encoding.dll">
-      <publishTime>11/05/2016 18:57:08</publishTime>
+      <publishTime>05/11/2016 18:57:08</publishTime>
     </File>
     <File Include="bin/roslyn/System.Security.Cryptography.Primitives.dll">
-      <publishTime>11/05/2016 18:57:18</publishTime>
+      <publishTime>05/11/2016 18:57:18</publishTime>
     </File>
     <File Include="bin/roslyn/System.Security.Cryptography.X509Certificates.dll">
-      <publishTime>11/05/2016 18:57:18</publishTime>
+      <publishTime>05/11/2016 18:57:18</publishTime>
     </File>
     <File Include="bin/roslyn/System.Text.Encoding.CodePages.dll">
-      <publishTime>11/05/2016 18:57:20</publishTime>
+      <publishTime>05/11/2016 18:57:20</publishTime>
     </File>
     <File Include="bin/roslyn/System.Threading.Tasks.Extensions.dll">
-      <publishTime>11/05/2016 18:57:24</publishTime>
+      <publishTime>05/11/2016 18:57:24</publishTime>
     </File>
     <File Include="bin/roslyn/System.ValueTuple.dll">
-      <publishTime>11/05/2016 18:57:30</publishTime>
+      <publishTime>05/11/2016 18:57:30</publishTime>
     </File>
     <File Include="bin/roslyn/System.Xml.ReaderWriter.dll">
-      <publishTime>11/05/2016 18:57:36</publishTime>
+      <publishTime>05/11/2016 18:57:36</publishTime>
     </File>
     <File Include="bin/roslyn/System.Xml.XmlDocument.dll">
-      <publishTime>11/05/2016 18:57:34</publishTime>
+      <publishTime>05/11/2016 18:57:34</publishTime>
     </File>
     <File Include="bin/roslyn/System.Xml.XPath.dll">
-      <publishTime>11/05/2016 18:57:40</publishTime>
+      <publishTime>05/11/2016 18:57:40</publishTime>
     </File>
     <File Include="bin/roslyn/System.Xml.XPath.XDocument.dll">
-      <publishTime>11/05/2016 18:57:34</publishTime>
+      <publishTime>05/11/2016 18:57:34</publishTime>
     </File>
     <File Include="bin/roslyn/vbc.exe">
       <publishTime>08/08/2018 05:38:48</publishTime>
@@ -282,7 +282,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>10/12/2020 21:49:21</publishTime>
     </File>
     <File Include="Default.aspx">
-      <publishTime>07/09/2022 09:54:02</publishTime>
+      <publishTime>08/11/2022 18:23:15</publishTime>
     </File>
     <File Include="EventReport.aspx">
       <publishTime>10/12/2020 20:38:35</publishTime>
@@ -342,13 +342,16 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/20/2022 17:52:04</publishTime>
     </File>
     <File Include="TrendDataAlarmReport.aspx">
-      <publishTime>07/06/2022 16:58:00</publishTime>
+      <publishTime>06/07/2022 16:58:00</publishTime>
     </File>
     <File Include="ViewPDF.aspx">
       <publishTime>10/11/2020 21:03:29</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>07/09/2022 09:54:55</publishTime>
+      <publishTime>08/11/2022 18:24:41</publishTime>
+    </File>
+    <File Include="WirelessCDUDeviceBatteryPercentage.aspx">
+      <publishTime>07/22/2022 13:20:44</publishTime>
     </File>
   </ItemGroup>
 </Project>

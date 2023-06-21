@@ -85,7 +85,7 @@ Public Class AlarmReport
 
         Dim nReportStatusID As Long
         nReportStatusID = InsertNewReportStatusRecord(nReportID, oFromDate, oToDate, nInterval, m_sUserName, ReportType.AlarmReport)
-        Response.Redirect("ReportProgress.aspx?ReportStatusID=" + nReportStatusID.ToString())
+        Response.Redirect("ReportProgress.aspx?ReportStatusID=" + nReportStatusID.ToString(), False)
 
 
         'If MactusReportLib.g_bIsBMS Then

@@ -111,6 +111,12 @@
     <Compile Include="DlgAppConfiguration.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="DlgBatteryReportConfiguration.Designer.vb">
+      <DependentUpon>DlgBatteryReportConfiguration.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DlgBatteryReportConfiguration.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="dlgColumnsConfiguration.Designer.vb">
       <DependentUpon>dlgColumnsConfiguration.vb</DependentUpon>
     </Compile>
@@ -127,6 +133,12 @@
       <DependentUpon>DlgNewGroup.vb</DependentUpon>
     </Compile>
     <Compile Include="DlgNewGroup.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DlgExcursionConfiguration.Designer.vb">
+      <DependentUpon>DlgExcursionConfiguration.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DlgExcursionConfiguration.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="DlgReportsConfiguration.Designer.vb">
@@ -198,6 +210,9 @@
     <EmbeddedResource Include="DlgAppConfiguration.resx">
       <DependentUpon>DlgAppConfiguration.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="DlgBatteryReportConfiguration.resx">
+      <DependentUpon>DlgBatteryReportConfiguration.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="dlgColumnsConfiguration.resx">
       <DependentUpon>dlgColumnsConfiguration.vb</DependentUpon>
     </EmbeddedResource>
@@ -206,6 +221,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DlgNewGroup.resx">
       <DependentUpon>DlgNewGroup.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DlgExcursionConfiguration.resx">
+      <DependentUpon>DlgExcursionConfiguration.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DlgReportsConfiguration.resx">
       <DependentUpon>DlgReportsConfiguration.vb</DependentUpon>

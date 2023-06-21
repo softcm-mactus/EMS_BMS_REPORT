@@ -129,7 +129,7 @@ Public Class DataTrendReport
 
         Dim nReportStatusID As Long
         nReportStatusID = InsertNewReportStatusRecord(nReportID, oFromDate, oToDate, nInterval, m_sUserName, ReportType.DataReport)
-        Response.Redirect("ReportProgress.aspx?ReportStatusID=" + nReportStatusID.ToString())
+        Response.Redirect("ReportProgress.aspx?ReportStatusID=" + nReportStatusID.ToString(), False)
 
         'Dim sFileName As String = ""
         'Dim sPathName As String = ""

@@ -6,7 +6,6 @@ D:\Sources\EmsBMSReports\MactusReportService(CDU)\bin\Debug\MactusReportLib.dll
 D:\Sources\EmsBMSReports\MactusReportService(CDU)\bin\Debug\itextsharp.dll
 D:\Sources\EmsBMSReports\MactusReportService(CDU)\bin\Debug\MactusReportLib.pdb
 D:\Sources\EmsBMSReports\MactusReportService(CDU)\bin\Debug\MactusReportLib.xml
-D:\Sources\EmsBMSReports\MactusReportService(CDU)\obj\Debug\MactusReportService(CDU).vbproj.AssemblyReference.cache
 D:\Sources\EmsBMSReports\MactusReportService(CDU)\obj\Debug\MactusReportService_CDU_.MactusReportServiceCDU.resources
 D:\Sources\EmsBMSReports\MactusReportService(CDU)\obj\Debug\MactusReportService_CDU_.Resources.resources
 D:\Sources\EmsBMSReports\MactusReportService(CDU)\obj\Debug\MactusReportService_CDU_.ProjectInstaller.resources
@@ -16,3 +15,5 @@ D:\Sources\EmsBMSReports\MactusReportService(CDU)\obj\Debug\MactusReportService(
 D:\Sources\EmsBMSReports\MactusReportService(CDU)\obj\Debug\MactusReportService(CDU).exe
 D:\Sources\EmsBMSReports\MactusReportService(CDU)\obj\Debug\MactusReportService(CDU).xml
 D:\Sources\EmsBMSReports\MactusReportService(CDU)\obj\Debug\MactusReportService(CDU).pdb
+D:\Sources\EmsBMSReports\MactusReportService(CDU)\obj\Debug\MactusReportService(CDU).vbproj.AssemblyReference.cache
+D:\Sources\EmsBMSReports\MactusReportService(CDU)\obj\Debug\MactusReportService(CDU).vbproj.SuggestedBindingRedirects.cache

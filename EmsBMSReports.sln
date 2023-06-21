@@ -19,6 +19,10 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EMSBMSReportService2", "EMS
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PingErrorApp", "PingErrorApp\PingErrorApp.vbproj", "{58D378CF-2812-4E7F-9F2E-34164B153FAB}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EMSBMSReportServiceTest", "EMSBMSReportServiceTest\EMSBMSReportServiceTest.vbproj", "{88CC2F6D-CA38-448E-9FEC-2348C0C42751}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "MactusReportService(CDU)", "MactusReportService(CDU)\MactusReportService(CDU).vbproj", "{2727003E-AADF-4518-A63B-A4489E9C713F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +61,14 @@ Global
 		{58D378CF-2812-4E7F-9F2E-34164B153FAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58D378CF-2812-4E7F-9F2E-34164B153FAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58D378CF-2812-4E7F-9F2E-34164B153FAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88CC2F6D-CA38-448E-9FEC-2348C0C42751}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88CC2F6D-CA38-448E-9FEC-2348C0C42751}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88CC2F6D-CA38-448E-9FEC-2348C0C42751}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88CC2F6D-CA38-448E-9FEC-2348C0C42751}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2727003E-AADF-4518-A63B-A4489E9C713F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2727003E-AADF-4518-A63B-A4489E9C713F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2727003E-AADF-4518-A63B-A4489E9C713F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2727003E-AADF-4518-A63B-A4489E9C713F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

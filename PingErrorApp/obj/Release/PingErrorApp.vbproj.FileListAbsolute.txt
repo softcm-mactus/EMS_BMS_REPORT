@@ -9,3 +9,14 @@ D:\GitHub\EmsBMSReports\PingErrorApp\obj\Release\PingErrorApp.vbproj.CoreCompile
 D:\GitHub\EmsBMSReports\PingErrorApp\obj\Release\PingErrorApp.exe
 D:\GitHub\EmsBMSReports\PingErrorApp\obj\Release\PingErrorApp.xml
 D:\GitHub\EmsBMSReports\PingErrorApp\obj\Release\PingErrorApp.pdb
+D:\Sources\EmsBMSReports\PingErrorApp\bin\Release\PingErrorApp.exe.config
+D:\Sources\EmsBMSReports\PingErrorApp\bin\Release\PingErrorApp.exe
+D:\Sources\EmsBMSReports\PingErrorApp\bin\Release\PingErrorApp.pdb
+D:\Sources\EmsBMSReports\PingErrorApp\bin\Release\PingErrorApp.xml
+D:\Sources\EmsBMSReports\PingErrorApp\obj\Release\PingErrorApp.MainForm.resources
+D:\Sources\EmsBMSReports\PingErrorApp\obj\Release\PingErrorApp.Resources.resources
+D:\Sources\EmsBMSReports\PingErrorApp\obj\Release\PingErrorApp.vbproj.GenerateResource.cache
+D:\Sources\EmsBMSReports\PingErrorApp\obj\Release\PingErrorApp.vbproj.CoreCompileInputs.cache
+D:\Sources\EmsBMSReports\PingErrorApp\obj\Release\PingErrorApp.exe
+D:\Sources\EmsBMSReports\PingErrorApp\obj\Release\PingErrorApp.xml
+D:\Sources\EmsBMSReports\PingErrorApp\obj\Release\PingErrorApp.pdb

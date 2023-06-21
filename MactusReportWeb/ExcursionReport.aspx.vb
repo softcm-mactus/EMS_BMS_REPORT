@@ -131,7 +131,7 @@ Public Class ExcursionReport
 
         Dim nReportStatusID As Long
         nReportStatusID = InsertNewReportStatusRecord(nReportID, oFromDate, oToDate, nInterval, m_sUserName, ReportType.ExcursionReport)
-        Response.Redirect("ReportProgress.aspx?ReportStatusID=" + nReportStatusID.ToString())
+        Response.Redirect("ReportProgress.aspx?ReportStatusID=" + nReportStatusID.ToString(), False)
 
 
     End Sub

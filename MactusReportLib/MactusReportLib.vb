@@ -127,6 +127,8 @@ Public Module MactusReportLib
         DataChartReport = 3
         ExcursionReport = 4
         DataTrendAlarmReport = 5
+        BatteryStatusReport = 6
+
     End Enum
 
     Public Enum ColJust As Integer
@@ -194,6 +196,9 @@ Public Module MactusReportLib
 
         Public m_bAlarmLowStart As Boolean
         Public m_bAlarmLowEnd As Boolean
+        Public m_nExcursionLowCheckCount As Integer
+        Public m_nExcursionHighCheckCount As Integer
+        Public m_nDataTableRowId As Integer
 
     End Class
 
@@ -225,7 +230,7 @@ Public Module MactusReportLib
             Else
                 oWriter = New System.IO.StreamWriter(g_sOutputFileDir + "\ReportErrorLog.txt", FileMode.Create)
             End If
-            oWriter.WriteLine("Page Name:: " + sPageName + "Function Name:: " + sFunctionName + "Date Time :: " + Now.ToString + " Error Message :: " + sError)
+            oWriter.WriteLine("Page Name:: " + sPageName + "  Function Name:: " + sFunctionName + "  Date Time :: " + Now.ToString + " Error Message :: " + sError)
             oWriter.Close()
 
         Catch ex As Exception
@@ -515,9 +520,6 @@ Public Module MactusReportLib
 
         End If
 
-
-
-
         g_bAddMeanKineticTempRow = False
         If GetPlantConfigParamValue("AddMeanKineticTempRow", sTemp) = True Then
             Try
@@ -627,7 +629,7 @@ Public Module MactusReportLib
                 Dim oCmd As New OdbcCommand(sQuery, oConnection)
                 oCmd.Parameters.Add("@0", OdbcType.Int).Value = nReportID
                 If g_bIsGMTTime And nReportType > 0 Then
-                    If nReportType = 4 Or nReportType = 5 Then
+                    If nReportType = 4 Or nReportType = 5 Or nReportType = 6 Then
                         oCmd.Parameters.Add(GetTimeODBCParam("@1", dtFrom))
                         oCmd.Parameters.Add(GetTimeODBCParam("@2", dtTo))
                     Else
@@ -715,6 +717,16 @@ Public Module MactusReportLib
                         CreateFolderIfNotThere(sPathFileName)
                         sPathFileName = sPathFileName + "\" + sFileName
                         GetAutoReportOutputPathName = True
+                    ElseIf nReportType = ReportType.DataTrendAlarmReport Then
+                        sPathFileName = g_sAutoReportFileDir + "\ExcursionReport\" + sDateFolderName
+                        CreateFolderIfNotThere(sPathFileName)
+                        sPathFileName = sPathFileName + "\" + sFileName
+                        GetAutoReportOutputPathName = True
+                    ElseIf nReportType = ReportType.BatteryStatusReport Then
+                        sPathFileName = g_sAutoReportFileDir + "\BatteryPercentage\" + sDateFolderName
+                        CreateFolderIfNotThere(sPathFileName)
+                        sPathFileName = sPathFileName + "\" + sFileName
+                        GetAutoReportOutputPathName = True
                     Else
                         GetAutoReportOutputPathName = False
                     End If
@@ -747,12 +759,12 @@ Public Module MactusReportLib
                 oConnection.Open()
                 Dim oCmd As New OdbcCommand(sQuery, oConnection)
                 oCmd.Parameters.Add("@0", OdbcType.Int).Value = nReportID
-                If g_bIsGMTTime And nReportType > 0 Then
-                    oCmd.Parameters.Add(GetTimeODBCParam("@1", dtFrom.ToUniversalTime))
-                    oCmd.Parameters.Add(GetTimeODBCParam("@2", dtTo.ToUniversalTime))
-                Else
+                If nReportType = 4 Or nReportType = 5 Or nReportType = 6 Or nReportType = 0 Then
                     oCmd.Parameters.Add(GetTimeODBCParam("@1", dtFrom))
                     oCmd.Parameters.Add(GetTimeODBCParam("@2", dtTo))
+                Else
+                    oCmd.Parameters.Add(GetTimeODBCParam("@1", dtFrom.ToUniversalTime))
+                    oCmd.Parameters.Add(GetTimeODBCParam("@2", dtTo.ToUniversalTime))
                 End If
                 oCmd.Parameters.Add("@3", OdbcType.Int).Value = nTimeInterval
                 oCmd.Parameters.Add("@4", OdbcType.VarChar).Value = sGeneratedUserName
@@ -774,7 +786,7 @@ Public Module MactusReportLib
                 oConnection.Close()
             End Using
         Catch ex As Exception
-
+            LogError("MactusReportLib.vb", "InsertNewAutoReportStatusRecord()", ex.Message)
         End Try
     End Function
 
@@ -940,6 +952,8 @@ Public Module MactusReportLib
                                     m_oEBOCombinedIndusoftReport.GenerateExcursionReport(nReportStatusID, dtFrom, dtTo, sPathFileName, nInternal)
                                 ElseIf m_oEBOCombinedIndusoftReport.g_nReportType = ReportType.DataTrendAlarmReport Then
                                     m_oEBOCombinedIndusoftReport.GenerateAlarmReportUsingTrendData(nReportStatusID, dtFrom, dtTo, sPathFileName, nInternal)
+                                ElseIf m_oEBOCombinedIndusoftReport.g_nReportType = ReportType.BatteryStatusReport Then
+                                    m_oEBOCombinedIndusoftReport.GenerateCDUDevicesBatteryStatus(nReportStatusID, dtFrom, dtTo, sPathFileName, nInternal)
                                 End If
 
                             Else
@@ -995,7 +1009,7 @@ Public Module MactusReportLib
             oToDate = oToDate.AddHours(-oToDate.Hour)
             oFromDate = oToDate.AddDays(-1)
             Try
-                sQuery = "SELECT * FROM  TBL_ReportsConfiguration WHERE ReportType=0 OR ReportType=2 "
+                sQuery = "SELECT * FROM  TBL_ReportsConfiguration WHERE ReportType=0 OR ReportType=2 OR ReportType=5 OR ReportType=6 "
                 Using oConnection As New OdbcConnection(g_sConString)
                     oConnection.Open()
                     Dim oCmd As New OdbcCommand(sQuery, oConnection)
@@ -1212,7 +1226,6 @@ Public Module MactusReportLib
         End Try
     End Function
 
-
     Public Sub AddNewDataTrendGroup(ByRef sGroupName As String)
         Dim sQuery As String = "SELECT groupid FROM tbl_datagroups ORDER BY groupid DESC"
         Dim nGroupID As Integer
@@ -1359,7 +1372,6 @@ Public Module MactusReportLib
         End Try
 
     End Sub
-
     '
     Public Sub SynchronizeWirelessCDUPointIDNamesTable()
         Dim oReader As OdbcDataReader

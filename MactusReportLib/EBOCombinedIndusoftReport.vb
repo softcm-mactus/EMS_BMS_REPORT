@@ -228,7 +228,7 @@ Public Class EBOCombinedIndusoftReport
                 Dim oBodyHeaderTable As PdfPTable
                 Dim oBodyHeaderTable2 As PdfPTable
 
-                If g_nReportType <> ReportType.DataChartReport Then
+                If g_nReportType <> ReportType.DataChartReport And g_nReportType <> ReportType.DataTrendAlarmReport Then
 
                     If g_nReportType = ReportType.AlarmReport Or g_nReportType = ReportType.EventReport Then
                         Dim nAlarmColCount As Integer = 0
@@ -278,7 +278,7 @@ Public Class EBOCombinedIndusoftReport
                             End If
                         Next
                         oBodyHeaderTable.WriteSelectedRows(0, -1, g_fSideMargin * 1.5, nBodyDeaderYPos, writer.DirectContent)
-                    ElseIf g_nReportType = ReportType.DataTrendAlarmReport Then
+                        'ElseIf g_nReportType = ReportType.DataTrendAlarmReport Then
                         '    Dim nAlarmColCount As Integer = 6
 
 
@@ -770,6 +770,8 @@ Public Class EBOCombinedIndusoftReport
             ElseIf g_nReportType = ReportType.ExcursionReport Then
                 sQuery = "SELECT * FROM TBL_ReportColumns WHERE ReportID= " + nReportID.ToString() + " ORDER BY ColSeq"
             ElseIf g_nReportType = ReportType.DataTrendAlarmReport Then
+                sQuery = "SELECT * FROM TBL_ReportColumns WHERE ReportID= " + nReportID.ToString() + " ORDER BY ColSeq"
+            ElseIf g_nReportType = ReportType.BatteryStatusReport Then
                 sQuery = "SELECT * FROM TBL_ReportColumns WHERE ReportID= " + nReportID.ToString() + " ORDER BY ColSeq"
             Else
 
@@ -1831,7 +1833,7 @@ Public Class EBOCombinedIndusoftReport
         GenerateTrendReport = False
         Dim nTopMargin As Integer = 0
         Dim nBottomMargin As Integer = 0
-
+        Dim nTopMarginCorrection = 0
         Try
 
             Using FS As New FileStream(sOutFileName, FileMode.Create, FileAccess.Write, FileShare.None)
@@ -1852,7 +1854,13 @@ Public Class EBOCombinedIndusoftReport
                 Writer.PageEvent = oPageEvent
 
                 CalcualteTopBottomBodyMargins(nTopMargin, nBottomMargin)
-                g_oDoc.SetMargins(0.0F, 0, nTopMargin, nBottomMargin)
+                If g_oColList.Count > 6 Then
+                    nTopMarginCorrection = 55
+                Else
+                    nTopMarginCorrection = 29
+
+                End If
+                g_oDoc.SetMargins(0.0F, 0, nTopMargin + nTopMarginCorrection, nBottomMargin)
                 g_oDoc.Open()
 
                 Dim oTable = New PdfPTable(g_oColList.Count)
@@ -2099,17 +2107,12 @@ Public Class EBOCombinedIndusoftReport
                 End If
 
                 Dim Writer As PdfWriter = PdfWriter.GetInstance(g_oDoc, FS)
-                ''//Bind our PDF object to the physical file using a PdfWriter
-                '  Using Writer As PdfWriter = PdfWriter.GetInstance(g_oDoc, FS)
-                ''//Open our document for writing
+
                 Dim oPageEvent As New IEntryExitReportEvents
                 SetPageEventParameters(oPageEvent)
                 Writer.PageEvent = oPageEvent
                 Dim oTable = New PdfPTable(5)
-                'Dim fAlarmHeder As Single() = {20, 40, 25, 25, 25, 25}
-                'oTable.SetWidths(fAlarmHeder)
-                'oTable.WidthPercentage = 100
-                'oTable.HeaderRows = 1
+
                 CalcualteTopBottomBodyMarginsForTrendAlarm(nTopMargin, nBottomMargin, g_nReportType)
                 g_oDoc.SetMargins(0.0F, 0, nTopMargin, nBottomMargin)
                 g_oDoc.Open()
@@ -2117,28 +2120,7 @@ Public Class EBOCombinedIndusoftReport
                 Dim nCol As Integer
                 Dim nAlmCol As Integer = 0
 
-                'For nCol = 0 To g_oColList.Count - 1
-                '    If g_oColList(nCol).m_bshowAlarmCol Then
-                '        nAlmCol = nAlmCol + 1
-                '    End If
 
-                'Next
-
-
-
-                'oTable.TotalWidth = g_oDoc.PageSize.Width - 3 * g_fSideMargin
-                'oTable.WidthPercentage = g_fSideFactor
-
-                'oTable.HorizontalAlignment = Element.ALIGN_CENTER
-                'Dim oTable = New PdfPTable(g_oColList.Count)
-                'oTable.TotalWidth = g_oDoc.PageSize.Width - 3 * g_fSideMargin
-
-                'oTable.WidthPercentage = g_fSideFactor
-
-                'oTable.HorizontalAlignment = Element.ALIGN_CENTER
-
-                'Dim nCol As Integer
-                'Dim sColWidths(g_oColList.Count - 1) As Single
                 Dim sColumName As String() = {"Date Time", "Alarm Message", "Alarm Normalized time", "Alarm Type", "User Comments"}
                 For nCol = 0 To 5 - 1
                     Dim oHeadPdfCel As PdfPCell
@@ -2150,154 +2132,49 @@ Public Class EBOCombinedIndusoftReport
                     oTable.AddCell(oHeadPdfCel)
                     'sColWidths(nCol) = g_oColList(nCol).m_sColWidth
                 Next
-                'oTable.SetWidths(sColWidths)
-
-                Dim bResult As Int16
 
                 Dim oTime As DateTime = dtFrom
                 oTime = oTime.AddMilliseconds(-oTime.Millisecond)
                 oTime = oTime.AddSeconds(-oTime.Second)
-
+                oAlarmTable.Clear()
                 While oTime <= dtTo
 
-                    bResult = GetColInstanceValuesForTrendDataAlarmReport(oTime)
-
-                    If bResult > 0 Then
-                        'For nCol = 0 To g_oColList.Count - 1
-                        Dim oPdfCel As PdfPCell
-
-                        If bResult = 1 Then
-                            If oAlarmTable.Rows.Count > 0 Then
-                                For nColumn = 0 To oAlarmTable.Columns.Count - 1
-                                    If nColumn = 0 Then
-                                        oPdfCel = New PdfPCell(New Paragraph(oAlarmTable.Rows(0).Item(0).ToString, g_oBodyFont))
-                                    ElseIf nColumn = 1 Then
-                                        oPdfCel = New PdfPCell(New Paragraph(oAlarmTable.Rows(0).Item(1).ToString, g_oBodyFont))
-                                    ElseIf nColumn = 2 Then
-                                        oPdfCel = New PdfPCell(New Paragraph(oAlarmTable.Rows(0).Item(2).ToString, g_oBodyFont))
-                                    ElseIf nColumn = 3 Then
-                                        oPdfCel = New PdfPCell(New Paragraph("Low_Limit", g_oBodyFont))
-                                    ElseIf nColumn = 4 Then
-                                        oPdfCel = New PdfPCell(New Paragraph("", g_oBodyFont))
-                                        'ElseIf nColumn = 5 Then
-                                        '    oPdfCel = New PdfPCell(New Paragraph("", g_oBodyFont))
-                                    Else
-                                        oPdfCel = New PdfPCell(New Paragraph("", g_oBodyFont))
-                                    End If
-                                    'If g_oColList(nCol).m_nColJust = ColJust.Left Then
-                                    '    oPdfCel.HorizontalAlignment = Element.ALIGN_LEFT
-                                    'ElseIf g_oColList(nCol).m_nColJust = ColJust.Right Then
-                                    '    oPdfCel.HorizontalAlignment = Element.ALIGN_RIGHT
-                                    'Else
-                                    '    oPdfCel.HorizontalAlignment = Element.ALIGN_CENTER
-                                    'End If
-                                    oPdfCel.VerticalAlignment = Element.ALIGN_MIDDLE
-                                    oPdfCel.PaddingBottom = g_nBodyPad
-
-                                    oTable.AddCell(oPdfCel)
-                                Next
-                            End If
-                            'If g_oColList(nCol).m_sAlarmLowStartDate.Length > 0 Or g_oColList(nCol).m_sAlarmLowEndDate.Length > 0 Then
-                            '    oPdfCel = New PdfPCell(New Paragraph(g_oColList(nCol).m_sAlarmLowStartDate, g_oBodyFontLow))
-
-                            '    If g_oColList(nCol).m_bError Then
-                            '        oPdfCel = New PdfPCell(New Paragraph(g_oColList(nCol).m_sValue, g_oBodyFontLow))
-                            '    Else
-                            '        oPdfCel = New PdfPCell(New Paragraph(g_oColList(nCol).m_sValue, g_oBodyFont))
-                            '    End If
-                            '    If g_oColList(nCol).m_nColJust = ColJust.Left Then
-                            '        oPdfCel.HorizontalAlignment = Element.ALIGN_LEFT
-                            '    ElseIf g_oColList(nCol).m_nColJust = ColJust.Right Then
-                            '        oPdfCel.HorizontalAlignment = Element.ALIGN_RIGHT
-                            '    Else
-                            '        oPdfCel.HorizontalAlignment = Element.ALIGN_CENTER
-                            '    End If
-                            '    oPdfCel.VerticalAlignment = Element.ALIGN_MIDDLE
-                            '    oPdfCel.PaddingBottom = g_nBodyPad
-
-                            '    oTable.AddCell(oPdfCel)
-                            'End If
-                        ElseIf bResult = 2 Then
-
-                            If oAlarmTable.Rows.Count > 0 Then
-                                For nColumn = 0 To oAlarmTable.Columns.Count - 1
-                                    If nColumn = 0 Then
-                                        oPdfCel = New PdfPCell(New Paragraph(oAlarmTable.Rows(0).Item(0).ToString, g_oBodyFont))
-                                    ElseIf nColumn = 1 Then
-                                        oPdfCel = New PdfPCell(New Paragraph(oAlarmTable.Rows(0).Item(1).ToString, g_oBodyFont))
-                                    ElseIf nColumn = 2 Then
-                                        oPdfCel = New PdfPCell(New Paragraph(oAlarmTable.Rows(0).Item(2).ToString, g_oBodyFont))
-                                    ElseIf nColumn = 3 Then
-                                        oPdfCel = New PdfPCell(New Paragraph("High_Limit", g_oBodyFont))
-                                    ElseIf nColumn = 4 Then
-                                        oPdfCel = New PdfPCell(New Paragraph("", g_oBodyFont))
-                                        'ElseIf nColumn = 5 Then
-                                        '    oPdfCel = New PdfPCell(New Paragraph("", g_oBodyFont))
-                                    Else
-                                        oPdfCel = New PdfPCell(New Paragraph("", g_oBodyFont))
-                                    End If
-                                    'If g_oColList(nCol).m_nColJust = ColJust.Left Then
-                                    '    oPdfCel.HorizontalAlignment = Element.ALIGN_LEFT
-                                    'ElseIf g_oColList(nCol).m_nColJust = ColJust.Right Then
-                                    '    oPdfCel.HorizontalAlignment = Element.ALIGN_RIGHT
-                                    'Else
-                                    '    oPdfCel.HorizontalAlignment = Element.ALIGN_CENTER
-                                    'End If
-                                    oPdfCel.VerticalAlignment = Element.ALIGN_MIDDLE
-                                    oPdfCel.PaddingBottom = g_nBodyPad
-
-                                    oTable.AddCell(oPdfCel)
-                                Next
-                            End If
-
-                            'If nCol > 0 Then
-                            '    If g_oColList(nCol).m_sAlarmHighStartDate.Length > 0 Or g_oColList(nCol).m_sAlarmHighEndDate.Length > 0 Then
-                            '        oPdfCel = New PdfPCell(New Paragraph(g_oColList(nCol).m_sAlarmHighStartDate, g_oBodyFontLow))
-
-                            '        If g_oColList(nCol).m_sAlarmHighStartDate.Length > 0 Then
-                            '            If g_oColList(nCol).m_bError Then
-                            '                oPdfCel = New PdfPCell(New Paragraph(g_oColList(nCol).m_sValue, g_oBodyFontLow))
-                            '            Else
-                            '                oPdfCel = New PdfPCell(New Paragraph(g_oColList(nCol).m_sValue, g_oBodyFont))
-                            '            End If
-                            '        ElseIf g_oColList(nCol).m_sAlarmHighEndDate.Length > 0 Then
-                            '            If g_oColList(nCol).m_bError Then
-                            '                oPdfCel = New PdfPCell(New Paragraph(g_oColList(nCol).m_sValue, g_oBodyFontLow))
-                            '            Else
-                            '                oPdfCel = New PdfPCell(New Paragraph(g_oColList(nCol).m_sValue, g_oBodyFont))
-                            '            End If
-                            '        End If
-
-                            '        If g_oColList(nCol).m_nColJust = ColJust.Left Then
-                            '            oPdfCel.HorizontalAlignment = Element.ALIGN_LEFT
-                            '        ElseIf g_oColList(nCol).m_nColJust = ColJust.Right Then
-                            '            oPdfCel.HorizontalAlignment = Element.ALIGN_RIGHT
-                            '        Else
-                            '            oPdfCel.HorizontalAlignment = Element.ALIGN_CENTER
-                            '        End If
-                            '        oPdfCel.VerticalAlignment = Element.ALIGN_MIDDLE
-                            '        oPdfCel.PaddingBottom = g_nBodyPad
-
-                            '        oTable.AddCell(oPdfCel)
-                            '    End If
-                            'End If
-
-
-                        End If
-
-                        If nCol = 0 Then
-
-                        End If
-
-
-
-                        'Next
-                    End If
+                    GetColInstanceValuesForTrendDataAlarmReport(oTime)
 
                     oTime = oTime.AddMinutes(nTimeInterval)
                     UpdateReportProgress(nReportStatusID, dtFrom, dtTo, oTime)
                 End While
+                If oAlarmTable.Rows.Count > 0 Then
+                    Dim oPdfCel As PdfPCell
 
+                    For nRow = 0 To oAlarmTable.Rows.Count - 1
+
+                        For nColumn = 0 To oAlarmTable.Columns.Count - 1
+
+                            If nColumn = 0 Then
+                                oPdfCel = New PdfPCell(New Paragraph(oAlarmTable.Rows(nRow).Item(0).ToString, g_oBodyFont))
+                            ElseIf nColumn = 1 Then
+                                oPdfCel = New PdfPCell(New Paragraph(oAlarmTable.Rows(nRow).Item(1).ToString, g_oBodyFont))
+                            ElseIf nColumn = 2 Then
+                                oPdfCel = New PdfPCell(New Paragraph(oAlarmTable.Rows(nRow).Item(2).ToString, g_oBodyFont))
+                            ElseIf nColumn = 3 Then
+                                oPdfCel = New PdfPCell(New Paragraph(oAlarmTable.Rows(nRow).Item(3).ToString, g_oBodyFont))
+                            ElseIf nColumn = 4 Then
+                                oPdfCel = New PdfPCell(New Paragraph("", g_oBodyFont))
+
+                            Else
+                                oPdfCel = New PdfPCell(New Paragraph("", g_oBodyFont))
+                            End If
+
+                            oPdfCel.VerticalAlignment = Element.ALIGN_MIDDLE
+                            oPdfCel.PaddingBottom = g_nBodyPad
+
+                            oTable.AddCell(oPdfCel)
+
+                        Next
+                    Next
+
+                End If
                 g_oDoc.Add(oTable)
 
                 PrintEndOfDataReport(dtFrom, dtTo)
@@ -2316,6 +2193,109 @@ Public Class EBOCombinedIndusoftReport
         UpdateReportProgress(nReportStatusID, dtFrom, dtTo, dtTo)
     End Function
 
+    Friend Function GenerateCDUDevicesBatteryStatus(ByRef nReportStatusID As Long, ByVal dtFrom As Date, ByVal dtTo As Date, ByRef sOutFileName As String, ByRef nTimeInterval As Integer) As Boolean
+        Try
+            GenerateCDUDevicesBatteryStatus = False
+            Dim nTopMargin As Integer = 0
+            Dim nBottomMargin As Integer = 0
+
+            Try
+
+                Using FS As New FileStream(sOutFileName, FileMode.Create, FileAccess.Write, FileShare.None)
+
+                    g_oDoc = New Document(PageSize.A4)
+                    If g_bLandScape Then
+                        g_oDoc.SetPageSize(iTextSharp.text.PageSize.A4.Rotate())
+                    Else
+                        g_oDoc.SetPageSize(iTextSharp.text.PageSize.A4)
+                    End If
+
+                    Dim Writer As PdfWriter = PdfWriter.GetInstance(g_oDoc, FS)
+                    ''//Bind our PDF object to the physical file using a PdfWriter
+                    '  Using Writer As PdfWriter = PdfWriter.GetInstance(g_oDoc, FS)
+                    ''//Open our document for writing
+                    Dim oPageEvent As New IEntryExitReportEvents
+                    SetPageEventParameters(oPageEvent)
+                    Writer.PageEvent = oPageEvent
+
+                    CalcualteTopBottomBodyMargins(nTopMargin, nBottomMargin)
+                    g_oDoc.SetMargins(0.0F, 0, nTopMargin, nBottomMargin)
+                    g_oDoc.Open()
+                    'PrintLimitSetPointRows(dtFrom, dtTo)
+                    Dim oTable = New PdfPTable(g_oColList.Count)
+                    oTable.TotalWidth = g_oDoc.PageSize.Width - 3 * g_fSideMargin
+
+                    oTable.WidthPercentage = g_fSideFactor
+
+                    oTable.HorizontalAlignment = Element.ALIGN_CENTER
+
+                    Dim nCol As Integer
+                    Dim sColWidths(g_oColList.Count - 1) As Single
+                    For nCol = 0 To g_oColList.Count - 1
+                        sColWidths(nCol) = g_oColList(nCol).m_sColWidth
+                    Next
+                    oTable.SetWidths(sColWidths)
+
+                    Dim bResult As Boolean
+
+                    Dim oTime As DateTime = dtFrom
+                    oTime = oTime.AddMilliseconds(-oTime.Millisecond)
+                    oTime = oTime.AddSeconds(-oTime.Second)
+                    While oTime <= dtTo
+
+                        bResult = GetColInstanceValuesForBateeryStatus(oTime)
+
+                        If bResult = True Then
+                            For nCol = 0 To g_oColList.Count - 1
+                                Dim oPdfCel As PdfPCell
+                                If g_oColList(nCol).m_nColType = ColType.DateTime Then
+
+                                End If
+                                If g_oColList(nCol).m_bError Then
+                                    oPdfCel = New PdfPCell(New Paragraph(g_oColList(nCol).m_sValue, g_oBodyFontLow))
+                                Else
+                                    oPdfCel = New PdfPCell(New Paragraph(g_oColList(nCol).m_sValue, g_oBodyFont))
+                                End If
+                                If g_oColList(nCol).m_nColJust = ColJust.Left Then
+                                    oPdfCel.HorizontalAlignment = Element.ALIGN_LEFT
+                                ElseIf g_oColList(nCol).m_nColJust = ColJust.Right Then
+                                    oPdfCel.HorizontalAlignment = Element.ALIGN_RIGHT
+                                Else
+                                    oPdfCel.HorizontalAlignment = Element.ALIGN_CENTER
+                                End If
+                                oPdfCel.VerticalAlignment = Element.ALIGN_MIDDLE
+                                oPdfCel.PaddingBottom = g_nBodyPad
+
+                                oTable.AddCell(oPdfCel)
+
+                            Next
+                        End If
+
+                        oTime = oTime.AddMinutes(nTimeInterval)
+                        UpdateReportProgress(nReportStatusID, dtFrom, dtTo, oTime)
+                    End While
+
+                    g_oDoc.Add(oTable)
+
+                    PrintEndOfDataReport(dtFrom, dtTo)
+                    g_oDoc.Close()
+                    GenerateCDUDevicesBatteryStatus = True
+                    UpdateReportProgress(nReportStatusID, dtFrom, dtTo, dtTo)
+                End Using
+
+
+            Catch ex As Exception
+                UpdateExceptionInDatabase(nReportStatusID, ex.Message)
+                LogError("NewIndusoftReport.vb", "GenerateCDUDevicesBatteryStatus()", ex.Message)
+            Finally
+
+            End Try
+            UpdateReportProgress(nReportStatusID, dtFrom, dtTo, dtTo)
+
+        Catch ex As Exception
+            GenerateCDUDevicesBatteryStatus = False
+        End Try
+    End Function
 
     Public Sub AddDebugMessageToReport(ByRef oDoc As Document, ByRef sMessage As String)
         Try
@@ -2511,11 +2491,12 @@ Public Class EBOCombinedIndusoftReport
             LogError("NewIndusoftReport.vb", "GetColInstanceValuesForExcursionReport()", ex.Message)
         End Try
     End Function
-    Function GetColInstanceValuesForTrendDataAlarmReport(ByRef oTime As Date) As Int16
+
+    Function GetColInstanceValuesForBateeryStatus(ByRef oTime As Date) As Boolean
         Try
             Dim sQuery As String
             Dim oReader As OdbcDataReader
-            GetColInstanceValuesForTrendDataAlarmReport = 0
+            GetColInstanceValuesForBateeryStatus = False
             g_bExcursion = False
 
             Dim sTimeField As String
@@ -2527,203 +2508,29 @@ Public Class EBOCombinedIndusoftReport
             Using oConnection As New OdbcConnection(g_sEMSDbConString)
                 Dim cmd As New OdbcCommand(sQuery, oConnection)
                 oConnection.Open()
-                cmd.Parameters.AddWithValue("@0", oTime.ToString)
+                Dim sDateTime As String = oTime.ToString(g_oColList(0).m_sColFormat)
+                cmd.Parameters.AddWithValue("@0", sDateTime)
 
                 Try
 
-                    Dim fTemp As Single
+
 
                     oReader = cmd.ExecuteReader()
                     If oReader.Read() Then
-                        oAlarmTable.Clear()
-                        Dim column1 As DataColumn = New DataColumn("AlarmStartDate")
-                        column1.DataType = System.Type.GetType("System.String")
-
-
-                        Dim column2 As DataColumn = New DataColumn("AlarmMessage")
-                        column2.DataType = System.Type.GetType("System.String")
-                        Dim column3 As DataColumn = New DataColumn("AlarmEndDate")
-                        column3.DataType = System.Type.GetType("System.String")
-                        Dim column4 As DataColumn = New DataColumn("AcknowledgeDataTime")
-                        column4.DataType = System.Type.GetType("System.String")
-                        Dim column5 As DataColumn = New DataColumn("UserId")
-                        column5.DataType = System.Type.GetType("System.String")
-                        'Dim column6 As DataColumn = New DataColumn("UserComments")
-                        'column6.DataType = System.Type.GetType("System.String")
-                        If oAlarmTable.Columns.Count = 0 Then
-
-                            oAlarmTable.Columns.Add(column1)
-                            oAlarmTable.Columns.Add(column2)
-                            oAlarmTable.Columns.Add(column3)
-                            oAlarmTable.Columns.Add(column4)
-                            oAlarmTable.Columns.Add(column5)
-                            'oAlarmTable.Columns.Add(column6)
-                        End If
-
-
 
                         For nCol = 0 To g_oColList.Count - 1
 
                             g_oColList(nCol).m_sValue = ""
                             g_oColList(nCol).m_bError = False
 
-
                             If g_oColList(nCol).m_nColType = ColType.DateTime Then
                                 g_oColList(nCol).m_sValue = oTime.ToString(g_oColList(nCol).m_sColFormat)
                             ElseIf g_oColList(nCol).m_nColType = ColType.Other Then
                                 g_oColList(nCol).m_sValue = oReader(g_oColList(nCol).m_sColumnNameinTable)
-                                'g_oColList(nCol).m_sValue = fTemp.ToString(g_oColList(nCol).m_sColFormat)
-                                'If g_oColList(nCol).m_bExcursion And g_oColList(nCol).m_fExcursionLow <> 0 Then
-                                If CSng(g_oColList(nCol).m_sValue) < g_oColList(nCol).m_fExcursionLow Then
-                                    g_bExcursion = True
-                                    g_oColList(nCol).m_bError = True
-                                    If g_oColList(nCol).m_bAlarmLowStart = False Then
-                                        g_oColList(nCol).m_bAlarmLowStart = True
-                                        g_oColList(nCol).m_sAlarmLowStartDate = oTime.ToString(g_oColList(nCol).m_sColFormat)
-
-                                    End If
-                                Else
-                                    If g_oColList(nCol).m_bAlarmLowStart Then
-                                        g_oColList(nCol).m_bAlarmLowEnd = True
-                                        g_oColList(nCol).m_sAlarmLowEndDate = oTime.ToString(g_oColList(nCol).m_sColFormat)
-                                    End If
-                                End If
-                                'End If
-                                'If g_oColList(nCol).m_bExcursion And g_oColList(nCol).m_fExcursionHigh <> 0 Then
-                                If CSng(g_oColList(nCol).m_sValue) > g_oColList(nCol).m_fExcursionHigh Then
-                                    g_bExcursion = True
-                                    g_oColList(nCol).m_bError = True
-                                    If g_oColList(nCol).m_bAlarmHighStart = False Then
-                                        g_oColList(nCol).m_bAlarmHighStart = True
-                                        g_oColList(nCol).m_sAlarmHighStartDate = oTime.ToString(g_oColList(nCol).m_sColFormat)
-                                    End If
-                                Else
-                                    If g_oColList(nCol).m_bAlarmHighStart Then
-                                        g_oColList(nCol).m_bAlarmHighEnd = True
-                                        g_oColList(nCol).m_sAlarmHighEndDate = oTime.ToString(g_oColList(nCol).m_sColFormat)
-                                    End If
-                                End If
-                                'End If
-                                If g_oColList(nCol).m_bAlarmLowStart And g_oColList(nCol).m_bAlarmLowEnd Then
-                                    g_oColList(nCol).m_bAlarmLowEnd = False
-                                    g_oColList(nCol).m_bAlarmLowStart = False
-                                    oAlarmTable.Rows.Add(g_oColList(nCol).m_sAlarmLowStartDate, g_oColList(nCol).m_sColTitle, g_oColList(nCol).m_sAlarmLowEndDate)
-                                    GetColInstanceValuesForTrendDataAlarmReport = 1
-                                End If
-                                If g_oColList(nCol).m_bAlarmHighStart And g_oColList(nCol).m_bAlarmHighEnd Then
-                                    g_oColList(nCol).m_bAlarmHighStart = False
-                                    g_oColList(nCol).m_bAlarmHighEnd = False
-                                    oAlarmTable.Rows.Add(g_oColList(nCol).m_sAlarmHighStartDate, g_oColList(nCol).m_sColTitle, g_oColList(nCol).m_sAlarmHighEndDate)
-                                    GetColInstanceValuesForTrendDataAlarmReport = 2
-                                End If
-
-                            ElseIf g_oColList(nCol).m_nColType = ColType.Enumtype Then
-                                Try
-                                    Dim nValue As Integer
-                                    nValue = oReader(g_oColList(nCol).m_sColumnNameinTable)
-                                    g_oColList(nCol).m_sValue = GetEnumStringFromValue(g_oColList(nCol).m_nEnumID, nValue)
-
-                                    'If g_oColList(nCol).m_bExcursion And g_oColList(nCol).m_fExcursionLow <> 0 Then
-                                    If CSng(g_oColList(nCol).m_sValue) < g_oColList(nCol).m_fExcursionLow Then
-                                        g_bExcursion = True
-                                        g_oColList(nCol).m_bError = True
-                                        If g_oColList(nCol).m_bAlarmLowStart = False Then
-                                            g_oColList(nCol).m_bAlarmLowStart = True
-                                            g_oColList(nCol).m_sAlarmLowStartDate = oTime.ToString(g_oColList(nCol).m_sColFormat)
-                                        End If
-                                    Else
-                                        If g_oColList(nCol).m_bAlarmLowStart Then
-                                            g_oColList(nCol).m_bAlarmLowEnd = True
-                                            g_oColList(nCol).m_sAlarmLowEndDate = oTime.ToString(g_oColList(nCol).m_sColFormat)
-                                        End If
-                                    End If
-                                    'End If
-                                    'If g_oColList(nCol).m_bExcursion And g_oColList(nCol).m_fExcursionHigh <> 0 Then
-                                    If CSng(g_oColList(nCol).m_sValue) > g_oColList(nCol).m_fExcursionHigh Then
-                                        g_bExcursion = True
-                                        g_oColList(nCol).m_bError = True
-                                        If g_oColList(nCol).m_bAlarmHighStart = False Then
-                                            g_oColList(nCol).m_bAlarmHighStart = True
-                                            g_oColList(nCol).m_sAlarmHighStartDate = oTime.ToString(g_oColList(nCol).m_sColFormat)
-                                        End If
-                                    Else
-                                        If g_oColList(nCol).m_bAlarmHighStart Then
-                                            g_oColList(nCol).m_bAlarmHighEnd = True
-                                            g_oColList(nCol).m_sAlarmHighEndDate = oTime.ToString(g_oColList(nCol).m_sColFormat)
-                                        End If
-                                    End If
-                                    'End If
-
-                                    If g_oColList(nCol).m_bAlarmLowStart And g_oColList(nCol).m_bAlarmLowEnd Then
-                                        g_oColList(nCol).m_bAlarmLowStart = False
-                                        g_oColList(nCol).m_bAlarmLowEnd = False
-                                        oAlarmTable.Rows.Add(g_oColList(nCol).m_sAlarmLowStartDate, g_oColList(nCol).m_sAlarmLowEndDate, g_oColList(nCol).m_sColTitle)
-                                        GetColInstanceValuesForTrendDataAlarmReport = 1
-                                    End If
-                                    If g_oColList(nCol).m_bAlarmHighStart And g_oColList(nCol).m_bAlarmHighEnd Then
-                                        g_oColList(nCol).m_bAlarmHighStart = False
-                                        g_oColList(nCol).m_bAlarmHighEnd = False
-                                        oAlarmTable.Rows.Add(g_oColList(nCol).m_sAlarmHighStartDate, g_oColList(nCol).m_sColTitle, g_oColList(nCol).m_sAlarmHighEndDate)
-                                        GetColInstanceValuesForTrendDataAlarmReport = 2
-                                    End If
-
-                                Catch ex As Exception
-                                    g_oColList(nCol).m_sValue = g_sErrorText
-                                    g_oColList(nCol).m_bError = True
-                                End Try
-                            Else
-                                Try
-                                    fTemp = oReader(g_oColList(nCol).m_sColumnNameinTable)
-                                Catch ex As Exception
-                                    fTemp = 0
-                                End Try
-
-                                g_oColList(nCol).m_sValue = fTemp.ToString(g_oColList(nCol).m_sColFormat)
-                                'If g_oColList(nCol).m_bExcursion And g_oColList(nCol).m_fExcursionLow <> 0 Then
-                                If CSng(g_oColList(nCol).m_sValue) < g_oColList(nCol).m_fExcursionLow Then
-                                    g_bExcursion = True
-                                    g_oColList(nCol).m_bError = True
-                                    If g_oColList(nCol).m_bAlarmLowStart = False Then
-                                        g_oColList(nCol).m_bAlarmLowStart = True
-                                        g_oColList(nCol).m_sAlarmLowStartDate = oTime.ToString(g_oColList(nCol).m_sColFormat)
-                                    End If
-                                Else
-                                    If g_oColList(nCol).m_bAlarmLowStart Then
-                                        g_oColList(nCol).m_bAlarmLowEnd = True
-                                        g_oColList(nCol).m_sAlarmLowEndDate = oTime.ToString(g_oColList(nCol).m_sColFormat)
-                                    End If
-                                End If
-                                'End If
-                                'If g_oColList(nCol).m_bExcursion And g_oColList(nCol).m_fExcursionHigh <> 0 Then
-                                If CSng(g_oColList(nCol).m_sValue) > g_oColList(nCol).m_fExcursionHigh Then
-                                    g_bExcursion = True
-                                    g_oColList(nCol).m_bError = True
-                                    If g_oColList(nCol).m_bAlarmHighStart = False Then
-                                        g_oColList(nCol).m_bAlarmHighStart = True
-                                        g_oColList(nCol).m_sAlarmHighStartDate = oTime.ToString(g_oColList(nCol).m_sColFormat)
-                                    End If
-                                Else
-                                    If g_oColList(nCol).m_bAlarmHighStart Then
-                                        g_oColList(nCol).m_bAlarmHighEnd = True
-                                        g_oColList(nCol).m_sAlarmHighEndDate = oTime.ToString(g_oColList(nCol).m_sColFormat)
-                                    End If
-                                End If
-                                'End If
-                                If g_oColList(nCol).m_bAlarmLowStart And g_oColList(nCol).m_bAlarmLowEnd Then
-                                    g_oColList(nCol).m_bAlarmLowStart = False
-                                    g_oColList(nCol).m_bAlarmLowEnd = False
-                                    oAlarmTable.Rows.Add(g_oColList(nCol).m_sAlarmLowStartDate, g_oColList(nCol).m_sColTitle, g_oColList(nCol).m_sAlarmLowEndDate)
-                                    GetColInstanceValuesForTrendDataAlarmReport = 1
-                                End If
-                                If g_oColList(nCol).m_bAlarmHighStart And g_oColList(nCol).m_bAlarmHighEnd Then
-                                    g_oColList(nCol).m_bAlarmHighStart = False
-                                    g_oColList(nCol).m_bAlarmHighEnd = False
-                                    oAlarmTable.Rows.Add(g_oColList(nCol).m_sAlarmHighStartDate, g_oColList(nCol).m_sColTitle, g_oColList(nCol).m_sAlarmHighEndDate)
-                                    GetColInstanceValuesForTrendDataAlarmReport = 2
-                                End If
 
                             End If
                         Next
+                        GetColInstanceValuesForBateeryStatus = True
                     Else
                         For nCol = 0 To g_oColList.Count - 1
                             g_oColList(nCol).m_sValue = ""
@@ -2735,15 +2542,153 @@ Public Class EBOCombinedIndusoftReport
                             End If
                         Next
                     End If
-                    'If g_bExcursion Then
-                    '    g_nExcursionCheckCount = g_nExcursionCheckCount + 1
-                    '    If g_nExcursionCheckCount >= 3 Then
-                    '        g_nExcursionCheckCount = 0
-                    '        GetColInstanceValuesForTrendDataAlarmReport = True
-                    '    End If
-                    'Else
-                    '    g_nExcursionCheckCount = 0
-                    'End If
+
+                    oReader.Close()
+                Catch ex As Exception
+                    GetColInstanceValuesForBateeryStatus = False
+                End Try
+                oConnection.Close()
+            End Using
+        Catch ex As Exception
+            GetColInstanceValuesForBateeryStatus = False
+            LogError("NewIndusoftReport.vb", "GetColInstanceValuesForExcursionReport()", ex.Message)
+        End Try
+    End Function
+    Function GetColInstanceValuesForTrendDataAlarmReport(ByRef oTime As Date) As Int16
+        Try
+            Dim sQuery As String
+            Dim oReader As OdbcDataReader
+            GetColInstanceValuesForTrendDataAlarmReport = 0
+            'g_bExcursion = False
+
+            Dim sTimeField As String
+            sTimeField = g_oColList(0).m_sColumnNameinTable
+
+            sQuery = "SELECT * FROM " + g_sDataTableName + " WHERE " + sTimeField + " = ? "
+
+
+            Using oConnection As New OdbcConnection(g_sEMSDbConString)
+                Dim cmd As New OdbcCommand(sQuery, oConnection)
+                oConnection.Open()
+                Dim sDateTime As String = oTime.ToString(g_oColList(0).m_sColFormat)
+                cmd.Parameters.AddWithValue("@0", sDateTime)
+
+                Try
+
+                    'Dim fTemp As Single
+
+                    oReader = cmd.ExecuteReader()
+                    If oReader.Read() Then
+
+                        Dim cAlarmStartDate As DataColumn = New DataColumn("AlarmStartDate")
+                        cAlarmStartDate.DataType = System.Type.GetType("System.String")
+
+                        Dim cAlarmMessage As DataColumn = New DataColumn("AlarmMessage")
+                        cAlarmMessage.DataType = System.Type.GetType("System.String")
+                        Dim cAlarmEndDate As DataColumn = New DataColumn("AlarmEndDate")
+                        cAlarmEndDate.DataType = System.Type.GetType("System.String")
+                        Dim cAcknowledgeDataTime As DataColumn = New DataColumn("AcknowledgeDataTime")
+                        cAcknowledgeDataTime.DataType = System.Type.GetType("System.String")
+                        Dim cAlarmType As DataColumn = New DataColumn("AlarmType")
+                        cAlarmType.DataType = System.Type.GetType("System.String")
+
+                        If oAlarmTable.Columns.Count = 0 Then
+
+                            oAlarmTable.Columns.Add(cAlarmStartDate)
+                            oAlarmTable.Columns.Add(cAlarmMessage)
+                            oAlarmTable.Columns.Add(cAlarmEndDate)
+                            oAlarmTable.Columns.Add(cAcknowledgeDataTime)
+                            oAlarmTable.Columns.Add(cAlarmType)
+
+                        End If
+
+                        For nCol = 0 To g_oColList.Count - 1
+
+                            g_oColList(nCol).m_sValue = ""
+                            g_oColList(nCol).m_bError = False
+
+                            If g_oColList(nCol).m_nColType = ColType.DateTime Then
+                                g_oColList(nCol).m_sValue = oTime.ToString(g_oColList(nCol).m_sColFormat)
+                            Else
+                                g_oColList(nCol).m_sValue = oReader(g_oColList(nCol).m_sColumnNameinTable)
+
+                                If CSng(g_oColList(nCol).m_sValue) < g_oColList(nCol).m_fExcursionLow Then
+                                    g_oColList(nCol).m_bExcursion = True
+                                    g_oColList(nCol).m_bError = True
+                                    g_oColList(nCol).m_nExcursionLowCheckCount = g_oColList(nCol).m_nExcursionLowCheckCount + 1
+                                    If g_oColList(nCol).m_nExcursionLowCheckCount > 2 Then
+                                        If g_oColList(nCol).m_bAlarmLowStart = False Then
+                                            g_oColList(nCol).m_bAlarmLowStart = True
+                                            g_oColList(nCol).m_sAlarmLowStartDate = oTime.ToString(g_oColList(nCol).m_sColFormat)
+
+                                            oAlarmTable.Rows.Add(g_oColList(nCol).m_sAlarmLowStartDate, g_oColList(nCol).m_sColTitle, "", "Low_Limit", "")
+                                            g_oColList(nCol).m_nDataTableRowId = oAlarmTable.Rows.Count - 1
+
+                                        End If
+                                    End If
+                                Else
+                                    g_oColList(nCol).m_nExcursionLowCheckCount = 0
+                                    If g_oColList(nCol).m_bAlarmLowStart Then
+                                        g_oColList(nCol).m_bAlarmLowEnd = True
+                                        'g_oColList(nCol).m_nExcursionCheckCount = 0
+                                        g_oColList(nCol).m_sAlarmLowEndDate = oTime.ToString(g_oColList(nCol).m_sColFormat)
+                                    End If
+                                End If
+
+                                If CSng(g_oColList(nCol).m_sValue) > g_oColList(nCol).m_fExcursionHigh Then
+                                    g_oColList(nCol).m_bExcursion = True
+                                    g_oColList(nCol).m_bError = True
+                                    g_oColList(nCol).m_nExcursionHighCheckCount = g_oColList(nCol).m_nExcursionHighCheckCount + 1
+                                    If g_oColList(nCol).m_nExcursionHighCheckCount > 2 Then
+                                        If g_oColList(nCol).m_bAlarmHighStart = False Then
+                                            g_oColList(nCol).m_bAlarmHighStart = True
+                                            g_oColList(nCol).m_sAlarmHighStartDate = oTime.ToString(g_oColList(nCol).m_sColFormat)
+                                            oAlarmTable.Rows.Add(g_oColList(nCol).m_sAlarmHighStartDate, g_oColList(nCol).m_sColTitle, "", "High_Limit", "")
+                                            g_oColList(nCol).m_nDataTableRowId = oAlarmTable.Rows.Count - 1
+                                        End If
+                                    End If
+
+                                Else
+                                    g_oColList(nCol).m_nExcursionHighCheckCount = 0
+                                    If g_oColList(nCol).m_bAlarmHighStart Then
+                                        g_oColList(nCol).m_bAlarmHighEnd = True
+                                        g_oColList(nCol).m_sAlarmHighEndDate = oTime.ToString(g_oColList(nCol).m_sColFormat)
+                                    End If
+                                End If
+
+                                If g_oColList(nCol).m_bExcursion = True Then
+
+                                    If g_oColList(nCol).m_bAlarmLowStart And g_oColList(nCol).m_bAlarmLowEnd Then
+                                        'oAlarmTable.Rows(g_oColList(nCol).m_nDataTableRowId)("AlarmMessage") = g_oColList(nCol).m_sColTitle
+                                        oAlarmTable.Rows(g_oColList(nCol).m_nDataTableRowId)("AlarmEndDate") = g_oColList(nCol).m_sAlarmLowEndDate
+                                        'oAlarmTable.Rows(g_oColList(nCol).m_nDataTableRowId)("AcknowledgeDataTime") = "Low_Limit"
+                                        'GetColInstanceValuesForTrendDataAlarmReport = 1
+                                        g_oColList(nCol).m_bAlarmLowEnd = False
+                                        g_oColList(nCol).m_bAlarmLowStart = False
+                                        g_oColList(nCol).m_bExcursion = False
+                                        g_oColList(nCol).m_nExcursionLowCheckCount = 0
+                                    End If
+
+                                    If g_oColList(nCol).m_bAlarmHighStart And g_oColList(nCol).m_bAlarmHighEnd Then
+
+                                        'oAlarmTable.Rows.Add(g_oColList(nCol).m_sAlarmHighStartDate, g_oColList(nCol).m_sColTitle, g_oColList(nCol).m_sAlarmHighEndDate, "High_Limit")
+                                        'GetColInstanceValuesForTrendDataAlarmReport = 2
+                                        'oAlarmTable.Rows(g_oColList(nCol).m_nDataTableRowId)("AlarmMessage") = g_oColList(nCol).m_sColTitle
+                                        oAlarmTable.Rows(g_oColList(nCol).m_nDataTableRowId)("AlarmEndDate") = g_oColList(nCol).m_sAlarmHighEndDate
+                                        'oAlarmTable.Rows(g_oColList(nCol).m_nDataTableRowId)("AcknowledgeDataTime") = "High_Limit"
+                                        g_oColList(nCol).m_bAlarmHighStart = False
+                                        g_oColList(nCol).m_bAlarmHighEnd = False
+                                        g_oColList(nCol).m_bExcursion = False
+                                        g_oColList(nCol).m_nExcursionHighCheckCount = 0
+                                    End If
+                                Else
+                                    g_oColList(nCol).m_nExcursionLowCheckCount = 0
+                                    g_oColList(nCol).m_nExcursionHighCheckCount = 0
+                                End If
+                            End If
+                        Next
+
+                    End If
 
                     oReader.Close()
                 Catch ex As Exception
@@ -2769,25 +2714,26 @@ Public Class EBOCombinedIndusoftReport
         Using oConnection As New OdbcConnection(g_sEMSDbConString)
             Dim cmd As New OdbcCommand(sQuery, oConnection)
             oConnection.Open()
-            cmd.Parameters.AddWithValue("@0", oTime.ToString)
-
+            Dim sDateTime As String = oTime.ToString(g_oColList(0).m_sColFormat)
+            cmd.Parameters.AddWithValue("@0", sDateTime)
             Try
-
                 Dim fTemp As Single
-
                 oReader = cmd.ExecuteReader()
                 If oReader.Read() Then
                     GetColInstanceValues = True
                     For nCol = 0 To g_oColList.Count - 1
-
                         g_oColList(nCol).m_sValue = ""
                         g_oColList(nCol).m_bError = False
-
-
                         If g_oColList(nCol).m_nColType = ColType.DateTime Then
                             g_oColList(nCol).m_sValue = oTime.ToString(g_oColList(nCol).m_sColFormat)
                         ElseIf g_oColList(nCol).m_nColType = ColType.Other Then
-                            g_oColList(nCol).m_sValue = oReader(g_oColList(nCol).m_sColumnNameinTable)
+                            Try
+                                g_oColList(nCol).m_sValue = oReader(g_oColList(nCol).m_sColumnNameinTable)
+
+                            Catch ex As Exception
+                                g_oColList(nCol).m_sValue = g_sErrorText
+                                g_oColList(nCol).m_bError = True
+                            End Try
                         ElseIf g_oColList(nCol).m_nColType = ColType.Enumtype Then
                             Try
                                 Dim nValue As Integer
@@ -2800,11 +2746,12 @@ Public Class EBOCombinedIndusoftReport
                         Else
                             Try
                                 fTemp = oReader(g_oColList(nCol).m_sColumnNameinTable)
+                                g_oColList(nCol).m_sValue = fTemp.ToString(g_oColList(nCol).m_sColFormat)
                             Catch ex As Exception
-                                fTemp = 0
+                                'fTemp = 0
+                                g_oColList(nCol).m_sValue = g_sErrorText
+                                g_oColList(nCol).m_bError = True
                             End Try
-
-                            g_oColList(nCol).m_sValue = fTemp.ToString(g_oColList(nCol).m_sColFormat)
 
                             If g_oColList(nCol).m_bLowCheck And g_oColList(nCol).m_fLow <> 0 Then
                                 If g_oColList(nCol).m_nColType = ColType.Temperature Then
@@ -2817,7 +2764,6 @@ Public Class EBOCombinedIndusoftReport
                                     End If
                                 End If
                             End If
-
                             If g_oColList(nCol).m_bHighCheck And g_oColList(nCol).m_fHigh <> 0 Then
                                 If g_oColList(nCol).m_nColType = ColType.Temperature Then
                                     If g_oColList(nCol).m_sValue > g_oColList(nCol).m_fHigh Then
@@ -2829,17 +2775,6 @@ Public Class EBOCombinedIndusoftReport
                                     End If
                                 End If
                             End If
-                            'If g_oColList(nCol).m_bHighCheck And g_oColList(nCol).m_fHigh <> 0 Then
-                            '    If g_oColList(nCol).m_nColType = ColType.Temperature Then
-                            '        If g_oColList(nCol).m_sValue > g_oColList(nCol).m_fHigh Then
-                            '            g_oColList(nCol).m_bError = True
-                            '        End If
-                            '    Else
-                            '        If g_oColList(nCol).m_sValue > g_oColList(nCol).m_fHigh Then
-                            '            g_oColList(nCol).m_bError = True
-                            '        End If
-                            '    End If
-                            'End If
                         End If
                     Next
                 Else
@@ -4080,9 +4015,9 @@ Public Class EBOCombinedIndusoftReport
 
     Private Sub CalcualteTopBottomBodyMargins(ByRef nTopMargin As Integer, ByRef nBottomMargin As Integer)
         Dim oHeaderTable As PdfPTable
-        If g_nReportType = ReportType.DataTrendAlarmReport Then
+        'If g_nReportType = ReportType.DataTrendAlarmReport Then
 
-        End If
+        'End If
         If g_bIconNeeded Then
             Try
                 oHeaderTable = New PdfPTable(2)
@@ -4223,12 +4158,6 @@ Public Class EBOCombinedIndusoftReport
             Next
 
         End If
-
-
-
-
-
-
 
         nTopMargin = nTopMargin + oBodyHeaderTable.TotalHeight + oBodyHeaderTable2.TotalHeight + 3 + g_fTopBottomMargin
 

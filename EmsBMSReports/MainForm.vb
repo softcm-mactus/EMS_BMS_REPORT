@@ -10,74 +10,76 @@ Public Class MainForm
     Private m_nReportID As Integer = 0
     Private m_nReportStatusID As Long = 0
 
-
-
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         Try
             'If g_sCurrent_login_UserID.Length > 0 Then
             Dim sError As String = ""
 
-                Dim oTime As DateTime = DateTime.Now
-                If ReadDatabaseConnection(sError) = False Then
-                    MsgBox(sError)
-                    End
-                End If
+            Dim oTime As DateTime = DateTime.Now
+            If ReadDatabaseConnection(sError) = False Then
+                MsgBox(sError)
+                End
+            End If
 
-                bCOnfigureReports.Visible = True
-                bConfigureAlarmReports.Visible = True 'g_bEnableConfiguration
+            bCOnfigureReports.Visible = True
+            bConfigureAlarmReports.Visible = True 'g_bEnableConfiguration
 
-                Dim sQuery As String
-                sQuery = "UPDATE tbl_reportstatus SET status=4 where status=3"
-                ExecuteSQLInDb(sQuery)
+            Dim sQuery As String
+            sQuery = "UPDATE tbl_reportstatus SET status=4 where status=3"
+            ExecuteSQLInDb(sQuery)
 
-                m_oEBOReprots = New MactusReportLib.EBOReport()
-                m_oIndusoftReports = New MactusReportLib.NewInduSoftReport()
+            m_oEBOReprots = New MactusReportLib.EBOReport()
+            m_oIndusoftReports = New MactusReportLib.NewInduSoftReport()
 
-                bAreaReports.Checked = True
-                bAlarmReports.Checked = False
-                bEventReport.Checked = False
-                LoadReportsIntoListBox(oReportGrid, ReportType.DataReport)
-                cInterval.SelectedIndex = 0
-                m_nSelectedReportType = ReportType.DataReport
-                oTime = oTime.AddMilliseconds(-oTime.Millisecond)
-                oTime = oTime.AddSeconds(-oTime.Second)
-                oTime = oTime.AddMinutes(-oTime.Minute)
-                oTime = oTime.AddHours(-oTime.Hour)
-                oTime = oTime.AddDays(-7)
-                tr_FromDate.Value = oTime
-                tr_ToDate.Value = oTime.AddDays(1)
-                bGenerate.Enabled = False
+            bAreaReports.Checked = True
+            bAlarmReports.Checked = False
+            bEventReport.Checked = False
+            If g_bIsBMS = 2 Then
+                btnBatteryPercentage.Visible = True
+                btnExcursionReport.Visible = True
+            End If
+            LoadReportsIntoListBox(oReportGrid, ReportType.DataReport)
+            cInterval.SelectedIndex = 0
+            m_nSelectedReportType = ReportType.DataReport
+            oTime = oTime.AddMilliseconds(-oTime.Millisecond)
+            oTime = oTime.AddSeconds(-oTime.Second)
+            oTime = oTime.AddMinutes(-oTime.Minute)
+            oTime = oTime.AddHours(-oTime.Hour)
+            oTime = oTime.AddDays(-7)
+            tr_FromDate.Value = oTime
+            tr_ToDate.Value = oTime.AddDays(1)
+            bGenerate.Enabled = False
 
-                ' Dim sQuery As String
-                Dim oReader As OdbcDataReader
-                sQuery = "SELECT * FROM TBL_DataGroups WHERE grouptype=0 ORDER BY groupid"
+            ' Dim sQuery As String
+            Dim oReader As OdbcDataReader
+            sQuery = "SELECT * FROM TBL_DataGroups WHERE grouptype=0 ORDER BY groupid"
 
-                Try
-                    Using oConnection As New OdbcConnection(g_sConString)
-                        oConnection.Open()
-                        Dim oCmd As New OdbcCommand(sQuery, oConnection)
-                        oReader = oCmd.ExecuteReader()
-                        While oReader.Read()
-                            cGroup.Items.Add(oReader("groupname"))
-                        End While
-                        oConnection.Close()
-                    End Using
-                Catch ex As Exception
+            Try
+                Using oConnection As New OdbcConnection(g_sConString)
+                    oConnection.Open()
+                    Dim oCmd As New OdbcCommand(sQuery, oConnection)
+                    oReader = oCmd.ExecuteReader()
+                    While oReader.Read()
+                        cGroup.Items.Add(oReader("groupname"))
+                    End While
+                    oConnection.Close()
+                End Using
+            Catch ex As Exception
 
-                End Try
+            End Try
 
-                Try
-                    cGroup.SelectedIndex = 0
-                Catch ex As Exception
+            Try
+                cGroup.SelectedIndex = 0
+            Catch ex As Exception
 
-                End Try
+            End Try
 
-                UpdateGrid()
-                StartThread()
+            UpdateGrid()
+            StartThread()
 
 
-                oTimer.Enabled = True
+            oTimer.Enabled = True
 
             '  Else
 
@@ -318,6 +320,16 @@ Public Class MainForm
 
     Private Sub bConfigure_Click(sender As Object, e As EventArgs) Handles bConfigure.Click
         Dim oDlg As New DlgAppConfiguration()
+        oDlg.ShowDialog()
+    End Sub
+
+    Private Sub btnExcursionReport_Click(sender As Object, e As EventArgs) Handles btnExcursionReport.Click
+        Dim oDlg As New DlgExcursionConfiguration()
+        oDlg.ShowDialog()
+    End Sub
+
+    Private Sub btnBatteryPercentage_Click(sender As Object, e As EventArgs) Handles btnBatteryPercentage.Click
+        Dim oDlg As New DlgBatteryReportConfiguration()
         oDlg.ShowDialog()
     End Sub
 End Class

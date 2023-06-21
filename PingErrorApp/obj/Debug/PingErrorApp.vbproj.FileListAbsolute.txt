@@ -10,3 +10,16 @@ D:\GitHub\EmsBMSReports\PingErrorApp\obj\Debug\PingErrorApp.vbproj.CoreCompileIn
 D:\GitHub\EmsBMSReports\PingErrorApp\obj\Debug\PingErrorApp.exe
 D:\GitHub\EmsBMSReports\PingErrorApp\obj\Debug\PingErrorApp.xml
 D:\GitHub\EmsBMSReports\PingErrorApp\obj\Debug\PingErrorApp.pdb
+D:\Sources\EmsBMSReports\PingErrorApp\bin\Debug\PingErrorApp.exe.config
+D:\Sources\EmsBMSReports\PingErrorApp\bin\Debug\PingErrorApp.exe
+D:\Sources\EmsBMSReports\PingErrorApp\bin\Debug\PingErrorApp.pdb
+D:\Sources\EmsBMSReports\PingErrorApp\bin\Debug\PingErrorApp.xml
+D:\Sources\EmsBMSReports\PingErrorApp\obj\Debug\PingErrorApp.MainForm.resources
+D:\Sources\EmsBMSReports\PingErrorApp\obj\Debug\PingErrorApp.Resources.resources
+D:\Sources\EmsBMSReports\PingErrorApp\obj\Debug\PingErrorApp.vbproj.GenerateResource.cache
+D:\Sources\EmsBMSReports\PingErrorApp\obj\Debug\PingErrorApp.vbproj.CoreCompileInputs.cache
+D:\Sources\EmsBMSReports\PingErrorApp\obj\Debug\PingErrorApp.exe
+D:\Sources\EmsBMSReports\PingErrorApp\obj\Debug\PingErrorApp.xml
+D:\Sources\EmsBMSReports\PingErrorApp\obj\Debug\PingErrorApp.pdb
+D:\Sources\EmsBMSReports\PingErrorApp\obj\Debug\PingErrorApp.vbproj.AssemblyReference.cache
+D:\Sources\EmsBMSReports\PingErrorApp\obj\Debug\PingErrorApp.vbproj.SuggestedBindingRedirects.cache

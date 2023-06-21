@@ -276,6 +276,50 @@ Public Class NewInduSoftReport
                             End If
                         Next
                         oBodyHeaderTable.WriteSelectedRows(0, -1, g_fSideMargin * 1.5, nBodyDeaderYPos, writer.DirectContent)
+                        'ElseIf g_nReportType = ReportType.DataTrendAlarmReport Then
+                        '    Dim nAlarmColCount As Integer = 6
+
+
+
+                        '    oBodyHeaderTable = New PdfPTable(nAlarmColCount)
+                        '    oBodyHeaderTable.TotalWidth = g_oDoc.PageSize.Width - 3 * g_fSideMargin
+                        '    oBodyHeaderTable.WidthPercentage = 90
+                        '    oBodyHeaderTable.HorizontalAlignment = Element.ALIGN_CENTER
+
+
+                        '    Dim sColWidths(nAlarmColCount - 1) As Single
+                        '    nAlarmColCount = 0
+
+                        '    For nCol = 0 To g_oColList.Count - 1
+                        '        If g_oColList(nCol).m_bshowAlarmCol Then
+                        '            sColWidths(nAlarmColCount) = g_oColList(nCol).m_sColWidth
+                        '            nAlarmColCount = nAlarmColCount + 1
+                        '        End If
+                        '    Next
+                        '    oBodyHeaderTable.SetWidths(sColWidths)
+                        '    Dim sColumName As String() = {"Date Time", "Alarm Message", "Alarm Normalized time", "Acknowledge Data Time", "User ID", "User Comments"}
+                        '    For nCol = 0 To 6 - 1
+
+                        '        Dim oColHeader As PdfPCell
+                        '        oColHeader = New PdfPCell(New Paragraph(sColumName(nCol).ToString, g_oBodyHeaderFont))
+
+                        '        oColHeader.PaddingBottom = g_nBodyPad
+                        '        oColHeader.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
+                        '        oColHeader.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
+                        '        'If g_oColList(nCol).m_nColJust = ColJust.Left Then
+                        '        '    oColHeader.HorizontalAlignment = Element.ALIGN_LEFT
+                        '        'ElseIf g_oColList(nCol).m_nColJust = ColJust.Right Then
+                        '        '    oColHeader.HorizontalAlignment = Element.ALIGN_RIGHT
+                        '        'Else
+                        '        '    oColHeader.HorizontalAlignment = Element.ALIGN_CENTER
+                        '        'End If
+
+                        '        oColHeader.VerticalAlignment = Element.ALIGN_MIDDLE
+                        '        oBodyHeaderTable.AddCell(oColHeader)
+
+                        '    Next
+                        '    oBodyHeaderTable.WriteSelectedRows(0, -1, g_fSideMargin * 1.5, nBodyDeaderYPos, writer.DirectContent)
+
                     Else
 
                         oBodyHeaderTable = New PdfPTable(g_oColList.Count)
@@ -411,7 +455,7 @@ Public Class NewInduSoftReport
                 End If
 
             Catch ex As Exception
-                LogError("MactusReportLib.vb", "OnEndPage", ex.Message)
+                MsgBox("OnEndPage" + ex.Message)
             End Try
 
         End Sub

@@ -15,3 +15,4 @@ D:\Sources\EmsBMSReports\EMSBMSReportServiceTest\obj\Debug\EMSBMSReportServiceTe
 D:\Sources\EmsBMSReports\EMSBMSReportServiceTest\obj\Debug\EMSBMSReportServiceTest.xml
 D:\Sources\EmsBMSReports\EMSBMSReportServiceTest\obj\Debug\EMSBMSReportServiceTest.pdb
 D:\Sources\EmsBMSReports\EMSBMSReportServiceTest\obj\Debug\EMSBMSReportServiceTest.vbproj.AssemblyReference.cache
+D:\Sources\EmsBMSReports\EMSBMSReportServiceTest\obj\Debug\EMSBMSReportServiceTest.vbproj.SuggestedBindingRedirects.cache

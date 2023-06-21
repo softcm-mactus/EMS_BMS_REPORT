@@ -1,4 +1,4 @@
-﻿
+﻿Imports MactusReportLib.MactusReportLib
 Public Class ReportProgress
     Inherits System.Web.UI.Page
     Public m_nRepotStatusID As Long
@@ -24,7 +24,7 @@ Public Class ReportProgress
             If nProgress >= 100 Then
 
                 sFileName = MactusReportLib.GetReportFileName(m_nRepotStatusID, sReportFilePath)
-                System.Threading.Thread.Sleep(300)
+                System.Threading.Thread.Sleep(100)
 
                 Response.Redirect("Output\" + sFileName, False)
 
@@ -33,6 +33,8 @@ Public Class ReportProgress
             End If
 
         Catch ex As Exception
+            LogError("ReportProgress.vb", "Page_Load()", ex.Message)
+            System.Threading.Thread.Sleep(100)
             Response.Redirect("Output\" + sFileName, False)
         End Try
 

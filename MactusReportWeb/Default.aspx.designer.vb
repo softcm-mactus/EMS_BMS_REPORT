@@ -68,6 +68,15 @@ Partial Public Class MainPage
     Protected WithEvents btnTrendDataAlarmReport As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
+    '''btnCDUDeviceBateeryStatus control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnCDUDeviceBateeryStatus As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
     '''btnExcursionReport control.
     '''</summary>
     '''<remarks>

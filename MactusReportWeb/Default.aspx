@@ -42,23 +42,27 @@
                 <div class="col-md-6">
                     <asp:Button ID="bAlarmReports" runat="server" Style="min-width: 450px"
                         CssClass="btn  btn-warning" Text="Generate Alarm Reports" Font-Size="X-Large" />
-                     <asp:Button ID="btnTrendDataAlarmReport" OnClick="btnTrendDataAlarmReport_Click" runat="server" Style="min-width: 450px"
+                    <asp:Button ID="btnTrendDataAlarmReport" OnClick="btnTrendDataAlarmReport_Click" runat="server" Style="min-width: 450px; display:none"
                         Text="Generate Alarm Reports" CssClass="btn btn-warning" Font-Size="X-Large" />
                     <br />
                     <br />
+                    <asp:Button ID="btnCDUDeviceBateeryStatus" OnClick="btnCDUDeviceBateeryStatus_Click" runat="server" Style="min-width: 450px;display:none"
+                        Text="Generate Battery Percentage" CssClass="btn btn-light " Font-Size="X-Large" />
+                    <br />
+                    <br />
 
-                    <asp:Button ID="btnExcursionReport" OnClick="btnExcursionReport_Click" runat="server" Style="min-width: 450px; color: white; display:none "
+                    <asp:Button ID="btnExcursionReport" OnClick="btnExcursionReport_Click" runat="server" Style="min-width: 450px; color: white; display: none"
                         CssClass="btn  btn-danger" Text="Generate Excursion Report" Font-Size="X-Large" />
+                </div>
+                <div class="col-md-6">
+                    
                 </div>
             </div>
             <br />
-           
-            <%--<div class="row" >
+
+            <%-- <div class="row">
                 <div class="col-md-6">
-                    <asp:Button ID="btnTrendDataAlarmReport" OnClick="btnTrendDataAlarmReport_Click" runat="server" Style="min-width: 450px"
-                        Text="Generate Alarm Reports" CssClass="btn btn-light " Font-Size="X-Large" />
-                    <br />
-                    <br />
+                   
                 </div>
             </div>--%>
         </div>
