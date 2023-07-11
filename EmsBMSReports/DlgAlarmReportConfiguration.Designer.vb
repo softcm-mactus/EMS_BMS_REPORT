@@ -22,8 +22,8 @@ Partial Class DlgAlarmReportConfiguration
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.bDeleteReport = New System.Windows.Forms.Button()
         Me.oGrid = New System.Windows.Forms.DataGridView()
         Me.ReportID = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -43,6 +43,7 @@ Partial Class DlgAlarmReportConfiguration
         Me.bAddNewReport = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.bConfigureColumns = New System.Windows.Forms.Button()
+        Me.DataTableName = New System.Windows.Forms.DataGridViewTextBoxColumn()
         CType(Me.oGrid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
@@ -62,7 +63,7 @@ Partial Class DlgAlarmReportConfiguration
         Me.oGrid.AllowUserToDeleteRows = False
         Me.oGrid.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells
         Me.oGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.oGrid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.ReportID, Me.ReportTemplate, Me.ReportType, Me.ReportGroup, Me.ReportTitle, Me.ReportTitlle2, Me.PrntTime, Me.PrintBy, Me.PrintDates, Me.DefaultTimeInterval, Me.DataAggType, Me.ConfCol})
+        Me.oGrid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.ReportID, Me.ReportTemplate, Me.ReportType, Me.ReportGroup, Me.ReportTitle, Me.ReportTitlle2, Me.PrntTime, Me.PrintBy, Me.PrintDates, Me.DefaultTimeInterval, Me.DataAggType, Me.ConfCol, Me.DataTableName})
         Me.oGrid.Location = New System.Drawing.Point(-1, 3)
         Me.oGrid.Name = "oGrid"
         Me.oGrid.Size = New System.Drawing.Size(1074, 461)
@@ -98,18 +99,18 @@ Partial Class DlgAlarmReportConfiguration
         '
         'ReportTitle
         '
-        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.ReportTitle.DefaultCellStyle = DataGridViewCellStyle7
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.ReportTitle.DefaultCellStyle = DataGridViewCellStyle1
         Me.ReportTitle.HeaderText = "Report Title"
         Me.ReportTitle.Name = "ReportTitle"
         Me.ReportTitle.Width = 300
         '
         'ReportTitlle2
         '
-        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.ReportTitlle2.DefaultCellStyle = DataGridViewCellStyle8
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.ReportTitlle2.DefaultCellStyle = DataGridViewCellStyle2
         Me.ReportTitlle2.HeaderText = "Report Title 2"
         Me.ReportTitlle2.Name = "ReportTitlle2"
         Me.ReportTitlle2.Width = 300
@@ -212,6 +213,11 @@ Partial Class DlgAlarmReportConfiguration
         Me.bConfigureColumns.Text = "Configure Columns"
         Me.bConfigureColumns.UseVisualStyleBackColor = True
         '
+        'DataTableName
+        '
+        Me.DataTableName.HeaderText = "DataTableName"
+        Me.DataTableName.Name = "DataTableName"
+        '
         'DlgAlarmReportConfiguration
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -256,4 +262,5 @@ Partial Class DlgAlarmReportConfiguration
     Friend WithEvents DataAggType As DataGridViewComboBoxColumn
     Friend WithEvents ConfCol As DataGridViewButtonColumn
     Friend WithEvents bConfigureColumns As Button
+    Friend WithEvents DataTableName As DataGridViewTextBoxColumn
 End Class

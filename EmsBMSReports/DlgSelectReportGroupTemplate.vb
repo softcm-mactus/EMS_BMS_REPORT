@@ -150,4 +150,12 @@ Public Class DlgSelectReportGroupTemplate
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
     End Sub
+
+    Private Sub txtTableName_TextChanged(sender As Object, e As EventArgs) Handles txtTableName.TextChanged
+        If cTemplate.SelectedIndex = -1 Or cGroup.SelectedIndex = -1 Or txtTableName.Text.Length < 3 Then
+            bAdd.Enabled = False
+        Else
+            bAdd.Enabled = True
+        End If
+    End Sub
 End Class

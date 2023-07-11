@@ -31,6 +31,8 @@ Partial Class DlgSelectReportGroupTemplate
         Me.bAdd = New System.Windows.Forms.Button()
         Me.bCancel = New System.Windows.Forms.Button()
         Me.bAddNewGroup = New System.Windows.Forms.Button()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.txtTableName = New System.Windows.Forms.TextBox()
         Me.SuspendLayout()
         '
         'cTemplate
@@ -47,7 +49,7 @@ Partial Class DlgSelectReportGroupTemplate
         Me.Label1.AutoSize = True
         Me.Label1.Location = New System.Drawing.Point(41, 13)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(110, 16)
+        Me.Label1.Size = New System.Drawing.Size(109, 16)
         Me.Label1.TabIndex = 2
         Me.Label1.Text = "Report Template"
         '
@@ -56,7 +58,7 @@ Partial Class DlgSelectReportGroupTemplate
         Me.Label2.AutoSize = True
         Me.Label2.Location = New System.Drawing.Point(41, 78)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(89, 16)
+        Me.Label2.Size = New System.Drawing.Size(88, 16)
         Me.Label2.TabIndex = 3
         Me.Label2.Text = "Report Group"
         '
@@ -74,7 +76,7 @@ Partial Class DlgSelectReportGroupTemplate
         Me.Label3.AutoSize = True
         Me.Label3.Location = New System.Drawing.Point(41, 147)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(78, 16)
+        Me.Label3.Size = New System.Drawing.Size(77, 16)
         Me.Label3.TabIndex = 5
         Me.Label3.Text = "Report Title"
         '
@@ -89,9 +91,9 @@ Partial Class DlgSelectReportGroupTemplate
         '
         Me.bAdd.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.bAdd.Enabled = False
-        Me.bAdd.Location = New System.Drawing.Point(537, 34)
+        Me.bAdd.Location = New System.Drawing.Point(688, 281)
         Me.bAdd.Name = "bAdd"
-        Me.bAdd.Size = New System.Drawing.Size(132, 23)
+        Me.bAdd.Size = New System.Drawing.Size(132, 49)
         Me.bAdd.TabIndex = 7
         Me.bAdd.Text = "Add"
         Me.bAdd.UseVisualStyleBackColor = True
@@ -99,27 +101,45 @@ Partial Class DlgSelectReportGroupTemplate
         'bCancel
         '
         Me.bCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.bCancel.Location = New System.Drawing.Point(537, 97)
+        Me.bCancel.Location = New System.Drawing.Point(537, 281)
         Me.bCancel.Name = "bCancel"
-        Me.bCancel.Size = New System.Drawing.Size(132, 23)
+        Me.bCancel.Size = New System.Drawing.Size(132, 49)
         Me.bCancel.TabIndex = 8
         Me.bCancel.Text = "Cancel"
         Me.bCancel.UseVisualStyleBackColor = True
         '
         'bAddNewGroup
         '
-        Me.bAddNewGroup.Location = New System.Drawing.Point(370, 78)
+        Me.bAddNewGroup.Location = New System.Drawing.Point(382, 87)
         Me.bAddNewGroup.Name = "bAddNewGroup"
         Me.bAddNewGroup.Size = New System.Drawing.Size(72, 43)
         Me.bAddNewGroup.TabIndex = 7
         Me.bAddNewGroup.Text = "Add New Group"
         Me.bAddNewGroup.UseVisualStyleBackColor = True
         '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(44, 208)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(152, 16)
+        Me.Label4.TabIndex = 9
+        Me.Label4.Text = "Enter Data Table Name "
+        '
+        'txtTableName
+        '
+        Me.txtTableName.Location = New System.Drawing.Point(41, 237)
+        Me.txtTableName.Name = "txtTableName"
+        Me.txtTableName.Size = New System.Drawing.Size(628, 22)
+        Me.txtTableName.TabIndex = 10
+        '
         'DlgSelectReportGroupTemplate
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(744, 211)
+        Me.ClientSize = New System.Drawing.Size(832, 342)
+        Me.Controls.Add(Me.txtTableName)
+        Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.bCancel)
         Me.Controls.Add(Me.bAddNewGroup)
         Me.Controls.Add(Me.bAdd)
@@ -151,4 +171,6 @@ Partial Class DlgSelectReportGroupTemplate
     Friend WithEvents bAdd As Button
     Friend WithEvents bCancel As Button
     Friend WithEvents bAddNewGroup As Button
+    Friend WithEvents Label4 As Label
+    Friend WithEvents txtTableName As TextBox
 End Class

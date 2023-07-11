@@ -1325,7 +1325,25 @@ Public Module MactusReportLib
 
 
     End Function
+    Public Function GetEnumStringFromValue(ByRef nEnumID As Integer, ByRef nEnumValue As String) As String
+        GetEnumStringFromValue = nEnumValue.ToString()
 
+        Dim sQuery As String
+
+        sQuery = "SELECT enumdesc FROM tbl_enumvalue WHERE enumid=" + nEnumID.ToString + " and enumvalue='" + nEnumValue.ToString() + "'"
+        Try
+            Using oConnenction As New OdbcConnection(g_sConString)
+                oConnenction.Open()
+                Dim oCmd As New OdbcCommand(sQuery, oConnenction)
+                GetEnumStringFromValue = oCmd.ExecuteScalar()
+                oConnenction.Close()
+            End Using
+        Catch ex As Exception
+            LogError("MactusReportLib.vb", "GetEnumStringFromValue()", ex.Message + "  " + sQuery)
+            GetEnumStringFromValue = nEnumValue.ToString()
+        End Try
+
+    End Function
     Public Function GetPointName(ByRef nID As Integer) As String
         GetPointName = ""
         Dim sQuery As String = "SELECT pointname from tbl_pointidname where id=" + nID.ToString()
@@ -1352,15 +1370,15 @@ Public Module MactusReportLib
         sQuery = "TRUNCATE TABLE tbl_pointidname"
         ExecuteSQLInDb(sQuery)
         Try
-
-            sQuery = "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'TREND001' AND ORDINAL_POSITION >2  "
+            sQuery = "SELECT * FROM Points"
+            'sQuery = "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'TREND001' AND ORDINAL_POSITION >2  "
             Using oConnection As New OdbcConnection(g_sEMSDbConString)
                 oConnection.Open()
                 Dim oCmd As New OdbcCommand(sQuery, oConnection)
                 oReader = oCmd.ExecuteReader()
                 While oReader.Read()
-                    nLogID = oReader("ORDINAL_POSITION")
-                    sPointName = oReader("COLUMN_NAME")
+                    nLogID = oReader("Point_Id")
+                    sPointName = oReader("Point_Name")
                     sQuery = "INSERT INTO tbl_pointidname (id,pointname) VALUES (" + nLogID.ToString() + ",'" + sPointName + "')"
                     ExecuteSQLInDb(sQuery)
 

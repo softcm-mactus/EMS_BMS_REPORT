@@ -29,8 +29,6 @@ Partial Class DlgReportsConfiguration
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.Cancel_Button = New System.Windows.Forms.Button()
         Me.oGrid = New System.Windows.Forms.DataGridView()
-        Me.bAddNewReport = New System.Windows.Forms.Button()
-        Me.bDeleteReport = New System.Windows.Forms.Button()
         Me.ReportID = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.ReportTemplate = New System.Windows.Forms.DataGridViewComboBoxColumn()
         Me.ReportType = New System.Windows.Forms.DataGridViewComboBoxColumn()
@@ -45,6 +43,9 @@ Partial Class DlgReportsConfiguration
         Me.ConfCol = New System.Windows.Forms.DataGridViewButtonColumn()
         Me.PrMinMax = New System.Windows.Forms.DataGridViewCheckBoxColumn()
         Me.PrSV = New System.Windows.Forms.DataGridViewCheckBoxColumn()
+        Me.bAddNewReport = New System.Windows.Forms.Button()
+        Me.bDeleteReport = New System.Windows.Forms.Button()
+        Me.DataTableName = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.TableLayoutPanel1.SuspendLayout()
         CType(Me.oGrid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -57,7 +58,7 @@ Partial Class DlgReportsConfiguration
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(1094, 489)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(1159, 489)
         Me.TableLayoutPanel1.Margin = New System.Windows.Forms.Padding(4)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 1
@@ -92,29 +93,11 @@ Partial Class DlgReportsConfiguration
         Me.oGrid.AllowUserToDeleteRows = False
         Me.oGrid.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells
         Me.oGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.oGrid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.ReportID, Me.ReportTemplate, Me.ReportType, Me.ReportGroup, Me.ReportTitle, Me.ReportTitlle2, Me.PrntTime, Me.PrintBy, Me.PrintDates, Me.DefaultTimeInterval, Me.DataAggType, Me.ConfCol, Me.PrMinMax, Me.PrSV})
+        Me.oGrid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.ReportID, Me.ReportTemplate, Me.ReportType, Me.ReportGroup, Me.ReportTitle, Me.ReportTitlle2, Me.PrntTime, Me.PrintBy, Me.PrintDates, Me.DefaultTimeInterval, Me.DataAggType, Me.ConfCol, Me.PrMinMax, Me.PrSV, Me.DataTableName})
         Me.oGrid.Location = New System.Drawing.Point(13, 12)
         Me.oGrid.Name = "oGrid"
-        Me.oGrid.Size = New System.Drawing.Size(1276, 461)
+        Me.oGrid.Size = New System.Drawing.Size(1358, 461)
         Me.oGrid.TabIndex = 1
-        '
-        'bAddNewReport
-        '
-        Me.bAddNewReport.Location = New System.Drawing.Point(42, 491)
-        Me.bAddNewReport.Name = "bAddNewReport"
-        Me.bAddNewReport.Size = New System.Drawing.Size(175, 33)
-        Me.bAddNewReport.TabIndex = 2
-        Me.bAddNewReport.Text = "Add New Report"
-        Me.bAddNewReport.UseVisualStyleBackColor = True
-        '
-        'bDeleteReport
-        '
-        Me.bDeleteReport.Location = New System.Drawing.Point(261, 492)
-        Me.bDeleteReport.Name = "bDeleteReport"
-        Me.bDeleteReport.Size = New System.Drawing.Size(175, 33)
-        Me.bDeleteReport.TabIndex = 3
-        Me.bDeleteReport.Text = "Delete Report"
-        Me.bDeleteReport.UseVisualStyleBackColor = True
         '
         'ReportID
         '
@@ -216,13 +199,36 @@ Partial Class DlgReportsConfiguration
         Me.PrSV.Name = "PrSV"
         Me.PrSV.Width = 50
         '
+        'bAddNewReport
+        '
+        Me.bAddNewReport.Location = New System.Drawing.Point(42, 491)
+        Me.bAddNewReport.Name = "bAddNewReport"
+        Me.bAddNewReport.Size = New System.Drawing.Size(175, 33)
+        Me.bAddNewReport.TabIndex = 2
+        Me.bAddNewReport.Text = "Add New Report"
+        Me.bAddNewReport.UseVisualStyleBackColor = True
+        '
+        'bDeleteReport
+        '
+        Me.bDeleteReport.Location = New System.Drawing.Point(261, 492)
+        Me.bDeleteReport.Name = "bDeleteReport"
+        Me.bDeleteReport.Size = New System.Drawing.Size(175, 33)
+        Me.bDeleteReport.TabIndex = 3
+        Me.bDeleteReport.Text = "Delete Report"
+        Me.bDeleteReport.UseVisualStyleBackColor = True
+        '
+        'DataTableName
+        '
+        Me.DataTableName.HeaderText = "DataTableName"
+        Me.DataTableName.Name = "DataTableName"
+        '
         'DlgReportsConfiguration
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(1305, 540)
+        Me.ClientSize = New System.Drawing.Size(1370, 540)
         Me.Controls.Add(Me.bDeleteReport)
         Me.Controls.Add(Me.bAddNewReport)
         Me.Controls.Add(Me.oGrid)
@@ -261,4 +267,5 @@ Partial Class DlgReportsConfiguration
     Friend WithEvents ConfCol As DataGridViewButtonColumn
     Friend WithEvents PrMinMax As DataGridViewCheckBoxColumn
     Friend WithEvents PrSV As DataGridViewCheckBoxColumn
+    Friend WithEvents DataTableName As DataGridViewTextBoxColumn
 End Class

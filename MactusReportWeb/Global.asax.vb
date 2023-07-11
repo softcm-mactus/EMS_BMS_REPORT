@@ -11,11 +11,9 @@ Public Class Global_asax
             g_bError = False
 
             If g_bAutoReportRequired = False Then
-                If g_bIsBMS = 2 Then
-                    StartThread()
-                Else
-                    StartThread()
-                End If
+
+                StartThread()
+
             End If
 
         Else

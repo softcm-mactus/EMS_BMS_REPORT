@@ -818,8 +818,10 @@ Public Class NewInduSoftReport
                         oCol.m_sColType = "RH"
                     ElseIf oCol.m_nColType = ColType.DP Then
                         oCol.m_sColType = "Diffrential Pressure"
+                    ElseIf oCol.m_nColType = ColType.Other Then
+                        oCol.m_sColType = "Hz"
                     Else
-                        oCol.m_sColType = "Other"
+                        oCol.m_sColType = "Auto/Manual"
                     End If
                 End If
                 Try
@@ -965,7 +967,7 @@ Public Class NewInduSoftReport
 
 
                 If g_nReportType = ReportType.AlarmReport Or g_nReportType = ReportType.EventReport Then
-                    If oCol.m_nEnumID = 1 Then
+                    If oCol.m_nEnumID = 1 Or oCol.m_nEnumID = 3 Then
                         oCol.m_bshowAlarmCol = True
                     Else
                         oCol.m_bshowAlarmCol = False
@@ -1799,7 +1801,8 @@ Public Class NewInduSoftReport
                         If g_oColList(nCol).m_nColType = ColType.DateTime Then
                             g_oColList(nCol).m_sValue = oTime.ToString(g_oColList(nCol).m_sColFormat)
                         ElseIf g_oColList(nCol).m_nColType = ColType.Other Then
-                            g_oColList(nCol).m_sValue = oReader(g_oColList(nCol).m_sColumnNameinTable)
+                            fTemp = oReader(g_oColList(nCol).m_sColumnNameinTable)
+                            g_oColList(nCol).m_sValue = fTemp.ToString(g_oColList(nCol).m_sColFormat)
                         ElseIf g_oColList(nCol).m_nColType = ColType.Enumtype Then
                             Try
                                 Dim nValue As Integer
@@ -2211,7 +2214,7 @@ Public Class NewInduSoftReport
                 Dim sTimeField As String
                 sTimeField = g_oColList(0).m_sColumnNameinTable
 
-                sQuery = "SELECT * FROM " + g_sDataTableName + " WHERE " + sTimeField + " >= ? AND " + sTimeField + " <= ? AND " + sAlmGrpColName + " =? ORDER BY " + sTimeField + ",Al_Norm_Time"
+                sQuery = "SELECT * FROM " + g_sDataTableName + " WHERE " + sTimeField + " >= ? AND " + sTimeField + " <= ? ORDER BY " + sTimeField + ",Al_Norm_Time"
 
                 Using oConnection As New OdbcConnection(g_sEMSDbConString)
                     Dim cmd As New OdbcCommand(sQuery, oConnection)
@@ -2236,8 +2239,17 @@ Public Class NewInduSoftReport
                                 bHigh = False
                                 If g_oColList(nCol).m_nColType = ColType.DateTime Then
                                     Try
-                                        oDate = oReader(g_oColList(nCol).m_sColumnNameinTable)
-                                        sValue = oDate.ToString(g_oColList(nCol).m_sColFormat)
+                                        If Not IsDBNull(oReader(g_oColList(nCol).m_sColumnNameinTable)) Then
+                                            If String.IsNullOrEmpty(oReader(g_oColList(nCol).m_sColumnNameinTable)) Then
+                                                sValue = ""
+                                            Else
+                                                oDate = oReader(g_oColList(nCol).m_sColumnNameinTable)
+                                                sValue = oDate.ToString(g_oColList(nCol).m_sColFormat)
+                                            End If
+                                        Else
+                                            sValue = ""
+                                        End If
+
                                     Catch ex As Exception
                                         sValue = ""
                                     End Try
@@ -2248,7 +2260,15 @@ Public Class NewInduSoftReport
                                     Catch ex As Exception
                                         sValue = ""
                                     End Try
-
+                                ElseIf g_oColList(nCol).m_nColType = ColType.Enumtype Then
+                                    Try
+                                        Dim sTemp As String
+                                        sTemp = oReader(g_oColList(nCol).m_sColumnNameinTable).ToString()
+                                        sValue = sTemp.Split("_")(0)
+                                        sValue = GetEnumStringFromValue(g_oColList(nCol).m_nEnumID, sValue)
+                                    Catch ex As Exception
+                                        sValue = ""
+                                    End Try
                                 Else
                                     Try
                                         fTemp = oReader(g_oColList(nCol).m_sColumnNameinTable)
@@ -2390,43 +2410,43 @@ Public Class NewInduSoftReport
                 g_oDoc.Add(oTable)
 
                 'Write Footer Table
-                Dim oFooterTable As PdfPTable = New PdfPTable(3)
-                oFooterTable.TotalWidth = g_oDoc.PageSize.Width - 3 * g_fSideMargin
-                oFooterTable.HorizontalAlignment = Element.ALIGN_CENTER
+                'Dim oFooterTable As PdfPTable = New PdfPTable(3)
+                'oFooterTable.TotalWidth = g_oDoc.PageSize.Width - 3 * g_fSideMargin
+                'oFooterTable.HorizontalAlignment = Element.ALIGN_CENTER
 
-                Dim oFooterCell As PdfPCell
-                For nCol = 0 To g_oFooterRowList.Count - 1
-                    oFooterCell = New PdfPCell(New Phrase(g_oFooterRowList(nCol).m_sCol1, g_oFooterFont))
-                    oFooterCell.PaddingTop = g_nFooterPad
-                    oFooterCell.PaddingBottom = g_nFooterPad
-                    If g_oFooterRowList(nCol).m_bHeader Then
-                        oFooterCell.BackgroundColor = iTextSharp.text.Color.LIGHT_GRAY
-                    End If
-                    oFooterCell.HorizontalAlignment = Element.ALIGN_CENTER
-                    oFooterCell.VerticalAlignment = Element.ALIGN_MIDDLE
-                    oFooterTable.AddCell(oFooterCell)
+                'Dim oFooterCell As PdfPCell
+                'For nCol = 0 To g_oFooterRowList.Count - 1
+                '    oFooterCell = New PdfPCell(New Phrase(g_oFooterRowList(nCol).m_sCol1, g_oFooterFont))
+                '    oFooterCell.PaddingTop = g_nFooterPad
+                '    oFooterCell.PaddingBottom = g_nFooterPad
+                '    If g_oFooterRowList(nCol).m_bHeader Then
+                '        oFooterCell.BackgroundColor = iTextSharp.text.Color.LIGHT_GRAY
+                '    End If
+                '    oFooterCell.HorizontalAlignment = Element.ALIGN_CENTER
+                '    oFooterCell.VerticalAlignment = Element.ALIGN_MIDDLE
+                '    oFooterTable.AddCell(oFooterCell)
 
-                    oFooterCell = New PdfPCell(New Phrase(g_oFooterRowList(nCol).m_sCol2, g_oFooterFont))
-                    oFooterCell.PaddingTop = g_nFooterPad
-                    oFooterCell.PaddingBottom = g_nFooterPad
-                    If g_oFooterRowList(nCol).m_bHeader Then
-                        oFooterCell.BackgroundColor = iTextSharp.text.Color.LIGHT_GRAY
-                    End If
-                    oFooterCell.HorizontalAlignment = Element.ALIGN_CENTER
-                    oFooterCell.VerticalAlignment = Element.ALIGN_MIDDLE
-                    oFooterTable.AddCell(oFooterCell)
+                '    oFooterCell = New PdfPCell(New Phrase(g_oFooterRowList(nCol).m_sCol2, g_oFooterFont))
+                '    oFooterCell.PaddingTop = g_nFooterPad
+                '    oFooterCell.PaddingBottom = g_nFooterPad
+                '    If g_oFooterRowList(nCol).m_bHeader Then
+                '        oFooterCell.BackgroundColor = iTextSharp.text.Color.LIGHT_GRAY
+                '    End If
+                '    oFooterCell.HorizontalAlignment = Element.ALIGN_CENTER
+                '    oFooterCell.VerticalAlignment = Element.ALIGN_MIDDLE
+                '    oFooterTable.AddCell(oFooterCell)
 
-                    oFooterCell = New PdfPCell(New Phrase(g_oFooterRowList(nCol).m_sCol3, g_oFooterFont))
-                    oFooterCell.PaddingTop = g_nFooterPad
-                    oFooterCell.PaddingBottom = g_nFooterPad
-                    If g_oFooterRowList(nCol).m_bHeader Then
-                        oFooterCell.BackgroundColor = iTextSharp.text.Color.LIGHT_GRAY
-                    End If
-                    oFooterCell.HorizontalAlignment = Element.ALIGN_CENTER
-                    oFooterCell.VerticalAlignment = Element.ALIGN_MIDDLE
-                    oFooterTable.AddCell(oFooterCell)
-                Next
-                g_oDoc.Add(oFooterTable)
+                '    oFooterCell = New PdfPCell(New Phrase(g_oFooterRowList(nCol).m_sCol3, g_oFooterFont))
+                '    oFooterCell.PaddingTop = g_nFooterPad
+                '    oFooterCell.PaddingBottom = g_nFooterPad
+                '    If g_oFooterRowList(nCol).m_bHeader Then
+                '        oFooterCell.BackgroundColor = iTextSharp.text.Color.LIGHT_GRAY
+                '    End If
+                '    oFooterCell.HorizontalAlignment = Element.ALIGN_CENTER
+                '    oFooterCell.VerticalAlignment = Element.ALIGN_MIDDLE
+                '    oFooterTable.AddCell(oFooterCell)
+                'Next
+                'g_oDoc.Add(oFooterTable)
             End If
         Catch ex As Exception
             LogError("NewIndusoftReport.vb", "PrintEndOfReport()", ex.Message)

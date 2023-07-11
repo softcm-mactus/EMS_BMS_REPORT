@@ -56,7 +56,7 @@ Public Class DlgReportsConfiguration
                         End Try
                         oGrid.Rows(nRow).Cells(12).Value = CBool(oReader("PrintMinMaxRows"))
                         oGrid.Rows(nRow).Cells(13).Value = CBool(oReader("PrintAlarmSpRows"))
-
+                        oGrid.Rows(nRow).Cells(14).Value = oReader("DataTablename")
                     End If
                 End While
                 oConnection.Close()
@@ -78,7 +78,7 @@ Public Class DlgReportsConfiguration
 
                 nReportID = oGrid.Rows(nRow).Cells(0).Value
 
-                sQuery = "UPDATE tbl_reportsconfiguration SET templateid=?, almgroupid=?,reporttitle=?,reportheader=?,generatedtime=?,generatedby=?,fromtodatesprinted=?,timeintervalinmin=?,dataaggregationtype=?,PrintMinMaxRows=?,PrintAlarmSpRows=? WHERE reportid=" + nReportID.ToString()
+                sQuery = "UPDATE tbl_reportsconfiguration SET templateid=?, almgroupid=?,reporttitle=?,reportheader=?,generatedtime=?,generatedby=?,fromtodatesprinted=?,timeintervalinmin=?,dataaggregationtype=?,PrintMinMaxRows=?,PrintAlarmSpRows=?, DataTablename=? WHERE reportid=" + nReportID.ToString()
                 Using oUpdateConnection As New OdbcConnection(g_sConString)
                     oUpdateConnection.Open()
                     Dim oUpdateCmd As New OdbcCommand(sQuery, oUpdateConnection)
@@ -123,6 +123,8 @@ Public Class DlgReportsConfiguration
                         oUpdateCmd.Parameters.Add("@10", OdbcType.Int).Value = 1
                     End If
 
+                    oUpdateCmd.Parameters.Add("@11", OdbcType.VarChar).Value = oGrid.Rows(nRow).Cells(14).Value
+
                     oUpdateCmd.ExecuteNonQuery()
                     oUpdateConnection.Close()
                 End Using
@@ -163,14 +165,14 @@ Public Class DlgReportsConfiguration
                 oCmd.Parameters.Add("@5", OdbcType.Int).Value = 1 'generatedtime
                 oCmd.Parameters.Add("@6", OdbcType.Int).Value = 1 'generatedby
                 oCmd.Parameters.Add("@7", OdbcType.Int).Value = 1 'fromtodatesprinted
-                If g_bIsBMS = 1 Then 'datatablename
-                    oCmd.Parameters.Add("@8", OdbcType.VarChar).Value = "trend_data"
-                ElseIf g_bIsBMS = 2 Then
-                    oCmd.Parameters.Add("@8", OdbcType.VarChar).Value = "alldata"
-                Else
-
-                    oCmd.Parameters.Add("@8", OdbcType.VarChar).Value = "TREND001"
-                End If
+                'If g_bIsBMS = 1 Then 'datatablename
+                '    oCmd.Parameters.Add("@8", OdbcType.VarChar).Value = "trend_data"
+                'ElseIf g_bIsBMS = 2 Then
+                '    oCmd.Parameters.Add("@8", OdbcType.VarChar).Value = "alldata"
+                'Else
+                '    oCmd.Parameters.Add("@8", OdbcType.VarChar).Value = "TREND001"
+                'End If
+                oCmd.Parameters.Add("@8", OdbcType.VarChar).Value = oDlg.txtTableName.Text
                 oCmd.Parameters.Add("@9", OdbcType.Int).Value = 1 'timeintervalinmin
                 oCmd.Parameters.Add("@10", OdbcType.Int).Value = MactusReportLib.DataAgg.Instance 'dataaggregationtype
                 oCmd.Parameters.Add("@11", OdbcType.Int).Value = 0 'PrintAlarmSpRows

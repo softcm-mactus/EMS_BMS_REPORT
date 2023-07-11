@@ -55,6 +55,7 @@ Public Class DlgAlarmReportConfiguration
                         Catch ex As Exception
 
                         End Try
+                        oGrid.Rows(nRow).Cells(12).Value = oReader("DataTablename").ToString()
                     End If
                 End While
                 oConnection.Close()
@@ -113,7 +114,7 @@ Public Class DlgAlarmReportConfiguration
 
                                 Dim nAggtype As DataAgg = [Enum].Parse(GetType(DataAgg), oGrid.Rows(nRow).Cells(10).Value.ToString)
                                 sQuery += ",  dataaggregationtype=" + Str(nAggtype)
-
+                                sQuery += ",  DataTablename='" + oGrid.Rows(nRow).Cells(12).Value.ToString + "'"
                                 sQuery += " where reportid=" + nReportID.ToString()
                                 ExecuteSQLInDb(sQuery)
                                 bFound = True
