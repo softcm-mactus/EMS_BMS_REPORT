@@ -1203,7 +1203,7 @@ Public Class EBOReport
 
         Try
 
-            sQuery = "SELECT * FROM event_data WHERE Type<>11 AND timestamp >= ? AND alarmstate=1 AND (previousalarmstate=0 or previousalarmstate=3) AND source LIKE '%" + sPointName + "%' ORDER BY timestamp"
+            sQuery = "SELECT * FROM nsp.event_data WHERE Type<>11 AND timestamp >= ? AND alarmstate=1 AND (previousalarmstate=0 or previousalarmstate=3) AND source LIKE '%" + sPointName + "%' ORDER BY timestamp"
 
 
             Using oConnection As New OdbcConnection(g_sEMSDbConString)
@@ -1540,8 +1540,10 @@ Public Class EBOReport
 
                 While oTime <= dtTo
                     If nTimeInterval = 1 Or g_nDataAgg = DataAgg.Instance Then
+                        oTime.ToFileTimeUtc()
                         bResult = GetColValues(oTime)
                     Else
+                        oTime.ToFileTimeUtc()
                         bResult = GetColValues(oTime, nTimeInterval)
                     End If
 
@@ -1704,15 +1706,17 @@ Public Class EBOReport
         oToDate = oFromDate.AddMinutes(nIntervalMin)
         '  oToDate = oToDate.AddSeconds(30)
         g_oColList(0).m_sValue = FormatTimeToString(oTime, g_oColList(0).m_sColFormat)
-
+        oToDate = oToDate.AddMinutes(-330)
+        oFromDate = oFromDate.AddMinutes(-330)
         For nCol = 1 To g_oColList.Count - 1
 
 
-            sQuery = "SELECT AVG(Value) as avgvalue, MIN(Value) as minvalue, MAX(Value) as maxvalue FROM " + g_sDataTableName + " WHERE time_stamp < ? AND time_stamp > ? AND externallogid =" + g_oColList(nCol).m_sColumnNameinTable
+            sQuery = "SELECT AVG(Value) as avgvalue, MIN(Value) as minvalue, MAX(Value) as maxvalue FROM " + g_sDataTableName + " WHERE timestamp < ? AND timestamp > ? AND externallogid =" + g_oColList(nCol).m_sColumnNameinTable
             ' LogError(sQuery + " " + oFromDate.ToString() + " " + oToDate.ToString())
             Using oConnection As New OdbcConnection(g_sEMSDbConString)
                 Dim cmd As New OdbcCommand(sQuery, oConnection)
                 oConnection.Open()
+
                 cmd.Parameters.Add(GetTimeODBCParam("@0", oToDate))
                 cmd.Parameters.Add(GetTimeODBCParam("@1", oFromDate))
 
@@ -1922,9 +1926,10 @@ Public Class EBOReport
                 Dim sTimeField As String
                 sTimeField = g_oColList(0).m_sColumnNameinTable
                 sQuery = GetSelectedEventIDs()
-                sQuery = "SELECT * FROM " + g_sDataTableName + " WHERE " + sTimeField + " >= ? AND " + sTimeField + " <= ? " + sQuery + " ORDER BY " + sTimeField
+                sQuery = "SELECT * FROM " + g_sDataTableName + " WHERE SystemEventId IS NOT NULL AND " + sTimeField + " >= ? AND " + sTimeField + " <= ? " + sQuery + " ORDER BY " + sTimeField
 
-
+                dtTo = dtTo.AddMinutes(-330)
+                dtFrom = dtFrom.AddMinutes(-330)
                 Using oConnection As New OdbcConnection(g_sEMSDbConString)
                     Dim cmd As New OdbcCommand(sQuery, oConnection)
                     oConnection.Open()
@@ -1970,51 +1975,51 @@ Public Class EBOReport
                                 sValues(2) = ""
                             End Try
 
-                            If nEventTypeID >= 2 And nEventTypeID <= 10 Then
-                                Try
-                                    sValues(1) = oReader("description")
-                                Catch ex As Exception
-                                    sValues(1) = ""
-                                End Try
-                            End If
+                            'If nEventTypeID >= 2 And nEventTypeID <= 10 Then
+                            '    Try
+                            '        sValues(1) = oReader("description")
+                            '    Catch ex As Exception
+                            '        sValues(1) = ""
+                            '    End Try
+                            'End If
                             Try
-                                sValues(3) = oReader("valuebefore")
+                                sValues(3) = oReader("alarmtext")
                             Catch
                                 sValues(3) = ""
                             End Try
                             Try
-                                sValues(4) = oReader("valueafter")
-                            Catch ex As Exception
-                                sValues(4) = ""
-                            End Try
-
-
-                            'User Name
-                            Try
-                                sValues(5) = oReader("username")
+                                sValues(5) = oReader("valuebefore")
                             Catch ex As Exception
                                 sValues(5) = ""
                             End Try
 
+
                             'User Name
                             Try
-                                sValues(6) = oReader("signature1")
+                                sValues(6) = oReader("valueafter")
                             Catch ex As Exception
                                 sValues(6) = ""
                             End Try
 
+                            'User Name
+                            'Try
+                            '    sValues(6) = oReader("signature1")
+                            'Catch ex As Exception
+                            '    sValues(6) = ""
+                            'End Try
+
                             'User Comment
                             Try
-                                sValues(7) = oReader("signaturecomment")
+                                sValues(4) = oReader("username")
                             Catch ex As Exception
-                                sValues(7) = ""
+                                sValues(4) = ""
                             End Try
 
                             'User Comment
                             Try
-                                sValues(8) = oReader("ForcedValue")
+                                sValues(7) = oReader("comment")
                             Catch ex As Exception
-                                sValues(8) = ""
+                                sValues(7) = ""
                             End Try
 
                             If nEventTypeID <> 0 Then
@@ -2084,7 +2089,7 @@ Public Class EBOReport
         Dim sQuery As String
         GetEventTypeFromEventEnum = ""
 
-        sQuery = "SELECT description FROM tbl_reportedevents WHEREeventid=" + nEventTypeID.ToString()
+        sQuery = "SELECT description FROM tbl_reportedevents WHERE eventid=" + nEventTypeID.ToString()
         Try
             Using oConnenction As New OdbcConnection(g_sEMSDbConString)
                 oConnenction.Open()
@@ -2100,7 +2105,7 @@ Public Class EBOReport
             Exit Function
         End If
 
-        sQuery = "SELECT enumtext FROM enumerations WHERE key='SystemEventId' and enumvalue=" + nEventTypeID.ToString()
+        sQuery = "SELECT enumtext FROM nsp.enumerations WHERE EnumKey='SystemEventId' and enumvalue=" + nEventTypeID.ToString()
         Try
             Using oConnenction As New OdbcConnection(g_sEMSDbConString)
                 oConnenction.Open()
@@ -2185,6 +2190,8 @@ Public Class EBOReport
                 Dim sTimeField As String
                 Dim sAlmGrpName As String = ""
                 sTimeField = g_oColList(0).m_sColumnNameinTable
+                'dtTo = dtTo.AddMinutes(-330)
+                'dtFrom = dtFrom.AddMinutes(-330)
                 If g_nAlmGroupID = 0 Then
                     sQuery = "SELECT * FROM " + g_sDataTableName + " WHERE Type<>11 AND " + sTimeField + " >= ? AND " + sTimeField + " <= ? AND alarmstate=1 AND (previousalarmstate=0 or previousalarmstate=3) ORDER BY " + sTimeField + ""
                 Else
@@ -2336,7 +2343,7 @@ Public Class EBOReport
         Dim oReader As OdbcDataReader
         ' oAlmTime = oAlmTime.AddSeconds(1)
         Try
-            sQuery = "SELECT * FROM event_data WHERE uniquealarmid='" + oAlmGUID.ToString() + "' AND alarmstate=1 AND ( previousalarmstate=3) AND externalseqno>" + nAlmID.ToString() + " order by timestamp"
+            sQuery = "SELECT * FROM nsp.event_data WHERE uniquealarmid='" + oAlmGUID.ToString() + "' AND alarmstate=1 AND ( previousalarmstate=3) AND externalseqno>" + nAlmID.ToString() + " order by timestamp"
 
 
             Using oConnection As New OdbcConnection(g_sEMSDbConString)
@@ -2370,13 +2377,13 @@ Public Class EBOReport
             If bNextAlm = True Then
                 If g_bPrintAlmAckForAllAlarms = True Then
 
-                    sQuery = "SELECT * FROM event_data WHERE uniquealarmid='" + oAlmGUID.ToString() + "' AND comment IS NOT null  AND externalseqno>? order by timestamp"
+                    sQuery = "SELECT * FROM nsp.event_data WHERE uniquealarmid='" + oAlmGUID.ToString() + "' AND comment IS NOT null  AND externalseqno>? order by timestamp"
                 Else
 
-                    sQuery = "SELECT * FROM event_data WHERE uniquealarmid='" + oAlmGUID.ToString() + "' AND comment IS NOT null  AND externalseqno>? AND externalseqno<? order by timestamp"
+                    sQuery = "SELECT * FROM nsp.event_data WHERE uniquealarmid='" + oAlmGUID.ToString() + "' AND comment IS NOT null  AND externalseqno>? AND externalseqno<? order by timestamp"
                 End If
             Else
-                sQuery = "SELECT * FROM event_data WHERE uniquealarmid='" + oAlmGUID.ToString() + "' AND comment IS NOT null  AND externalseqno>? order by timestamp"
+                sQuery = "SELECT * FROM nsp.event_data WHERE uniquealarmid='" + oAlmGUID.ToString() + "' AND comment IS NOT null  AND externalseqno>? order by timestamp"
             End If
 
 
@@ -2409,9 +2416,9 @@ Public Class EBOReport
             bNormal = False
 
             If bNextAlm Then
-                sQuery = "SELECT * FROM event_data WHERE uniquealarmid='" + oAlmGUID.ToString() + "' AND (  alarmstate=3 OR (alarmstate=0 AND previousalarmstate<>0)) and externalseqno > ? and externalseqno<? order by timestamp"
+                sQuery = "SELECT * FROM nsp.event_data WHERE uniquealarmid='" + oAlmGUID.ToString() + "' AND (  alarmstate=3 OR (alarmstate=0 AND previousalarmstate<>0)) and externalseqno > ? and externalseqno<? order by timestamp"
             Else
-                sQuery = "SELECT * FROM event_data WHERE uniquealarmid='" + oAlmGUID.ToString() + "' AND (  alarmstate=3 OR (alarmstate=0 AND previousalarmstate<>0)) and externalseqno > ? order by timestamp"
+                sQuery = "SELECT * FROM nsp.event_data WHERE uniquealarmid='" + oAlmGUID.ToString() + "' AND (  alarmstate=3 OR (alarmstate=0 AND previousalarmstate<>0)) and externalseqno > ? order by timestamp"
             End If
 
             Using oConnection As New OdbcConnection(g_sEMSDbConString)
@@ -2460,7 +2467,7 @@ Public Class EBOReport
         Try
 
 
-            sQuery = "SELECT * FROM event_data WHERE uniquealarmid='" + oAlmGUID.ToString() + "' AND ( alarmstate=3 OR alarmstate=0) and timestamp > ?"
+            sQuery = "SELECT * FROM nsp.event_data WHERE uniquealarmid='" + oAlmGUID.ToString() + "' AND ( alarmstate=3 OR alarmstate=0) and timestamp > ?"
             Using oConnection As New OdbcConnection(g_sEMSDbConString)
                 oConnection.Open()
                 Dim cmd As New OdbcCommand(sQuery, oConnection)

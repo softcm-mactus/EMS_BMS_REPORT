@@ -1417,7 +1417,7 @@ Public Module MactusReportLib
 
         Try
 
-            sQuery = "SELECT * FROM trend_meta ORDER BY externallogid"
+            sQuery = "SELECT * FROM [nsp].[Trend_Meta] ORDER BY externallogid"
 
 
             Using oConnection As New OdbcConnection(g_sEMSDbConString)
