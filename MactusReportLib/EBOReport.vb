@@ -2021,7 +2021,7 @@ Public Class EBOReport
 
                             'User Comment
                             Try
-                                sValues(7) = oReader("comment")
+                                sValues(7) = oReader("signaturecomment")
                             Catch ex As Exception
                                 sValues(7) = ""
                             End Try
