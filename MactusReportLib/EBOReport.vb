@@ -1706,8 +1706,10 @@ Public Class EBOReport
         oToDate = oFromDate.AddMinutes(nIntervalMin)
         '  oToDate = oToDate.AddSeconds(30)
         g_oColList(0).m_sValue = FormatTimeToString(oTime, g_oColList(0).m_sColFormat)
-        oToDate = oToDate.AddMinutes(-330)
-        oFromDate = oFromDate.AddMinutes(-330)
+        'If g_bIsGMTTime Then
+        '    oToDate = oToDate.ToUniversalTime
+        '    oFromDate = oFromDate.ToUniversalTime
+        'End If
         For nCol = 1 To g_oColList.Count - 1
 
 
@@ -1928,8 +1930,10 @@ Public Class EBOReport
                 sQuery = GetSelectedEventIDs()
                 sQuery = "SELECT * FROM " + g_sDataTableName + " WHERE SystemEventId IS NOT NULL AND " + sTimeField + " >= ? AND " + sTimeField + " <= ? " + sQuery + " ORDER BY " + sTimeField
 
-                dtTo = dtTo.AddMinutes(-330)
-                dtFrom = dtFrom.AddMinutes(-330)
+                'If g_bIsGMTTime Then
+                '    dtTo = dtTo.ToUniversalTime
+                '    dtFrom = dtFrom.ToUniversalTime
+                'End If
                 Using oConnection As New OdbcConnection(g_sEMSDbConString)
                     Dim cmd As New OdbcCommand(sQuery, oConnection)
                     oConnection.Open()
@@ -2190,8 +2194,10 @@ Public Class EBOReport
                 Dim sTimeField As String
                 Dim sAlmGrpName As String = ""
                 sTimeField = g_oColList(0).m_sColumnNameinTable
-                'dtTo = dtTo.AddMinutes(-330)
-                'dtFrom = dtFrom.AddMinutes(-330)
+                'If g_bIsGMTTime Then
+                '    dtTo = dtTo.ToUniversalTime
+                '    dtFrom = dtFrom.ToUniversalTime
+                'End If
                 If g_nAlmGroupID = 0 Then
                     sQuery = "SELECT * FROM " + g_sDataTableName + " WHERE Type<>11 AND " + sTimeField + " >= ? AND " + sTimeField + " <= ? AND alarmstate=1 AND (previousalarmstate=0 or previousalarmstate=3) ORDER BY " + sTimeField + ""
                 Else

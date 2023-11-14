@@ -396,7 +396,6 @@ Public Module MactusReportLib
         Catch ex As Exception
 
         End Try
-
         Try
             Dim oConnection As New OdbcConnection(g_sConString)
             oConnection.Open()
@@ -628,15 +627,9 @@ Public Module MactusReportLib
                 oConnection.Open()
                 Dim oCmd As New OdbcCommand(sQuery, oConnection)
                 oCmd.Parameters.Add("@0", OdbcType.Int).Value = nReportID
-                If g_bIsGMTTime And nReportType > 0 Then
-                    If nReportType = 4 Or nReportType = 5 Or nReportType = 6 Then
-                        oCmd.Parameters.Add(GetTimeODBCParam("@1", dtFrom))
-                        oCmd.Parameters.Add(GetTimeODBCParam("@2", dtTo))
-                    Else
-                        oCmd.Parameters.Add(GetTimeODBCParam("@1", dtFrom.ToUniversalTime))
-                        oCmd.Parameters.Add(GetTimeODBCParam("@2", dtTo.ToUniversalTime))
-                    End If
-
+                If g_bIsGMTTime Then
+                    oCmd.Parameters.Add(GetTimeODBCParam("@1", dtFrom.ToUniversalTime))
+                    oCmd.Parameters.Add(GetTimeODBCParam("@2", dtTo.ToUniversalTime))
                 Else
                     oCmd.Parameters.Add(GetTimeODBCParam("@1", dtFrom))
                     oCmd.Parameters.Add(GetTimeODBCParam("@2", dtTo))
