@@ -1787,12 +1787,12 @@ Public Class EBOReport
                                     End If
                                 End If
 
-                                If g_oColList(nCol).m_fMin <= g_oColList(nCol).m_fReportMin Then
+                                If g_oColList(nCol).m_fReportMin >= g_oColList(nCol).m_fValue Then
                                     g_oColList(nCol).m_fReportMin = g_oColList(nCol).m_fValue
                                     g_oColList(nCol).m_bReportMinAdded = True
                                 End If
 
-                                If g_oColList(nCol).m_fMax >= g_oColList(nCol).m_fReportMax Then
+                                If g_oColList(nCol).m_fReportMax <= g_oColList(nCol).m_fValue Then
                                     g_oColList(nCol).m_fReportMax = g_oColList(nCol).m_fValue
                                     g_oColList(nCol).m_bReportMaxAdded = True
                                 End If
