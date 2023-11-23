@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{426618C0-3AF7-4890-9A64-153DCA5D9C47}</ProjectGuid>
+    <ProjectGuid>{F04299AB-F6AF-0761-183C-DF43A8CAA8E7}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <StartupObject>EmsBMSReports.My.MyApplication</StartupObject>
     <RootNamespace>EmsBMSReports</RootNamespace>
@@ -29,28 +29,29 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(ProjectDir)**\*.vb</DefaultItemExcludes>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>EmsBMSReports.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <Prefer32Bit>false</Prefer32Bit>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
-    <DefineDebug>false</DefineDebug>
-    <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>EmsBMSReports.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\EmsBMSReports.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <Prefer32Bit>true</Prefer32Bit>
+    <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup>
     <OptionExplicit>On</OptionExplicit>
@@ -65,6 +66,7 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -93,211 +95,222 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataTrendChart.Designer.vb">
-      <DependentUpon>DataTrendChart.vb</DependentUpon>
+    <Compile Include="MultiColumnDropbox.cs" />
+    <Compile Include="My Project\MyNamespace.Dynamic.Designer.cs" />
+    <Compile Include="My Project\MyNamespace.Static.1.Designer.cs" />
+    <Compile Include="My Project\MyNamespace.Static.2.Designer.cs" />
+    <Compile Include="My Project\MyNamespace.Static.3.Designer.cs" />
+    <Compile Include="DataTrendChart.Designer.cs">
+      <DependentUpon>DataTrendChart.cs</DependentUpon>
     </Compile>
-    <Compile Include="DataTrendChart.vb">
+    <Compile Include="DataTrendChart.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DlgAlarmReportConfiguration.Designer.vb">
-      <DependentUpon>DlgAlarmReportConfiguration.vb</DependentUpon>
+    <Compile Include="DlgAlarmReportConfiguration.Designer.cs">
+      <DependentUpon>DlgAlarmReportConfiguration.cs</DependentUpon>
     </Compile>
-    <Compile Include="DlgAlarmReportConfiguration.vb">
+    <Compile Include="DlgAlarmReportConfiguration.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DlgAppConfiguration.Designer.vb">
-      <DependentUpon>DlgAppConfiguration.vb</DependentUpon>
+    <Compile Include="DlgAppConfiguration.Designer.cs">
+      <DependentUpon>DlgAppConfiguration.cs</DependentUpon>
     </Compile>
-    <Compile Include="DlgAppConfiguration.vb">
+    <Compile Include="DlgAppConfiguration.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DlgBatteryReportConfiguration.Designer.vb">
-      <DependentUpon>DlgBatteryReportConfiguration.vb</DependentUpon>
+    <Compile Include="DlgBatteryReportConfiguration.Designer.cs">
+      <DependentUpon>DlgBatteryReportConfiguration.cs</DependentUpon>
     </Compile>
-    <Compile Include="DlgBatteryReportConfiguration.vb">
+    <Compile Include="DlgBatteryReportConfiguration.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgColumInfo.Designer.vb">
-      <DependentUpon>dlgColumInfo.vb</DependentUpon>
+    <Compile Include="dlgColumInfo.Designer.cs">
+      <DependentUpon>dlgColumInfo.cs</DependentUpon>
     </Compile>
-    <Compile Include="dlgColumInfo.vb">
+    <Compile Include="dlgColumInfo.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgColumnsConfiguration.Designer.vb">
-      <DependentUpon>dlgColumnsConfiguration.vb</DependentUpon>
+    <Compile Include="dlgColumnsConfiguration.Designer.cs">
+      <DependentUpon>dlgColumnsConfiguration.cs</DependentUpon>
     </Compile>
-    <Compile Include="dlgColumnsConfiguration.vb">
+    <Compile Include="dlgColumnsConfiguration.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DlgConfigureAlarmReportColumns.Designer.vb">
-      <DependentUpon>DlgConfigureAlarmReportColumns.vb</DependentUpon>
+    <Compile Include="DlgConfigureAlarmReportColumns.Designer.cs">
+      <DependentUpon>DlgConfigureAlarmReportColumns.cs</DependentUpon>
     </Compile>
-    <Compile Include="DlgConfigureAlarmReportColumns.vb">
+    <Compile Include="DlgConfigureAlarmReportColumns.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DlgConfigureViewGroup.Designer.vb">
-      <DependentUpon>DlgConfigureViewGroup.vb</DependentUpon>
+    <Compile Include="DlgConfigureViewGroup.Designer.cs">
+      <DependentUpon>DlgConfigureViewGroup.cs</DependentUpon>
     </Compile>
-    <Compile Include="DlgConfigureViewGroup.vb">
+    <Compile Include="DlgConfigureViewGroup.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DlgNewGroup.Designer.vb">
-      <DependentUpon>DlgNewGroup.vb</DependentUpon>
+    <Compile Include="DlgNewGroup.Designer.cs">
+      <DependentUpon>DlgNewGroup.cs</DependentUpon>
     </Compile>
-    <Compile Include="DlgNewGroup.vb">
+    <Compile Include="DlgNewGroup.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DlgExcursionConfiguration.Designer.vb">
-      <DependentUpon>DlgExcursionConfiguration.vb</DependentUpon>
+    <Compile Include="DlgExcursionConfiguration.Designer.cs">
+      <DependentUpon>DlgExcursionConfiguration.cs</DependentUpon>
     </Compile>
-    <Compile Include="DlgExcursionConfiguration.vb">
+    <Compile Include="DlgExcursionConfiguration.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DlgReportsConfiguration.Designer.vb">
-      <DependentUpon>DlgReportsConfiguration.vb</DependentUpon>
+    <Compile Include="DlgReportsConfiguration.Designer.cs">
+      <DependentUpon>DlgReportsConfiguration.cs</DependentUpon>
     </Compile>
-    <Compile Include="DlgReportsConfiguration.vb">
+    <Compile Include="DlgReportsConfiguration.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DlgSelectBMSAlarmGroup.Designer.vb">
-      <DependentUpon>DlgSelectBMSAlarmGroup.vb</DependentUpon>
+    <Compile Include="DlgSelectBMSAlarmGroup.Designer.cs">
+      <DependentUpon>DlgSelectBMSAlarmGroup.cs</DependentUpon>
     </Compile>
-    <Compile Include="DlgSelectBMSAlarmGroup.vb">
+    <Compile Include="DlgSelectBMSAlarmGroup.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgSelectColumns.Designer.vb">
-      <DependentUpon>dlgSelectColumns.vb</DependentUpon>
+    <Compile Include="dlgSelectColumns.Designer.cs">
+      <DependentUpon>dlgSelectColumns.cs</DependentUpon>
     </Compile>
-    <Compile Include="dlgSelectColumns.vb">
+    <Compile Include="dlgSelectColumns.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DlgSelectEnumID.Designer.vb">
-      <DependentUpon>DlgSelectEnumID.vb</DependentUpon>
+    <Compile Include="DlgSelectEnumID.Designer.cs">
+      <DependentUpon>DlgSelectEnumID.cs</DependentUpon>
     </Compile>
-    <Compile Include="DlgSelectEnumID.vb">
+    <Compile Include="DlgSelectEnumID.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DlgSelectReportGroupTemplate.Designer.vb">
-      <DependentUpon>DlgSelectReportGroupTemplate.vb</DependentUpon>
+    <Compile Include="DlgSelectReportGroupTemplate.Designer.cs">
+      <DependentUpon>DlgSelectReportGroupTemplate.cs</DependentUpon>
     </Compile>
-    <Compile Include="DlgSelectReportGroupTemplate.vb">
+    <Compile Include="DlgSelectReportGroupTemplate.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DlgSelectTrentDataPoint.Designer.vb">
-      <DependentUpon>DlgSelectTrentDataPoint.vb</DependentUpon>
+    <Compile Include="DlgSelectTrentDataPoint.Designer.cs">
+      <DependentUpon>DlgSelectTrentDataPoint.cs</DependentUpon>
     </Compile>
-    <Compile Include="DlgSelectTrentDataPoint.vb">
+    <Compile Include="DlgSelectTrentDataPoint.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgTableView.Designer.vb">
-      <DependentUpon>dlgTableView.vb</DependentUpon>
+    <Compile Include="dlgTableView.Designer.cs">
+      <DependentUpon>dlgTableView.cs</DependentUpon>
     </Compile>
-    <Compile Include="dlgTableView.vb">
+    <Compile Include="dlgTableView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Login.Designer.vb">
-      <DependentUpon>Login.vb</DependentUpon>
+    <Compile Include="Login.Designer.cs">
+      <DependentUpon>Login.cs</DependentUpon>
     </Compile>
-    <Compile Include="Login.vb">
+    <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.vb">
+    <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.vb">
-      <DependentUpon>MainForm.vb</DependentUpon>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="My Project\AssemblyInfo.vb" />
-    <Compile Include="My Project\Application.Designer.vb">
+    <Compile Include="My Project\AssemblyInfo.cs" />
+    <Compile Include="My Project\Application.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
     </Compile>
-    <Compile Include="My Project\Resources.Designer.vb">
+    <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="My Project\Settings.Designer.vb">
+    <Compile Include="My Project\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="TestForm1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestForm1.Designer.cs">
+      <DependentUpon>TestForm1.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DataTrendChart.resx">
-      <DependentUpon>DataTrendChart.vb</DependentUpon>
+      <DependentUpon>DataTrendChart.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DlgAlarmReportConfiguration.resx">
-      <DependentUpon>DlgAlarmReportConfiguration.vb</DependentUpon>
+      <DependentUpon>DlgAlarmReportConfiguration.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DlgAppConfiguration.resx">
-      <DependentUpon>DlgAppConfiguration.vb</DependentUpon>
+      <DependentUpon>DlgAppConfiguration.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DlgBatteryReportConfiguration.resx">
-      <DependentUpon>DlgBatteryReportConfiguration.vb</DependentUpon>
+      <DependentUpon>DlgBatteryReportConfiguration.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgColumInfo.resx">
-      <DependentUpon>dlgColumInfo.vb</DependentUpon>
+      <DependentUpon>dlgColumInfo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgColumnsConfiguration.resx">
-      <DependentUpon>dlgColumnsConfiguration.vb</DependentUpon>
+      <DependentUpon>dlgColumnsConfiguration.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DlgConfigureAlarmReportColumns.resx">
-      <DependentUpon>DlgConfigureAlarmReportColumns.vb</DependentUpon>
+      <DependentUpon>DlgConfigureAlarmReportColumns.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DlgConfigureViewGroup.resx">
-      <DependentUpon>DlgConfigureViewGroup.vb</DependentUpon>
+      <DependentUpon>DlgConfigureViewGroup.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DlgNewGroup.resx">
-      <DependentUpon>DlgNewGroup.vb</DependentUpon>
+      <DependentUpon>DlgNewGroup.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DlgExcursionConfiguration.resx">
-      <DependentUpon>DlgExcursionConfiguration.vb</DependentUpon>
+      <DependentUpon>DlgExcursionConfiguration.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DlgReportsConfiguration.resx">
-      <DependentUpon>DlgReportsConfiguration.vb</DependentUpon>
+      <DependentUpon>DlgReportsConfiguration.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DlgSelectBMSAlarmGroup.resx">
-      <DependentUpon>DlgSelectBMSAlarmGroup.vb</DependentUpon>
+      <DependentUpon>DlgSelectBMSAlarmGroup.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgSelectColumns.resx">
-      <DependentUpon>dlgSelectColumns.vb</DependentUpon>
+      <DependentUpon>dlgSelectColumns.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DlgSelectEnumID.resx">
-      <DependentUpon>DlgSelectEnumID.vb</DependentUpon>
+      <DependentUpon>DlgSelectEnumID.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DlgSelectReportGroupTemplate.resx">
-      <DependentUpon>DlgSelectReportGroupTemplate.vb</DependentUpon>
+      <DependentUpon>DlgSelectReportGroupTemplate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DlgSelectTrentDataPoint.resx">
-      <DependentUpon>DlgSelectTrentDataPoint.vb</DependentUpon>
+      <DependentUpon>DlgSelectTrentDataPoint.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgTableView.resx">
-      <DependentUpon>dlgTableView.vb</DependentUpon>
+      <DependentUpon>dlgTableView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Login.resx">
-      <DependentUpon>Login.vb</DependentUpon>
+      <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
-      <DependentUpon>MainForm.vb</DependentUpon>
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="My Project\Resources.resx">
-      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
-      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+    <EmbeddedResource Include="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>EmsBMSReports.My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
-      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+      <LastGenOutput>Application.Designer.cs</LastGenOutput>
     </None>
     <None Include="My Project\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
-      <CustomToolNamespace>My</CustomToolNamespace>
-      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>EmsBMSReports.My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="App.config" />
   </ItemGroup>
@@ -319,5 +332,5 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

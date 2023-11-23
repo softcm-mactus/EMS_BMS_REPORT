@@ -56,6 +56,8 @@ Partial Class MainForm
         Me.bConfigure = New System.Windows.Forms.Button()
         Me.btnExcursionReport = New System.Windows.Forms.Button()
         Me.btnBatteryPercentage = New System.Windows.Forms.Button()
+        Me.ViewData = New System.Windows.Forms.Button()
+        Me.ViewGroups = New System.Windows.Forms.Button()
         CType(Me.oReportGrid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         CType(Me.oGrid, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -79,7 +81,7 @@ Partial Class MainForm
         Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label2.Location = New System.Drawing.Point(315, 166)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(198, 25)
+        Me.Label2.Size = New System.Drawing.Size(166, 20)
         Me.Label2.TabIndex = 2
         Me.Label2.Text = "Configured Reports"
         '
@@ -89,7 +91,7 @@ Partial Class MainForm
         Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label3.Location = New System.Drawing.Point(709, 155)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(112, 25)
+        Me.Label3.Size = New System.Drawing.Size(94, 20)
         Me.Label3.TabIndex = 2
         Me.Label3.Text = "From Date"
         '
@@ -99,7 +101,7 @@ Partial Class MainForm
         Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label4.Location = New System.Drawing.Point(709, 240)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(89, 25)
+        Me.Label4.Size = New System.Drawing.Size(73, 20)
         Me.Label4.TabIndex = 2
         Me.Label4.Text = "To Date"
         '
@@ -111,7 +113,7 @@ Partial Class MainForm
         Me.tr_FromDate.Location = New System.Drawing.Point(713, 183)
         Me.tr_FromDate.Name = "tr_FromDate"
         Me.tr_FromDate.ShowUpDown = True
-        Me.tr_FromDate.Size = New System.Drawing.Size(178, 30)
+        Me.tr_FromDate.Size = New System.Drawing.Size(178, 26)
         Me.tr_FromDate.TabIndex = 327
         '
         'tr_ToDate
@@ -122,7 +124,7 @@ Partial Class MainForm
         Me.tr_ToDate.Location = New System.Drawing.Point(713, 268)
         Me.tr_ToDate.Name = "tr_ToDate"
         Me.tr_ToDate.ShowUpDown = True
-        Me.tr_ToDate.Size = New System.Drawing.Size(178, 30)
+        Me.tr_ToDate.Size = New System.Drawing.Size(178, 26)
         Me.tr_ToDate.TabIndex = 327
         '
         'bGenerate
@@ -196,7 +198,7 @@ Partial Class MainForm
         Me.bEventReport.AutoSize = True
         Me.bEventReport.Location = New System.Drawing.Point(38, 141)
         Me.bEventReport.Name = "bEventReport"
-        Me.bEventReport.Size = New System.Drawing.Size(173, 33)
+        Me.bEventReport.Size = New System.Drawing.Size(137, 28)
         Me.bEventReport.TabIndex = 0
         Me.bEventReport.TabStop = True
         Me.bEventReport.Text = "Event Report"
@@ -207,7 +209,7 @@ Partial Class MainForm
         Me.bAlarmReports.AutoSize = True
         Me.bAlarmReports.Location = New System.Drawing.Point(38, 87)
         Me.bAlarmReports.Name = "bAlarmReports"
-        Me.bAlarmReports.Size = New System.Drawing.Size(187, 33)
+        Me.bAlarmReports.Size = New System.Drawing.Size(147, 28)
         Me.bAlarmReports.TabIndex = 0
         Me.bAlarmReports.TabStop = True
         Me.bAlarmReports.Text = "Alarm Reports"
@@ -218,7 +220,7 @@ Partial Class MainForm
         Me.bAreaReports.AutoSize = True
         Me.bAreaReports.Location = New System.Drawing.Point(38, 37)
         Me.bAreaReports.Name = "bAreaReports"
-        Me.bAreaReports.Size = New System.Drawing.Size(175, 33)
+        Me.bAreaReports.Size = New System.Drawing.Size(138, 28)
         Me.bAreaReports.TabIndex = 0
         Me.bAreaReports.TabStop = True
         Me.bAreaReports.Text = "Area Reports"
@@ -230,7 +232,7 @@ Partial Class MainForm
         Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label5.Location = New System.Drawing.Point(709, 85)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(212, 25)
+        Me.Label5.Size = New System.Drawing.Size(177, 20)
         Me.Label5.TabIndex = 2
         Me.Label5.Text = "Report Time Interval "
         '
@@ -245,12 +247,12 @@ Partial Class MainForm
         Me.cInterval.Items.AddRange(New Object() {"1", "5", "15", "30", "60"})
         Me.cInterval.Location = New System.Drawing.Point(713, 109)
         Me.cInterval.Name = "cInterval"
-        Me.cInterval.Size = New System.Drawing.Size(121, 28)
+        Me.cInterval.Size = New System.Drawing.Size(121, 24)
         Me.cInterval.TabIndex = 334
         '
         'oProgress
         '
-        Me.oProgress.Location = New System.Drawing.Point(32, 559)
+        Me.oProgress.Location = New System.Drawing.Point(25, 658)
         Me.oProgress.Name = "oProgress"
         Me.oProgress.Size = New System.Drawing.Size(960, 23)
         Me.oProgress.TabIndex = 335
@@ -261,7 +263,7 @@ Partial Class MainForm
         Me.oGrid.AllowUserToDeleteRows = False
         Me.oGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.oGrid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.StatusID, Me.ReportFileName, Me.ReportPathName, Me.Open})
-        Me.oGrid.Location = New System.Drawing.Point(341, 601)
+        Me.oGrid.Location = New System.Drawing.Point(334, 700)
         Me.oGrid.Name = "oGrid"
         Me.oGrid.RowHeadersVisible = False
         Me.oGrid.RowHeadersWidth = 51
@@ -307,7 +309,7 @@ Partial Class MainForm
         Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label6.Location = New System.Drawing.Point(315, 88)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(133, 25)
+        Me.Label6.Size = New System.Drawing.Size(110, 20)
         Me.Label6.TabIndex = 2
         Me.Label6.Text = "Group Name"
         '
@@ -317,7 +319,7 @@ Partial Class MainForm
         Me.cGroup.FormattingEnabled = True
         Me.cGroup.Location = New System.Drawing.Point(319, 112)
         Me.cGroup.Name = "cGroup"
-        Me.cGroup.Size = New System.Drawing.Size(325, 28)
+        Me.cGroup.Size = New System.Drawing.Size(325, 24)
         Me.cGroup.TabIndex = 337
         '
         'bCOnfigureReports
@@ -394,11 +396,33 @@ Partial Class MainForm
         Me.btnBatteryPercentage.UseVisualStyleBackColor = True
         Me.btnBatteryPercentage.Visible = False
         '
+        'ViewData
+        '
+        Me.ViewData.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ViewData.Location = New System.Drawing.Point(713, 482)
+        Me.ViewData.Name = "ViewData"
+        Me.ViewData.Size = New System.Drawing.Size(178, 47)
+        Me.ViewData.TabIndex = 343
+        Me.ViewData.Text = "View Data"
+        Me.ViewData.UseVisualStyleBackColor = True
+        '
+        'ViewGroups
+        '
+        Me.ViewGroups.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ViewGroups.Location = New System.Drawing.Point(32, 559)
+        Me.ViewGroups.Name = "ViewGroups"
+        Me.ViewGroups.Size = New System.Drawing.Size(260, 37)
+        Me.ViewGroups.TabIndex = 344
+        Me.ViewGroups.Text = "Configure View Groups"
+        Me.ViewGroups.UseVisualStyleBackColor = True
+        '
         'MainForm
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 20.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1129, 901)
+        Me.Controls.Add(Me.ViewGroups)
+        Me.Controls.Add(Me.ViewData)
         Me.Controls.Add(Me.btnBatteryPercentage)
         Me.Controls.Add(Me.btnExcursionReport)
         Me.Controls.Add(Me.bConfigure)
@@ -468,4 +492,6 @@ Partial Class MainForm
     Friend WithEvents bConfigure As Button
     Friend WithEvents btnExcursionReport As Button
     Friend WithEvents btnBatteryPercentage As Button
+    Friend WithEvents ViewData As Button
+    Friend WithEvents ViewGroups As Button
 End Class
