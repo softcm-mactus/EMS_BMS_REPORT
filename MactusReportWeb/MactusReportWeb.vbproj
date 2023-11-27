@@ -118,6 +118,7 @@
     <Content Include="DataTrendReport.aspx" />
     <Content Include="DBError.aspx" />
     <Content Include="EventReport.aspx" />
+    <Content Include="itextsharp.dll" />
     <Content Include="TrendDataAlarmReport.aspx" />
     <Content Include="ExcursionReport.aspx" />
     <Content Include="Global.asax" />
@@ -260,6 +261,7 @@
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
     </None>
     <None Include="My Project\PublishProfiles\IISProfile.pubxml" />
+    <None Include="My Project\PublishProfiles\Release.pubxml" />
     <None Include="My Project\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <CustomToolNamespace>My</CustomToolNamespace>

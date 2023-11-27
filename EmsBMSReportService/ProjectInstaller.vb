@@ -16,4 +16,8 @@ Public Class ProjectInstaller
     Private Sub EMSBMSReportService_AfterInstall(sender As Object, e As InstallEventArgs) Handles EMSBMSReportService.AfterInstall
 
     End Sub
+
+    Private Sub ServiceProcessInstaller0_AfterInstall(sender As Object, e As InstallEventArgs) Handles ServiceProcessInstaller0.AfterInstall
+
+    End Sub
 End Class

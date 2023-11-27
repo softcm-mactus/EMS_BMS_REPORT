@@ -2,10 +2,17 @@
 Imports System.Data.Odbc
 Imports MactusReportLib.MactusReportLib
 Imports System.Net.NetworkInformation
+Imports System.Threading.ManualResetEvent
 
 Public Class EMSBMSReportService
     Private m_tmrTime As Timer = New Timer()
     Private m_tmrErrorCheck As Timer = New Timer()
+    Public Sub TestStartupAndStop(ByVal args() As String)
+        OnStart(args)
+        Dim WaitEvent As New Threading.ManualResetEvent(False)
+        WaitEvent.WaitOne()
+        OnStop()
+    End Sub
 
     Protected Overrides Sub OnStart(ByVal args() As String)
         ' Add code here to start your service. This method should set things

@@ -1,11 +1,11 @@
 ﻿Imports System.ServiceProcess
 
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class EMSBMSReportService
     Inherits System.ServiceProcess.ServiceBase
 
     'UserService overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -17,10 +17,9 @@ Partial Class EMSBMSReportService
     End Sub
 
     ' The main entry point for the process
-    <MTAThread()> _
-    <System.Diagnostics.DebuggerNonUserCode()> _
-    Shared Sub Main()
-        Dim ServicesToRun() As System.ServiceProcess.ServiceBase
+    <MTAThread()>
+    <System.Diagnostics.DebuggerNonUserCode()>
+    Shared Sub Main(ByVal args() As String)
 
         ' More than one NT Service may run within the same process. To add
         ' another service to this process, change the following line to
@@ -28,9 +27,15 @@ Partial Class EMSBMSReportService
         '
         '   ServicesToRun = New System.ServiceProcess.ServiceBase () {New Service1, New MySecondUserService}
         '
-        ServicesToRun = New System.ServiceProcess.ServiceBase() {New EMSBMSReportService}
+        If (Environment.UserInteractive) Then
+            Dim service1 As New EMSBMSReportService
+            service1.TestStartupAndStop(args)
+        Else
+            Dim ServicesToRun() As System.ServiceProcess.ServiceBase
+            ServicesToRun = New System.ServiceProcess.ServiceBase() {New EMSBMSReportService}
 
-        System.ServiceProcess.ServiceBase.Run(ServicesToRun)
+            System.ServiceProcess.ServiceBase.Run(ServicesToRun)
+        End If
     End Sub
 
     'Required by the Component Designer
@@ -39,7 +44,7 @@ Partial Class EMSBMSReportService
     ' NOTE: The following procedure is required by the Component Designer
     ' It can be modified using the Component Designer.  
     ' Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         components = New System.ComponentModel.Container()
         Me.ServiceName = "Service1"
