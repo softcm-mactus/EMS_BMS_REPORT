@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using static MactusReportLib.MactusReportLib;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using System.Drawing;
 
 namespace EmsBMSReports
 {
@@ -42,8 +43,8 @@ namespace EmsBMSReports
                 bConfigureAlarmReports.Visible = true; // g_bEnableConfiguration
 
                 string sQuery;
-                sQuery = "UPDATE tbl_reportstatus SET status=4 where status=3";
-                ExecuteSQLInDb(sQuery);
+                //sQuery = "UPDATE tbl_reportstatus SET status=4 where status=3";
+                //ExecuteSQLInDb(sQuery);
 
                 m_oEBOReprots = new MactusReportLib.EBOReport();
                 m_oIndusoftReports = new MactusReportLib.NewInduSoftReport();
@@ -327,54 +328,83 @@ namespace EmsBMSReports
 
         private void UpdateGrid()
         {
-            string sQuery;
-            OdbcDataReader oReader;
-            int nRow;
-
-            sQuery = "SELECT * FROM tbl_reportstatus WHERE Status=3";
-            oGrid.Rows.Clear();
+            string sQuery = @"SELECT status.id id, 
+                             status.reportId reportid,
+                             rc.ReportTitle reporttitle,  
+                             rc.ReportHeader reportheader, 
+                             status.username username,  
+                             status.fromdate fromdate,  
+                             status.todate todate,  
+                             status.status status,  
+                             status.progress progress,  
+                             status.errormessage errormessage,  
+                             status.filename filename,  
+                             status.outputfilename outputfilename  
+                        FROM tbl_reportstatus as status  
+                        Join TBL_ReportsConfiguration rc on rc.ReportID = status.reportid  
+                        WHERE Status< 4";
             try
             {
+                oGrid.Rows.Clear();
                 using (var oConnection = new OdbcConnection(g_sConString))
                 {
                     oConnection.Open();
                     var oCmd = new OdbcCommand(sQuery, oConnection);
-                    oReader = oCmd.ExecuteReader();
+                    var oReader = oCmd.ExecuteReader();
                     while (oReader.Read())
                     {
-                        nRow = oGrid.Rows.Add();
-                        oGrid.Rows[nRow].Cells[0].Value = oReader["id"];
-                        oGrid.Rows[nRow].Cells[1].Value = oReader["outputfilename"];
-                        oGrid.Rows[nRow].Cells[2].Value = oReader["outputfilename"];
-
+                        var nRow = oGrid.Rows.Add();
+                        oGrid.Rows[nRow].Tag = oReader["id"];
+                        oGrid.Rows[nRow].Cells[0].Value = oReader["reportheader"];
+                        oGrid.Rows[nRow].Cells[1].Value = oReader["reporttitle"];
+                        oGrid.Rows[nRow].Cells[2].Value = oReader["fromdate"].ToString();
+                        oGrid.Rows[nRow].Cells[3].Value = oReader["todate"].ToString();
+                        oGrid.Rows[nRow].Cells[4].Value = oReader["username"];
+                        oGrid.Rows[nRow].Cells[5].Value = oReader["progress"].ToString()+"%";
+                        if (oReader["status"].ToString() == "3")
+                        {
+                            DataGridViewTextBoxCell c = (DataGridViewTextBoxCell)oGrid.Rows[nRow].Cells[6];
+                            c.Style.Font =  new Font(oGrid.Font,FontStyle.Underline);
+                            c.Style.ForeColor = Color.Blue;
+                            c.Tag = oReader["outputfilename"];
+                            c.Value = "Open Report";
+                            c.ToolTipText = "Open report " + c.Tag.ToString();
+                            c.Value = "Open Report";
+                        }
+                        else
+                        {
+                            DataGridViewTextBoxCell c = (DataGridViewTextBoxCell)oGrid.Rows[nRow].Cells[6];
+                            c.Value = "Pending";
+                        }
                     }
                     oConnection.Close();
                 }
             }
-            catch (Exception )
+            catch(Exception ex)
             {
-
             }
-
             oGrid.ClearSelection();
             oGrid.Refresh();
         }
 
         private void oGrid_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex == -1 | e.ColumnIndex != 3)
+            if (e.RowIndex == -1 | e.ColumnIndex != 6)
             {
                 return;
             }
             try
             {
                 string sQuery;
-                sQuery = "UPDATE tbl_reportstatus SET  Status=4 WHERE id=" + oGrid.Rows[e.RowIndex].Cells[0].Value.ToString();
-                ExecuteSQLInDb(sQuery);
-                Process.Start(oGrid.Rows[e.RowIndex].Cells[2].Value.ToString());
+                if (oGrid.Rows[e.RowIndex].Cells[6].Tag != null)
+                {
+                    sQuery = "UPDATE tbl_reportstatus SET  Status=4 WHERE id=" + oGrid.Rows[e.RowIndex].Tag.ToString();
+                    ExecuteSQLInDb(sQuery);
+                    Process.Start(oGrid.Rows[e.RowIndex].Cells[6].Tag.ToString());
+                }
             }
 
-            catch (Exception )
+            catch (Exception)
             {
 
             }
@@ -457,6 +487,11 @@ namespace EmsBMSReports
         {
             var dlg = new DlgConfigureViewGroup();
             dlg.ShowDialog();
+        }
+
+        private void oGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

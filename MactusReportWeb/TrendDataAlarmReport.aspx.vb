@@ -65,7 +65,7 @@ Public Class TrendDataAlarmReport
                 r.Cells.Add(c)
 
                 c = New TableCell()
-                c.Controls.Add(New LiteralControl(oReader("progress")))
+                c.Controls.Add(New LiteralControl(oReader("progress").ToString() + "%"))
                 r.Cells.Add(c)
 
                 c = New TableCell()

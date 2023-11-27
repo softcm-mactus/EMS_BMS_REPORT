@@ -35,461 +35,489 @@ namespace EmsBMSReports
         [DebuggerStepThrough()]
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
-            Label1 = new Label();
-            Label2 = new Label();
-            Label3 = new Label();
-            Label4 = new Label();
-            tr_FromDate = new DateTimePicker();
-            tr_FromDate.LostFocus += new EventHandler(tr_FromDate_LostFocus);
-            tr_ToDate = new DateTimePicker();
-            tr_ToDate.LostFocus += new EventHandler(tr_ToDate_LostFocus);
-            bGenerate = new Button();
-            bGenerate.Click += new EventHandler(bGenerate_Click);
-            oReportGrid = new DataGridView();
-            oReportGrid.CellClick += new DataGridViewCellEventHandler(oReportGrid_CellClick);
-            ID = new DataGridViewTextBoxColumn();
-            Report = new DataGridViewTextBoxColumn();
-            Interval = new DataGridViewTextBoxColumn();
-            GroupBox1 = new GroupBox();
-            bEventReport = new RadioButton();
-            bEventReport.CheckedChanged += new EventHandler(bEventReport_CheckedChanged);
-            bAlarmReports = new RadioButton();
-            bAlarmReports.CheckedChanged += new EventHandler(bAlarmReports_CheckedChanged);
-            bAreaReports = new RadioButton();
-            bAreaReports.CheckedChanged += new EventHandler(bAreaReports_CheckedChanged);
-            Label5 = new Label();
-            oTimer = new Timer(components);
-            oTimer.Tick += new EventHandler(oTimer_Tick);
-            cInterval = new ComboBox();
-            oProgress = new ProgressBar();
-            oGrid = new DataGridView();
-            oGrid.CellClick += new DataGridViewCellEventHandler(oGrid_CellClick);
-            StatusID = new DataGridViewTextBoxColumn();
-            ReportFileName = new DataGridViewTextBoxColumn();
-            ReportPathName = new DataGridViewTextBoxColumn();
-            Open = new DataGridViewButtonColumn();
-            Label6 = new Label();
-            cGroup = new ComboBox();
-            cGroup.SelectedIndexChanged += new EventHandler(cGroup_SelectedIndexChanged);
-            bCOnfigureReports = new Button();
-            bCOnfigureReports.Click += new EventHandler(bCOnfigureReports_Click);
-            bConfigureAlarmReports = new Button();
-            bConfigureAlarmReports.Click += new EventHandler(bConfigureAlarmReports_Click);
-            bGenerateChart = new Button();
-            bGenerateChart.Click += new EventHandler(bGenerateChart_Click);
-            Button1 = new Button();
-            Button1.Click += new EventHandler(Button1_Click);
-            bConfigure = new Button();
-            bConfigure.Click += new EventHandler(bConfigure_Click);
-            btnExcursionReport = new Button();
-            btnExcursionReport.Click += new EventHandler(btnExcursionReport_Click);
-            btnBatteryPercentage = new Button();
-            btnBatteryPercentage.Click += new EventHandler(btnBatteryPercentage_Click);
-            ViewData = new Button();
-            ViewData.Click += new EventHandler(Button2_Click);
-            ViewGroups = new Button();
-            ViewGroups.Click += new EventHandler(Button2_Click_1);
-            ((System.ComponentModel.ISupportInitialize)oReportGrid).BeginInit();
-            GroupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)oGrid).BeginInit();
-            SuspendLayout();
+            this.components = new System.ComponentModel.Container();
+            this.Label1 = new System.Windows.Forms.Label();
+            this.Label2 = new System.Windows.Forms.Label();
+            this.Label3 = new System.Windows.Forms.Label();
+            this.Label4 = new System.Windows.Forms.Label();
+            this.tr_FromDate = new System.Windows.Forms.DateTimePicker();
+            this.tr_ToDate = new System.Windows.Forms.DateTimePicker();
+            this.bGenerate = new System.Windows.Forms.Button();
+            this.oReportGrid = new System.Windows.Forms.DataGridView();
+            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Report = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Interval = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.GroupBox1 = new System.Windows.Forms.GroupBox();
+            this.bEventReport = new System.Windows.Forms.RadioButton();
+            this.bAlarmReports = new System.Windows.Forms.RadioButton();
+            this.bAreaReports = new System.Windows.Forms.RadioButton();
+            this.Label5 = new System.Windows.Forms.Label();
+            this.oTimer = new System.Windows.Forms.Timer(this.components);
+            this.cInterval = new System.Windows.Forms.ComboBox();
+            this.oProgress = new System.Windows.Forms.ProgressBar();
+            this.oGrid = new System.Windows.Forms.DataGridView();
+            this.Label6 = new System.Windows.Forms.Label();
+            this.cGroup = new System.Windows.Forms.ComboBox();
+            this.bCOnfigureReports = new System.Windows.Forms.Button();
+            this.bConfigureAlarmReports = new System.Windows.Forms.Button();
+            this.bGenerateChart = new System.Windows.Forms.Button();
+            this.Button1 = new System.Windows.Forms.Button();
+            this.bConfigure = new System.Windows.Forms.Button();
+            this.btnExcursionReport = new System.Windows.Forms.Button();
+            this.btnBatteryPercentage = new System.Windows.Forms.Button();
+            this.ViewData = new System.Windows.Forms.Button();
+            this.ViewGroups = new System.Windows.Forms.Button();
+            this.ReportHeader = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ReportTitle = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Username = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.FromDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ToDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Progress = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Output = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            ((System.ComponentModel.ISupportInitialize)(this.oReportGrid)).BeginInit();
+            this.GroupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.oGrid)).BeginInit();
+            this.SuspendLayout();
             // 
             // Label1
             // 
-            Label1.BackColor = Color.Navy;
-            Label1.Font = new Font("Microsoft Sans Serif", 26.25f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            Label1.ForeColor = Color.White;
-            Label1.Location = new Point(0, 0);
-            Label1.Name = "Label1";
-            Label1.Size = new Size(1085, 63);
-            Label1.TabIndex = 0;
-            Label1.Text = "EMS Reporting Tool";
-            Label1.TextAlign = ContentAlignment.MiddleCenter;
+            this.Label1.BackColor = System.Drawing.Color.Navy;
+            this.Label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label1.ForeColor = System.Drawing.Color.White;
+            this.Label1.Location = new System.Drawing.Point(0, 0);
+            this.Label1.Name = "Label1";
+            this.Label1.Size = new System.Drawing.Size(1085, 63);
+            this.Label1.TabIndex = 0;
+            this.Label1.Text = "EMS Reporting Tool";
+            this.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // Label2
             // 
-            Label2.AutoSize = true;
-            Label2.Font = new Font("Microsoft Sans Serif", 12.0f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            Label2.Location = new Point(315, 166);
-            Label2.Name = "Label2";
-            Label2.Size = new Size(166, 20);
-            Label2.TabIndex = 2;
-            Label2.Text = "Configured Reports";
+            this.Label2.AutoSize = true;
+            this.Label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label2.Location = new System.Drawing.Point(315, 166);
+            this.Label2.Name = "Label2";
+            this.Label2.Size = new System.Drawing.Size(166, 20);
+            this.Label2.TabIndex = 2;
+            this.Label2.Text = "Configured Reports";
             // 
             // Label3
             // 
-            Label3.AutoSize = true;
-            Label3.Font = new Font("Microsoft Sans Serif", 12.0f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            Label3.Location = new Point(709, 155);
-            Label3.Name = "Label3";
-            Label3.Size = new Size(94, 20);
-            Label3.TabIndex = 2;
-            Label3.Text = "From Date";
+            this.Label3.AutoSize = true;
+            this.Label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label3.Location = new System.Drawing.Point(709, 155);
+            this.Label3.Name = "Label3";
+            this.Label3.Size = new System.Drawing.Size(94, 20);
+            this.Label3.TabIndex = 2;
+            this.Label3.Text = "From Date";
             // 
             // Label4
             // 
-            Label4.AutoSize = true;
-            Label4.Font = new Font("Microsoft Sans Serif", 12.0f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            Label4.Location = new Point(709, 240);
-            Label4.Name = "Label4";
-            Label4.Size = new Size(73, 20);
-            Label4.TabIndex = 2;
-            Label4.Text = "To Date";
+            this.Label4.AutoSize = true;
+            this.Label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label4.Location = new System.Drawing.Point(709, 240);
+            this.Label4.Name = "Label4";
+            this.Label4.Size = new System.Drawing.Size(73, 20);
+            this.Label4.TabIndex = 2;
+            this.Label4.Text = "To Date";
             // 
             // tr_FromDate
             // 
-            tr_FromDate.CustomFormat = "dd-MM-yyyy HH:mm";
-            tr_FromDate.Font = new Font("Microsoft Sans Serif", 12.0f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            tr_FromDate.Format = DateTimePickerFormat.Custom;
-            tr_FromDate.Location = new Point(713, 183);
-            tr_FromDate.Name = "tr_FromDate";
-            tr_FromDate.ShowUpDown = true;
-            tr_FromDate.Size = new Size(178, 26);
-            tr_FromDate.TabIndex = 327;
+            this.tr_FromDate.CustomFormat = "dd-MM-yyyy HH:mm";
+            this.tr_FromDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tr_FromDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.tr_FromDate.Location = new System.Drawing.Point(713, 183);
+            this.tr_FromDate.Name = "tr_FromDate";
+            this.tr_FromDate.ShowUpDown = true;
+            this.tr_FromDate.Size = new System.Drawing.Size(178, 26);
+            this.tr_FromDate.TabIndex = 327;
+            this.tr_FromDate.LostFocus += new System.EventHandler(this.tr_FromDate_LostFocus);
             // 
             // tr_ToDate
             // 
-            tr_ToDate.CustomFormat = "dd-MM-yyyy HH:mm";
-            tr_ToDate.Font = new Font("Microsoft Sans Serif", 12.0f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            tr_ToDate.Format = DateTimePickerFormat.Custom;
-            tr_ToDate.Location = new Point(713, 268);
-            tr_ToDate.Name = "tr_ToDate";
-            tr_ToDate.ShowUpDown = true;
-            tr_ToDate.Size = new Size(178, 26);
-            tr_ToDate.TabIndex = 327;
+            this.tr_ToDate.CustomFormat = "dd-MM-yyyy HH:mm";
+            this.tr_ToDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tr_ToDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.tr_ToDate.Location = new System.Drawing.Point(713, 268);
+            this.tr_ToDate.Name = "tr_ToDate";
+            this.tr_ToDate.ShowUpDown = true;
+            this.tr_ToDate.Size = new System.Drawing.Size(178, 26);
+            this.tr_ToDate.TabIndex = 327;
+            this.tr_ToDate.LostFocus += new System.EventHandler(this.tr_ToDate_LostFocus);
             // 
             // bGenerate
             // 
-            bGenerate.Font = new Font("Microsoft Sans Serif", 14.25f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            bGenerate.Location = new Point(713, 340);
-            bGenerate.Name = "bGenerate";
-            bGenerate.Size = new Size(178, 47);
-            bGenerate.TabIndex = 328;
-            bGenerate.Text = "Generate Report";
-            bGenerate.UseVisualStyleBackColor = true;
+            this.bGenerate.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bGenerate.Location = new System.Drawing.Point(713, 340);
+            this.bGenerate.Name = "bGenerate";
+            this.bGenerate.Size = new System.Drawing.Size(178, 47);
+            this.bGenerate.TabIndex = 328;
+            this.bGenerate.Text = "Generate Report";
+            this.bGenerate.UseVisualStyleBackColor = true;
+            this.bGenerate.Click += new System.EventHandler(this.bGenerate_Click);
             // 
             // oReportGrid
             // 
-            oReportGrid.AllowUserToAddRows = false;
-            oReportGrid.AllowUserToDeleteRows = false;
-            oReportGrid.AllowUserToResizeColumns = false;
-            oReportGrid.AllowUserToResizeRows = false;
-            oReportGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            oReportGrid.ColumnHeadersVisible = false;
-            oReportGrid.Columns.AddRange(new DataGridViewColumn[] { ID, Report, Interval });
-            oReportGrid.Location = new Point(319, 190);
-            oReportGrid.MultiSelect = false;
-            oReportGrid.Name = "oReportGrid";
-            oReportGrid.RowHeadersVisible = false;
-            oReportGrid.RowHeadersWidth = 51;
-            oReportGrid.Size = new Size(334, 245);
-            oReportGrid.TabIndex = 329;
+            this.oReportGrid.AllowUserToAddRows = false;
+            this.oReportGrid.AllowUserToDeleteRows = false;
+            this.oReportGrid.AllowUserToResizeColumns = false;
+            this.oReportGrid.AllowUserToResizeRows = false;
+            this.oReportGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.oReportGrid.ColumnHeadersVisible = false;
+            this.oReportGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ID,
+            this.Report,
+            this.Interval});
+            this.oReportGrid.Location = new System.Drawing.Point(319, 190);
+            this.oReportGrid.MultiSelect = false;
+            this.oReportGrid.Name = "oReportGrid";
+            this.oReportGrid.RowHeadersVisible = false;
+            this.oReportGrid.RowHeadersWidth = 51;
+            this.oReportGrid.Size = new System.Drawing.Size(334, 245);
+            this.oReportGrid.TabIndex = 329;
+            this.oReportGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.oReportGrid_CellClick);
             // 
             // ID
             // 
-            ID.HeaderText = "ID";
-            ID.MinimumWidth = 6;
-            ID.Name = "ID";
-            ID.ReadOnly = true;
-            ID.Visible = false;
-            ID.Width = 125;
+            this.ID.HeaderText = "ID";
+            this.ID.MinimumWidth = 6;
+            this.ID.Name = "ID";
+            this.ID.ReadOnly = true;
+            this.ID.Visible = false;
+            this.ID.Width = 125;
             // 
             // Report
             // 
-            Report.HeaderText = "Report Name";
-            Report.MinimumWidth = 6;
-            Report.Name = "Report";
-            Report.ReadOnly = true;
-            Report.Width = 300;
+            this.Report.HeaderText = "Report Name";
+            this.Report.MinimumWidth = 6;
+            this.Report.Name = "Report";
+            this.Report.ReadOnly = true;
+            this.Report.Width = 300;
             // 
             // Interval
             // 
-            Interval.HeaderText = "Interval";
-            Interval.MinimumWidth = 6;
-            Interval.Name = "Interval";
-            Interval.ReadOnly = true;
-            Interval.Visible = false;
-            Interval.Width = 125;
+            this.Interval.HeaderText = "Interval";
+            this.Interval.MinimumWidth = 6;
+            this.Interval.Name = "Interval";
+            this.Interval.ReadOnly = true;
+            this.Interval.Visible = false;
+            this.Interval.Width = 125;
             // 
             // GroupBox1
             // 
-            GroupBox1.Controls.Add(bEventReport);
-            GroupBox1.Controls.Add(bAlarmReports);
-            GroupBox1.Controls.Add(bAreaReports);
-            GroupBox1.Font = new Font("Microsoft Sans Serif", 14.25f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            GroupBox1.Location = new Point(22, 76);
-            GroupBox1.Name = "GroupBox1";
-            GroupBox1.Size = new Size(270, 195);
-            GroupBox1.TabIndex = 330;
-            GroupBox1.TabStop = false;
-            GroupBox1.Text = "Report Type";
+            this.GroupBox1.Controls.Add(this.bEventReport);
+            this.GroupBox1.Controls.Add(this.bAlarmReports);
+            this.GroupBox1.Controls.Add(this.bAreaReports);
+            this.GroupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GroupBox1.Location = new System.Drawing.Point(22, 76);
+            this.GroupBox1.Name = "GroupBox1";
+            this.GroupBox1.Size = new System.Drawing.Size(270, 195);
+            this.GroupBox1.TabIndex = 330;
+            this.GroupBox1.TabStop = false;
+            this.GroupBox1.Text = "Report Type";
             // 
             // bEventReport
             // 
-            bEventReport.AutoSize = true;
-            bEventReport.Location = new Point(38, 141);
-            bEventReport.Name = "bEventReport";
-            bEventReport.Size = new Size(137, 28);
-            bEventReport.TabIndex = 0;
-            bEventReport.TabStop = true;
-            bEventReport.Text = "Event Report";
-            bEventReport.UseVisualStyleBackColor = true;
+            this.bEventReport.AutoSize = true;
+            this.bEventReport.Location = new System.Drawing.Point(38, 141);
+            this.bEventReport.Name = "bEventReport";
+            this.bEventReport.Size = new System.Drawing.Size(137, 28);
+            this.bEventReport.TabIndex = 0;
+            this.bEventReport.TabStop = true;
+            this.bEventReport.Text = "Event Report";
+            this.bEventReport.UseVisualStyleBackColor = true;
+            this.bEventReport.CheckedChanged += new System.EventHandler(this.bEventReport_CheckedChanged);
             // 
             // bAlarmReports
             // 
-            bAlarmReports.AutoSize = true;
-            bAlarmReports.Location = new Point(38, 87);
-            bAlarmReports.Name = "bAlarmReports";
-            bAlarmReports.Size = new Size(147, 28);
-            bAlarmReports.TabIndex = 0;
-            bAlarmReports.TabStop = true;
-            bAlarmReports.Text = "Alarm Reports";
-            bAlarmReports.UseVisualStyleBackColor = true;
+            this.bAlarmReports.AutoSize = true;
+            this.bAlarmReports.Location = new System.Drawing.Point(38, 87);
+            this.bAlarmReports.Name = "bAlarmReports";
+            this.bAlarmReports.Size = new System.Drawing.Size(147, 28);
+            this.bAlarmReports.TabIndex = 0;
+            this.bAlarmReports.TabStop = true;
+            this.bAlarmReports.Text = "Alarm Reports";
+            this.bAlarmReports.UseVisualStyleBackColor = true;
+            this.bAlarmReports.CheckedChanged += new System.EventHandler(this.bAlarmReports_CheckedChanged);
             // 
             // bAreaReports
             // 
-            bAreaReports.AutoSize = true;
-            bAreaReports.Location = new Point(38, 37);
-            bAreaReports.Name = "bAreaReports";
-            bAreaReports.Size = new Size(138, 28);
-            bAreaReports.TabIndex = 0;
-            bAreaReports.TabStop = true;
-            bAreaReports.Text = "Area Reports";
-            bAreaReports.UseVisualStyleBackColor = true;
+            this.bAreaReports.AutoSize = true;
+            this.bAreaReports.Location = new System.Drawing.Point(38, 37);
+            this.bAreaReports.Name = "bAreaReports";
+            this.bAreaReports.Size = new System.Drawing.Size(138, 28);
+            this.bAreaReports.TabIndex = 0;
+            this.bAreaReports.TabStop = true;
+            this.bAreaReports.Text = "Area Reports";
+            this.bAreaReports.UseVisualStyleBackColor = true;
+            this.bAreaReports.CheckedChanged += new System.EventHandler(this.bAreaReports_CheckedChanged);
             // 
             // Label5
             // 
-            Label5.AutoSize = true;
-            Label5.Font = new Font("Microsoft Sans Serif", 12.0f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            Label5.Location = new Point(709, 85);
-            Label5.Name = "Label5";
-            Label5.Size = new Size(177, 20);
-            Label5.TabIndex = 2;
-            Label5.Text = "Report Time Interval ";
+            this.Label5.AutoSize = true;
+            this.Label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label5.Location = new System.Drawing.Point(709, 85);
+            this.Label5.Name = "Label5";
+            this.Label5.Size = new System.Drawing.Size(177, 20);
+            this.Label5.TabIndex = 2;
+            this.Label5.Text = "Report Time Interval ";
             // 
             // oTimer
             // 
-            oTimer.Interval = 3000;
+            this.oTimer.Interval = 3000;
+            this.oTimer.Tick += new System.EventHandler(this.oTimer_Tick);
             // 
             // cInterval
             // 
-            cInterval.DropDownStyle = ComboBoxStyle.DropDownList;
-            cInterval.FormattingEnabled = true;
-            cInterval.Items.AddRange(new object[] { "1", "5", "15", "30", "60" });
-            cInterval.Location = new Point(713, 109);
-            cInterval.Name = "cInterval";
-            cInterval.Size = new Size(121, 24);
-            cInterval.TabIndex = 334;
+            this.cInterval.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cInterval.FormattingEnabled = true;
+            this.cInterval.Items.AddRange(new object[] {
+            "1",
+            "5",
+            "15",
+            "30",
+            "60"});
+            this.cInterval.Location = new System.Drawing.Point(713, 109);
+            this.cInterval.Name = "cInterval";
+            this.cInterval.Size = new System.Drawing.Size(121, 24);
+            this.cInterval.TabIndex = 334;
             // 
             // oProgress
             // 
-            oProgress.Location = new Point(25, 658);
-            oProgress.Name = "oProgress";
-            oProgress.Size = new Size(960, 23);
-            oProgress.TabIndex = 335;
+            this.oProgress.Location = new System.Drawing.Point(25, 658);
+            this.oProgress.Name = "oProgress";
+            this.oProgress.Size = new System.Drawing.Size(960, 23);
+            this.oProgress.TabIndex = 335;
             // 
             // oGrid
             // 
-            oGrid.AllowUserToAddRows = false;
-            oGrid.AllowUserToDeleteRows = false;
-            oGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            oGrid.Columns.AddRange(new DataGridViewColumn[] { StatusID, ReportFileName, ReportPathName, Open });
-            oGrid.Location = new Point(334, 700);
-            oGrid.Name = "oGrid";
-            oGrid.RowHeadersVisible = false;
-            oGrid.RowHeadersWidth = 51;
-            oGrid.Size = new Size(651, 150);
-            oGrid.TabIndex = 336;
-            // 
-            // StatusID
-            // 
-            StatusID.HeaderText = "StatusID";
-            StatusID.MinimumWidth = 6;
-            StatusID.Name = "StatusID";
-            StatusID.Visible = false;
-            StatusID.Width = 125;
-            // 
-            // ReportFileName
-            // 
-            ReportFileName.HeaderText = "Report File Name";
-            ReportFileName.MinimumWidth = 6;
-            ReportFileName.Name = "ReportFileName";
-            ReportFileName.ReadOnly = true;
-            ReportFileName.Width = 400;
-            // 
-            // ReportPathName
-            // 
-            ReportPathName.HeaderText = "ReportPathName";
-            ReportPathName.MinimumWidth = 6;
-            ReportPathName.Name = "ReportPathName";
-            ReportPathName.ReadOnly = true;
-            ReportPathName.Visible = false;
-            ReportPathName.Width = 125;
-            // 
-            // Open
-            // 
-            Open.HeaderText = "Open";
-            Open.MinimumWidth = 6;
-            Open.Name = "Open";
-            Open.Text = "Open";
-            Open.Width = 125;
+            this.oGrid.AllowUserToAddRows = false;
+            this.oGrid.AllowUserToDeleteRows = false;
+            this.oGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.oGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ReportHeader,
+            this.ReportTitle,
+            this.Username,
+            this.FromDate,
+            this.ToDate,
+            this.Progress,
+            this.Output});
+            this.oGrid.Location = new System.Drawing.Point(60, 700);
+            this.oGrid.Name = "oGrid";
+            this.oGrid.RowHeadersVisible = false;
+            this.oGrid.RowHeadersWidth = 51;
+            this.oGrid.Size = new System.Drawing.Size(925, 150);
+            this.oGrid.TabIndex = 336;
+            this.oGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.oGrid_CellClick);
+            this.oGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.oGrid_CellContentClick);
             // 
             // Label6
             // 
-            Label6.AutoSize = true;
-            Label6.Font = new Font("Microsoft Sans Serif", 12.0f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            Label6.Location = new Point(315, 88);
-            Label6.Name = "Label6";
-            Label6.Size = new Size(110, 20);
-            Label6.TabIndex = 2;
-            Label6.Text = "Group Name";
+            this.Label6.AutoSize = true;
+            this.Label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label6.Location = new System.Drawing.Point(315, 88);
+            this.Label6.Name = "Label6";
+            this.Label6.Size = new System.Drawing.Size(110, 20);
+            this.Label6.TabIndex = 2;
+            this.Label6.Text = "Group Name";
             // 
             // cGroup
             // 
-            cGroup.DropDownStyle = ComboBoxStyle.DropDownList;
-            cGroup.FormattingEnabled = true;
-            cGroup.Location = new Point(319, 112);
-            cGroup.Name = "cGroup";
-            cGroup.Size = new Size(325, 24);
-            cGroup.TabIndex = 337;
+            this.cGroup.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cGroup.FormattingEnabled = true;
+            this.cGroup.Location = new System.Drawing.Point(319, 112);
+            this.cGroup.Name = "cGroup";
+            this.cGroup.Size = new System.Drawing.Size(325, 24);
+            this.cGroup.TabIndex = 337;
+            this.cGroup.SelectedIndexChanged += new System.EventHandler(this.cGroup_SelectedIndexChanged);
             // 
             // bCOnfigureReports
             // 
-            bCOnfigureReports.Font = new Font("Microsoft Sans Serif", 12.0f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            bCOnfigureReports.Location = new Point(32, 340);
-            bCOnfigureReports.Name = "bCOnfigureReports";
-            bCOnfigureReports.Size = new Size(260, 37);
-            bCOnfigureReports.TabIndex = 338;
-            bCOnfigureReports.Text = "Configure Data Trend Reports";
-            bCOnfigureReports.UseVisualStyleBackColor = true;
-            bCOnfigureReports.Visible = false;
+            this.bCOnfigureReports.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bCOnfigureReports.Location = new System.Drawing.Point(32, 340);
+            this.bCOnfigureReports.Name = "bCOnfigureReports";
+            this.bCOnfigureReports.Size = new System.Drawing.Size(260, 37);
+            this.bCOnfigureReports.TabIndex = 338;
+            this.bCOnfigureReports.Text = "Configure Data Trend Reports";
+            this.bCOnfigureReports.UseVisualStyleBackColor = true;
+            this.bCOnfigureReports.Visible = false;
+            this.bCOnfigureReports.Click += new System.EventHandler(this.bCOnfigureReports_Click);
             // 
             // bConfigureAlarmReports
             // 
-            bConfigureAlarmReports.Font = new Font("Microsoft Sans Serif", 12.0f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            bConfigureAlarmReports.Location = new Point(32, 473);
-            bConfigureAlarmReports.Name = "bConfigureAlarmReports";
-            bConfigureAlarmReports.Size = new Size(260, 37);
-            bConfigureAlarmReports.TabIndex = 338;
-            bConfigureAlarmReports.Text = "Configure Alarm Reports";
-            bConfigureAlarmReports.UseVisualStyleBackColor = true;
-            bConfigureAlarmReports.Visible = false;
+            this.bConfigureAlarmReports.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bConfigureAlarmReports.Location = new System.Drawing.Point(32, 473);
+            this.bConfigureAlarmReports.Name = "bConfigureAlarmReports";
+            this.bConfigureAlarmReports.Size = new System.Drawing.Size(260, 37);
+            this.bConfigureAlarmReports.TabIndex = 338;
+            this.bConfigureAlarmReports.Text = "Configure Alarm Reports";
+            this.bConfigureAlarmReports.UseVisualStyleBackColor = true;
+            this.bConfigureAlarmReports.Visible = false;
+            this.bConfigureAlarmReports.Click += new System.EventHandler(this.bConfigureAlarmReports_Click);
             // 
             // bGenerateChart
             // 
-            bGenerateChart.Font = new Font("Microsoft Sans Serif", 14.25f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            bGenerateChart.Location = new Point(713, 412);
-            bGenerateChart.Name = "bGenerateChart";
-            bGenerateChart.Size = new Size(178, 47);
-            bGenerateChart.TabIndex = 328;
-            bGenerateChart.Text = "Generate Chart";
-            bGenerateChart.UseVisualStyleBackColor = true;
+            this.bGenerateChart.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bGenerateChart.Location = new System.Drawing.Point(713, 412);
+            this.bGenerateChart.Name = "bGenerateChart";
+            this.bGenerateChart.Size = new System.Drawing.Size(178, 47);
+            this.bGenerateChart.TabIndex = 328;
+            this.bGenerateChart.Text = "Generate Chart";
+            this.bGenerateChart.UseVisualStyleBackColor = true;
+            this.bGenerateChart.Click += new System.EventHandler(this.bGenerateChart_Click);
             // 
             // Button1
             // 
-            Button1.Font = new Font("Microsoft Sans Serif", 12.0f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            Button1.Location = new Point(32, 516);
-            Button1.Name = "Button1";
-            Button1.Size = new Size(260, 37);
-            Button1.TabIndex = 339;
-            Button1.Text = "Synchronize Point Names";
-            Button1.UseVisualStyleBackColor = true;
+            this.Button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Button1.Location = new System.Drawing.Point(32, 516);
+            this.Button1.Name = "Button1";
+            this.Button1.Size = new System.Drawing.Size(260, 37);
+            this.Button1.TabIndex = 339;
+            this.Button1.Text = "Synchronize Point Names";
+            this.Button1.UseVisualStyleBackColor = true;
+            this.Button1.Click += new System.EventHandler(this.Button1_Click);
             // 
             // bConfigure
             // 
-            bConfigure.Font = new Font("Microsoft Sans Serif", 12.0f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            bConfigure.Location = new Point(32, 297);
-            bConfigure.Name = "bConfigure";
-            bConfigure.Size = new Size(260, 37);
-            bConfigure.TabIndex = 340;
-            bConfigure.Text = "Configure Main Parameters";
-            bConfigure.UseVisualStyleBackColor = true;
+            this.bConfigure.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bConfigure.Location = new System.Drawing.Point(32, 297);
+            this.bConfigure.Name = "bConfigure";
+            this.bConfigure.Size = new System.Drawing.Size(260, 37);
+            this.bConfigure.TabIndex = 340;
+            this.bConfigure.Text = "Configure Main Parameters";
+            this.bConfigure.UseVisualStyleBackColor = true;
+            this.bConfigure.Click += new System.EventHandler(this.bConfigure_Click);
             // 
             // btnExcursionReport
             // 
-            btnExcursionReport.Font = new Font("Microsoft Sans Serif", 12.0f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnExcursionReport.Location = new Point(32, 383);
-            btnExcursionReport.Name = "btnExcursionReport";
-            btnExcursionReport.Size = new Size(260, 37);
-            btnExcursionReport.TabIndex = 341;
-            btnExcursionReport.Text = "Configure Excursion Reports";
-            btnExcursionReport.UseVisualStyleBackColor = true;
-            btnExcursionReport.Visible = false;
+            this.btnExcursionReport.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnExcursionReport.Location = new System.Drawing.Point(32, 383);
+            this.btnExcursionReport.Name = "btnExcursionReport";
+            this.btnExcursionReport.Size = new System.Drawing.Size(260, 37);
+            this.btnExcursionReport.TabIndex = 341;
+            this.btnExcursionReport.Text = "Configure Excursion Reports";
+            this.btnExcursionReport.UseVisualStyleBackColor = true;
+            this.btnExcursionReport.Visible = false;
+            this.btnExcursionReport.Click += new System.EventHandler(this.btnExcursionReport_Click);
             // 
             // btnBatteryPercentage
             // 
-            btnBatteryPercentage.Font = new Font("Microsoft Sans Serif", 12.0f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnBatteryPercentage.Location = new Point(32, 430);
-            btnBatteryPercentage.Name = "btnBatteryPercentage";
-            btnBatteryPercentage.Size = new Size(260, 37);
-            btnBatteryPercentage.TabIndex = 342;
-            btnBatteryPercentage.Text = "Configure Battery  Reports";
-            btnBatteryPercentage.UseVisualStyleBackColor = true;
-            btnBatteryPercentage.Visible = false;
+            this.btnBatteryPercentage.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnBatteryPercentage.Location = new System.Drawing.Point(32, 430);
+            this.btnBatteryPercentage.Name = "btnBatteryPercentage";
+            this.btnBatteryPercentage.Size = new System.Drawing.Size(260, 37);
+            this.btnBatteryPercentage.TabIndex = 342;
+            this.btnBatteryPercentage.Text = "Configure Battery  Reports";
+            this.btnBatteryPercentage.UseVisualStyleBackColor = true;
+            this.btnBatteryPercentage.Visible = false;
+            this.btnBatteryPercentage.Click += new System.EventHandler(this.btnBatteryPercentage_Click);
             // 
             // ViewData
             // 
-            ViewData.Font = new Font("Microsoft Sans Serif", 14.25f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            ViewData.Location = new Point(713, 482);
-            ViewData.Name = "ViewData";
-            ViewData.Size = new Size(178, 47);
-            ViewData.TabIndex = 343;
-            ViewData.Text = "View Data";
-            ViewData.UseVisualStyleBackColor = true;
+            this.ViewData.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ViewData.Location = new System.Drawing.Point(713, 482);
+            this.ViewData.Name = "ViewData";
+            this.ViewData.Size = new System.Drawing.Size(178, 47);
+            this.ViewData.TabIndex = 343;
+            this.ViewData.Text = "View Data";
+            this.ViewData.UseVisualStyleBackColor = true;
+            this.ViewData.Click += new System.EventHandler(this.Button2_Click);
             // 
             // ViewGroups
             // 
-            ViewGroups.Font = new Font("Microsoft Sans Serif", 12.0f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            ViewGroups.Location = new Point(32, 559);
-            ViewGroups.Name = "ViewGroups";
-            ViewGroups.Size = new Size(260, 37);
-            ViewGroups.TabIndex = 344;
-            ViewGroups.Text = "Configure View Groups";
-            ViewGroups.UseVisualStyleBackColor = true;
+            this.ViewGroups.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ViewGroups.Location = new System.Drawing.Point(32, 559);
+            this.ViewGroups.Name = "ViewGroups";
+            this.ViewGroups.Size = new System.Drawing.Size(260, 37);
+            this.ViewGroups.TabIndex = 344;
+            this.ViewGroups.Text = "Configure View Groups";
+            this.ViewGroups.UseVisualStyleBackColor = true;
+            this.ViewGroups.Click += new System.EventHandler(this.Button2_Click_1);
+            // 
+            // ReportHeader
+            // 
+            this.ReportHeader.HeaderText = "Report Header";
+            this.ReportHeader.Name = "ReportHeader";
+            this.ReportHeader.Width = 200;
+            // 
+            // ReportTitle
+            // 
+            this.ReportTitle.HeaderText = "Report Title";
+            this.ReportTitle.Name = "ReportTitle";
+            this.ReportTitle.Width = 200;
+            // 
+            // Username
+            // 
+            this.Username.HeaderText = "User Name";
+            this.Username.Name = "Username";
+            // 
+            // FromDate
+            // 
+            this.FromDate.HeaderText = "From Date";
+            this.FromDate.Name = "FromDate";
+            this.FromDate.Width = 120;
+            // 
+            // ToDate
+            // 
+            this.ToDate.HeaderText = "To Date";
+            this.ToDate.Name = "ToDate";
+            this.ToDate.Width = 120;
+            // 
+            // Progress
+            // 
+            this.Progress.HeaderText = "Progress";
+            this.Progress.Name = "Progress";
+            this.Progress.Width = 60;
+            // 
+            // Output
+            // 
+            this.Output.HeaderText = "Output";
+            this.Output.Name = "Output";
+            this.Output.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Output.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // MainForm
             // 
-            AutoScaleDimensions = new SizeF(8.0f, 16.0f);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1129, 901);
-            Controls.Add(ViewGroups);
-            Controls.Add(ViewData);
-            Controls.Add(btnBatteryPercentage);
-            Controls.Add(btnExcursionReport);
-            Controls.Add(bConfigure);
-            Controls.Add(Button1);
-            Controls.Add(bConfigureAlarmReports);
-            Controls.Add(bCOnfigureReports);
-            Controls.Add(cGroup);
-            Controls.Add(oGrid);
-            Controls.Add(oProgress);
-            Controls.Add(cInterval);
-            Controls.Add(GroupBox1);
-            Controls.Add(oReportGrid);
-            Controls.Add(bGenerateChart);
-            Controls.Add(bGenerate);
-            Controls.Add(tr_ToDate);
-            Controls.Add(tr_FromDate);
-            Controls.Add(Label4);
-            Controls.Add(Label3);
-            Controls.Add(Label5);
-            Controls.Add(Label6);
-            Controls.Add(Label2);
-            Controls.Add(Label1);
-            Font = new Font("Microsoft Sans Serif", 9.75f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            FormBorderStyle = FormBorderStyle.FixedDialog;
-            Margin = new Padding(4);
-            Name = "MainForm";
-            StartPosition = FormStartPosition.CenterScreen;
-            ((System.ComponentModel.ISupportInitialize)oReportGrid).EndInit();
-            GroupBox1.ResumeLayout(false);
-            GroupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)oGrid).EndInit();
-            Load += new EventHandler(MainForm_Load);
-            Closing += new System.ComponentModel.CancelEventHandler(MainForm_Closing);
-            ResumeLayout(false);
-            PerformLayout();
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(1129, 901);
+            this.Controls.Add(this.ViewGroups);
+            this.Controls.Add(this.ViewData);
+            this.Controls.Add(this.btnBatteryPercentage);
+            this.Controls.Add(this.btnExcursionReport);
+            this.Controls.Add(this.bConfigure);
+            this.Controls.Add(this.Button1);
+            this.Controls.Add(this.bConfigureAlarmReports);
+            this.Controls.Add(this.bCOnfigureReports);
+            this.Controls.Add(this.cGroup);
+            this.Controls.Add(this.oGrid);
+            this.Controls.Add(this.oProgress);
+            this.Controls.Add(this.cInterval);
+            this.Controls.Add(this.GroupBox1);
+            this.Controls.Add(this.oReportGrid);
+            this.Controls.Add(this.bGenerateChart);
+            this.Controls.Add(this.bGenerate);
+            this.Controls.Add(this.tr_ToDate);
+            this.Controls.Add(this.tr_FromDate);
+            this.Controls.Add(this.Label4);
+            this.Controls.Add(this.Label3);
+            this.Controls.Add(this.Label5);
+            this.Controls.Add(this.Label6);
+            this.Controls.Add(this.Label2);
+            this.Controls.Add(this.Label1);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Margin = new System.Windows.Forms.Padding(4);
+            this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Closing += new System.ComponentModel.CancelEventHandler(this.MainForm_Closing);
+            this.Load += new System.EventHandler(this.MainForm_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.oReportGrid)).EndInit();
+            this.GroupBox1.ResumeLayout(false);
+            this.GroupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.oGrid)).EndInit();
+            this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -513,10 +541,6 @@ namespace EmsBMSReports
         internal ComboBox cInterval;
         internal ProgressBar oProgress;
         internal DataGridView oGrid;
-        internal DataGridViewTextBoxColumn StatusID;
-        internal DataGridViewTextBoxColumn ReportFileName;
-        internal DataGridViewTextBoxColumn ReportPathName;
-        internal DataGridViewButtonColumn Open;
         internal Label Label6;
         internal ComboBox cGroup;
         internal Button bCOnfigureReports;
@@ -528,5 +552,12 @@ namespace EmsBMSReports
         internal Button btnBatteryPercentage;
         internal Button ViewData;
         internal Button ViewGroups;
+        private DataGridViewTextBoxColumn ReportHeader;
+        private DataGridViewTextBoxColumn ReportTitle;
+        private DataGridViewTextBoxColumn Username;
+        private DataGridViewTextBoxColumn FromDate;
+        private DataGridViewTextBoxColumn ToDate;
+        private DataGridViewTextBoxColumn Progress;
+        private DataGridViewTextBoxColumn Output;
     }
 }

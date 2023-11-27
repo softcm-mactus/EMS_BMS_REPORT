@@ -68,7 +68,7 @@ Public Class MainPage
                 r.Cells.Add(c)
 
                 c = New TableCell()
-                c.Controls.Add(New LiteralControl(oReader("progress")))
+                c.Controls.Add(New LiteralControl(oReader("progress").ToString() + "%"))
                 r.Cells.Add(c)
 
                 c = New TableCell()
@@ -87,6 +87,8 @@ Public Class MainPage
 
                 StatusTable.Rows.Add(r)
             End While
+            oReader.Close()
+            oConnection.Close()
         Catch ex As Exception
             'Response.Redirect("DBError.aspx", False)
         End Try
