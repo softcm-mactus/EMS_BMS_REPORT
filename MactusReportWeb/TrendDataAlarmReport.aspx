@@ -57,6 +57,39 @@
         <div style="text-align: center">
             <asp:Button ID="bGenerateReport" runat="server" Text="Generate Report" BorderColor="Black" BorderStyle="Solid" BackColor="#3399FF" Font-Bold="True" Font-Size="XX-Large" />
         </div>
+            <div style="margin:20px">
+             <div style="margin:20px;font-size:30px;font-weight:600">Pending Reports</div>
+                <asp:Table runat="server"
+                    CellPadding="10"
+                    GridLines="Both" ID="StatusTable">
+         <asp:TableHeaderRow id="StatusHeaderRow" 
+            BackColor="LightBlue"
+            runat="server">
+            <asp:TableHeaderCell 
+                Scope="Column" 
+                Text="Report Header" />
+            <asp:TableHeaderCell 
+                Scope="Column" 
+                Text="Report Title" />
+            <asp:TableHeaderCell 
+                Scope="Column" 
+                Text="From Date" />
+            <asp:TableHeaderCell 
+                Scope="Column" 
+                Text="To Date" />
+            <asp:TableHeaderCell  
+                Scope="Column" 
+                Text="User" />
+            <asp:TableHeaderCell 
+                Scope="Column" 
+                Text="Progress" />
+            <asp:TableHeaderCell 
+                Scope="Column" 
+                Text="Status" />
+        </asp:TableHeaderRow>  
+    </asp:Table>
+         </div>
+
        
     </form>
 </body>

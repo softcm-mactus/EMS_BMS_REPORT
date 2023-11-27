@@ -58,6 +58,38 @@
                     
                 </div>
             </div>
+            <div style="margin:20px">
+             <div style="margin:20px;font-size:30px;font-weight:600">Pending Reports</div>
+                <asp:Table runat="server"
+                    CellPadding="10"
+                    GridLines="Both" ID="StatusTable">
+         <asp:TableHeaderRow id="StatusHeaderRow" 
+            BackColor="LightBlue"
+            runat="server">
+            <asp:TableHeaderCell 
+                Scope="Column" 
+                Text="Report Header" />
+            <asp:TableHeaderCell 
+                Scope="Column" 
+                Text="Report Title" />
+            <asp:TableHeaderCell 
+                Scope="Column" 
+                Text="From Date" />
+            <asp:TableHeaderCell 
+                Scope="Column" 
+                Text="To Date" />
+            <asp:TableHeaderCell  
+                Scope="Column" 
+                Text="User" />
+            <asp:TableHeaderCell 
+                Scope="Column" 
+                Text="Progress" />
+            <asp:TableHeaderCell 
+                Scope="Column" 
+                Text="Status" />
+        </asp:TableHeaderRow>  
+    </asp:Table>
+         </div>
             <br />
 
             <%-- <div class="row">

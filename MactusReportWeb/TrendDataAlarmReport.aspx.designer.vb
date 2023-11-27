@@ -111,4 +111,22 @@ Partial Public Class TrendDataAlarmReport
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents bGenerateReport As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''StatusTable control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents StatusTable As Global.System.Web.UI.WebControls.Table
+
+    '''<summary>
+    '''StatusHeaderRow control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents StatusHeaderRow As Global.System.Web.UI.WebControls.TableHeaderRow
 End Class
