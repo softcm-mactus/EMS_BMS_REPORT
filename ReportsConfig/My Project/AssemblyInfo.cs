@@ -8,10 +8,10 @@ using System.Runtime.InteropServices;
 
 // Review the values of the assembly attributes
 
-[assembly: AssemblyTitle("ReportsConfig")]
+[assembly: AssemblyTitle("ReportsSetup")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ReportsConfig")]
+[assembly: AssemblyProduct("ReportsSetup")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 

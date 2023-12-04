@@ -240,8 +240,6 @@ Public Module MactusReportLib
 
     Public Sub LogData(ByRef sData As String, ByVal sFileName As String)
         Try
-
-
             Dim oWriter As System.IO.StreamWriter
             If File.Exists(g_sOutputFileDir + "\" + sFileName) Then
                 oWriter = New System.IO.StreamWriter(g_sOutputFileDir + "\" + sFileName, FileMode.Append)

@@ -100,7 +100,7 @@ namespace EmsBMSReports
             this.bGenerate.TabIndex = 328;
             this.bGenerate.Text = "Test Connection";
             this.bGenerate.UseVisualStyleBackColor = true;
-            this.bGenerate.Click += new System.EventHandler(this.bGenerate_Click);
+            this.bGenerate.Click += new System.EventHandler(this.testDBConnection);
             // 
             // label2
             // 
@@ -316,6 +316,7 @@ namespace EmsBMSReports
             this.ebodb.Name = "ebodb";
             this.ebodb.Size = new System.Drawing.Size(276, 24);
             this.ebodb.TabIndex = 376;
+            this.ebodb.DropDown += new System.EventHandler(this.ebodb_DropDown);
             // 
             // label16
             // 

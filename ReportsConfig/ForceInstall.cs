@@ -9,17 +9,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ReportsConfig
+namespace ReportsSetup
 {
     public partial class ForceInstall : Form
     {
         public string webpath = "";
         public string apppath = "";
+        public string installInfo = "";
 
         public string result = "";
+        public bool isCorrupted = false;
 
-        public ForceInstall()
+        public ForceInstall(string _appPath, string _webPath)
         {
+            this.apppath = _appPath;
+            this.webpath = _webPath;
             InitializeComponent();
         }
 
@@ -36,14 +40,19 @@ namespace ReportsConfig
         private void ForceInstall_Load(object sender, EventArgs e)
         {
             string msg ="";
+            if(isCorrupted)
+            {
+                msg += $"Previous installation info at {installInfo} is corrupted\n";
+            }
             if (Directory.Exists(webpath))
             {
                 msg += $"Web site path '{webpath}' already exist\n";
             }
             if (Directory.Exists(apppath))
             {
-                msg += $"Application install path '{webpath}' already exist\n";
+                msg += $"Application install path '{apppath}' already exist\n";
             }
+            this.msg.Text = msg;
         }
 
         private void Upgrade_Click(object sender, EventArgs e)

@@ -1,0 +1,46 @@
+Page Name:: EMSBMSReportService  Function Name:: OnStop()  Date Time :: 11/27/2023 10:08:15 PM Error Message :: Service Stopped
+Page Name:: EMSBMSReportService  Function Name:: OnStop()  Date Time :: 11/27/2023 10:09:48 PM Error Message :: Service Stopped
+Page Name:: EMSBMSReportService  Function Name:: OnStop()  Date Time :: 11/27/2023 10:10:20 PM Error Message :: Service Stopped
+Page Name:: EMSBMSReportService  Function Name:: OnStop()  Date Time :: 11/27/2023 10:13:25 PM Error Message :: Service Stopped
+Page Name:: EMSBMSReportService  Function Name:: OnStop()  Date Time :: 11/27/2023 11:26:53 PM Error Message :: Service Stopped
+Page Name:: EMSBMSReportService  Function Name:: OnStop()  Date Time :: 11/27/2023 11:27:13 PM Error Message :: Service Stopped
+Page Name:: MactusReportLib.vb  Function Name:: GenerateReport  Date Time :: 11/28/2023 3:23:14 AM Error Message :: ERROR [HYT00] [Microsoft][ODBC SQL Server Driver]Query timeout expired
+Page Name:: MactusReportLib.vb  Function Name:: GenerateReport  Date Time :: 11/28/2023 3:26:22 AM Error Message :: ERROR [HYT00] [Microsoft][ODBC SQL Server Driver]Query timeout expired
+Page Name:: MactusReportLib.vb  Function Name:: GenerateReport  Date Time :: 11/28/2023 11:26:05 AM Error Message :: ERROR [HYT00] [Microsoft][ODBC SQL Server Driver]Query timeout expired
+Page Name:: MactusReportLib.vb  Function Name:: GenerateReport  Date Time :: 11/28/2023 11:26:22 AM Error Message :: ERROR [08001] [Microsoft][ODBC SQL Server Driver][DBNETLIB]SQL Server does not exist or access denied.
+ERROR [01000] [Microsoft][ODBC SQL Server Driver][DBNETLIB]ConnectionOpen (Connect()).
+Page Name:: MactusReportLib.vb  Function Name:: GenerateReport  Date Time :: 11/28/2023 11:26:40 AM Error Message :: ERROR [08001] [Microsoft][ODBC SQL Server Driver][DBNETLIB]SQL Server does not exist or access denied.
+ERROR [01000] [Microsoft][ODBC SQL Server Driver][DBNETLIB]ConnectionOpen (Connect()).
+Page Name:: MactusReportLib.vb  Function Name:: GenerateReport  Date Time :: 11/28/2023 11:26:56 AM Error Message :: ERROR [08001] [Microsoft][ODBC SQL Server Driver][DBNETLIB]SQL Server does not exist or access denied.
+ERROR [01000] [Microsoft][ODBC SQL Server Driver][DBNETLIB]ConnectionOpen (Connect()).
+Page Name:: MactusReportLib.vb  Function Name:: GenerateReport  Date Time :: 11/28/2023 11:27:13 AM Error Message :: ERROR [08001] [Microsoft][ODBC SQL Server Driver][DBNETLIB]SQL Server does not exist or access denied.
+ERROR [01000] [Microsoft][ODBC SQL Server Driver][DBNETLIB]ConnectionOpen (Connect()).
+Page Name:: MactusReportLib.vb  Function Name:: GenerateReport  Date Time :: 11/28/2023 11:27:31 AM Error Message :: ERROR [08001] [Microsoft][ODBC SQL Server Driver][DBNETLIB]SQL Server does not exist or access denied.
+ERROR [01000] [Microsoft][ODBC SQL Server Driver][DBNETLIB]ConnectionOpen (Connect()).
+Page Name:: MactusReportLib.vb  Function Name:: GenerateReport  Date Time :: 11/28/2023 11:27:47 AM Error Message :: ERROR [08001] [Microsoft][ODBC SQL Server Driver][DBNETLIB]SQL Server does not exist or access denied.
+ERROR [01000] [Microsoft][ODBC SQL Server Driver][DBNETLIB]ConnectionOpen (Connect()).
+Page Name:: MactusReportLib.vb  Function Name:: GenerateReport  Date Time :: 11/28/2023 11:28:04 AM Error Message :: ERROR [08001] [Microsoft][ODBC SQL Server Driver][DBNETLIB]SQL Server does not exist or access denied.
+ERROR [01000] [Microsoft][ODBC SQL Server Driver][DBNETLIB]ConnectionOpen (Connect()).
+Page Name:: MactusReportLib.vb  Function Name:: GenerateReport  Date Time :: 11/28/2023 11:50:20 AM Error Message :: ERROR [HYT00] [Microsoft][ODBC SQL Server Driver]Query timeout expired
+Page Name:: MactusReportLib.vb  Function Name:: GenerateReport  Date Time :: 11/28/2023 1:38:24 PM Error Message :: ERROR [HYT00] [Microsoft][ODBC SQL Server Driver]Query timeout expired
+Page Name:: MactusReportLib.vb  Function Name:: GenerateReport  Date Time :: 11/28/2023 3:41:06 PM Error Message :: ERROR [HYT00] [Microsoft][ODBC SQL Server Driver]Query timeout expired
+Page Name:: MactusReportLib.vb  Function Name:: GenerateReport  Date Time :: 11/28/2023 3:47:53 PM Error Message :: ERROR [HYT00] [Microsoft][ODBC SQL Server Driver]Query timeout expired
+Page Name:: MactusReportLib.vb  Function Name:: GenerateReport  Date Time :: 11/28/2023 3:52:45 PM Error Message :: ERROR [HYT00] [Microsoft][ODBC SQL Server Driver]Query timeout expired
+Page Name:: MactusReportLib.vb  Function Name:: GenerateReport  Date Time :: 11/28/2023 3:53:01 PM Error Message :: ERROR [HYT00] [Microsoft][ODBC SQL Server Driver]Login timeout expired
+Page Name:: MactusReportLib.vb  Function Name:: GenerateReport  Date Time :: 11/28/2023 3:58:23 PM Error Message :: The connection has been disabled.
+Page Name:: MactusReportLib.vb  Function Name:: GenerateReport  Date Time :: 11/28/2023 4:05:53 PM Error Message :: The connection has been disabled.
+Page Name:: MactusReportLib.vb  Function Name:: GenerateReport  Date Time :: 11/28/2023 4:06:10 PM Error Message :: ERROR [08001] [Microsoft][ODBC SQL Server Driver][DBNETLIB]SQL Server does not exist or access denied.
+ERROR [01000] [Microsoft][ODBC SQL Server Driver][DBNETLIB]ConnectionOpen (Connect()).
+Page Name:: MactusReportLib.vb  Function Name:: GenerateReport  Date Time :: 11/29/2023 4:01:43 AM Error Message :: ERROR [HYT00] [Microsoft][ODBC SQL Server Driver]Login timeout expired
+Page Name:: MactusReportLib.vb  Function Name:: GenerateReport  Date Time :: 11/29/2023 8:37:50 AM Error Message :: ERROR [HYT00] [Microsoft][ODBC SQL Server Driver]Query timeout expired
+Page Name:: MactusReportLib.vb  Function Name:: GenerateReport  Date Time :: 11/29/2023 8:44:24 AM Error Message :: ERROR [HYT00] [Microsoft][ODBC SQL Server Driver]Query timeout expired
+Page Name:: EMSBMSReportService  Function Name:: OnStop()  Date Time :: 11/30/2023 1:09:57 AM Error Message :: Service Stopped
+Page Name:: EMSBMSReportService  Function Name:: OnStop()  Date Time :: 11/30/2023 1:52:43 AM Error Message :: Service Stopped
+Page Name:: EMSBMSReportService  Function Name:: OnStop()  Date Time :: 11/30/2023 2:42:44 PM Error Message :: Service Stopped
+Page Name:: EMSBMSReportService  Function Name:: OnStop()  Date Time :: 11/30/2023 2:43:03 PM Error Message :: Service Stopped
+Page Name:: EMSBMSReportService  Function Name:: OnStop()  Date Time :: 11/30/2023 3:06:36 PM Error Message :: Service Stopped
+Page Name:: EMSBMSReportService  Function Name:: OnStop()  Date Time :: 11/30/2023 3:17:13 PM Error Message :: Service Stopped
+Page Name:: MactusReportLib.vb  Function Name:: GenerateReport  Date Time :: 11/30/2023 9:26:07 PM Error Message :: ERROR [HYT00] [Microsoft][ODBC SQL Server Driver]Query timeout expired
+Page Name:: MactusReportLib.vb  Function Name:: GenerateReport  Date Time :: 12/1/2023 12:24:17 AM Error Message :: ERROR [HYT00] [Microsoft][ODBC SQL Server Driver]Login timeout expired
+Page Name:: MactusReportLib.vb  Function Name:: GenerateReport  Date Time :: 12/1/2023 3:05:25 AM Error Message :: ERROR [HYT00] [Microsoft][ODBC SQL Server Driver]Login timeout expired
+Page Name:: MactusReportLib.vb  Function Name:: GenerateReport  Date Time :: 12/1/2023 6:11:31 AM Error Message :: ERROR [HYT00] [Microsoft][ODBC SQL Server Driver]Login timeout expired

@@ -1,4 +1,4 @@
-﻿namespace ReportsConfig
+﻿namespace ReportsSetup
 {
     partial class ForceInstall
     {
@@ -51,7 +51,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(353, 137);
+            this.label2.Location = new System.Drawing.Point(353, 132);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(231, 20);
             this.label2.TabIndex = 1;
@@ -61,10 +61,10 @@
             // Upgrade
             // 
             this.Upgrade.BackColor = System.Drawing.Color.LimeGreen;
-            this.Upgrade.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Upgrade.Location = new System.Drawing.Point(608, 129);
+            this.Upgrade.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Upgrade.Location = new System.Drawing.Point(600, 117);
             this.Upgrade.Name = "Upgrade";
-            this.Upgrade.Size = new System.Drawing.Size(145, 37);
+            this.Upgrade.Size = new System.Drawing.Size(153, 49);
             this.Upgrade.TabIndex = 1;
             this.Upgrade.Text = "Upgrade";
             this.Upgrade.UseVisualStyleBackColor = false;
@@ -72,10 +72,10 @@
             // 
             // Cancel
             // 
-            this.Cancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Cancel.Location = new System.Drawing.Point(608, 267);
+            this.Cancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Cancel.Location = new System.Drawing.Point(600, 255);
             this.Cancel.Name = "Cancel";
-            this.Cancel.Size = new System.Drawing.Size(145, 37);
+            this.Cancel.Size = new System.Drawing.Size(153, 49);
             this.Cancel.TabIndex = 3;
             this.Cancel.Text = "Cancel";
             this.Cancel.UseVisualStyleBackColor = true;
@@ -84,10 +84,10 @@
             // Force
             // 
             this.Force.BackColor = System.Drawing.Color.Tomato;
-            this.Force.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Force.Location = new System.Drawing.Point(608, 196);
+            this.Force.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Force.Location = new System.Drawing.Point(600, 184);
             this.Force.Name = "Force";
-            this.Force.Size = new System.Drawing.Size(145, 37);
+            this.Force.Size = new System.Drawing.Size(153, 49);
             this.Force.TabIndex = 2;
             this.Force.Text = "Force Install";
             this.Force.UseVisualStyleBackColor = false;
@@ -97,7 +97,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(376, 213);
+            this.label1.Location = new System.Drawing.Point(376, 204);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(208, 20);
             this.label1.TabIndex = 4;
@@ -107,7 +107,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(387, 275);
+            this.label3.Location = new System.Drawing.Point(387, 266);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(197, 20);
             this.label3.TabIndex = 5;
@@ -117,10 +117,10 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(604, 62);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(113, 20);
+            this.label4.Size = new System.Drawing.Size(147, 24);
             this.label4.TabIndex = 6;
             this.label4.Text = "Choose Action";
             // 

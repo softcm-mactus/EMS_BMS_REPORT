@@ -1775,13 +1775,13 @@ Public Class EBOReport
 
 
                                 If g_oColList(nCol).m_bLowCheck And g_oColList(nCol).m_fLow <> 0 Then
-                                    If g_oColList(nCol).m_fValue < g_oColList(nCol).m_fLow Then
+                                    If g_oColList(nCol).m_fValue <= g_oColList(nCol).m_fLow Then
                                         g_oColList(nCol).m_bError = True
                                     End If
                                 End If
                                 If g_oColList(nCol).m_bHighCheck And g_oColList(nCol).m_fHigh <> 0 Then
 
-                                    If g_oColList(nCol).m_fValue > g_oColList(nCol).m_fHigh Then
+                                    If g_oColList(nCol).m_fValue >= g_oColList(nCol).m_fHigh Then
                                         g_oColList(nCol).m_bError = True
 
                                     End If
