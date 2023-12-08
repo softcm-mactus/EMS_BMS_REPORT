@@ -44,3 +44,5 @@ Page Name:: MactusReportLib.vb  Function Name:: GenerateReport  Date Time :: 11/
 Page Name:: MactusReportLib.vb  Function Name:: GenerateReport  Date Time :: 12/1/2023 12:24:17 AM Error Message :: ERROR [HYT00] [Microsoft][ODBC SQL Server Driver]Login timeout expired
 Page Name:: MactusReportLib.vb  Function Name:: GenerateReport  Date Time :: 12/1/2023 3:05:25 AM Error Message :: ERROR [HYT00] [Microsoft][ODBC SQL Server Driver]Login timeout expired
 Page Name:: MactusReportLib.vb  Function Name:: GenerateReport  Date Time :: 12/1/2023 6:11:31 AM Error Message :: ERROR [HYT00] [Microsoft][ODBC SQL Server Driver]Login timeout expired
+Page Name:: EMSBMSReportService  Function Name:: OnStop()  Date Time :: 12/7/2023 7:57:01 PM Error Message :: Service Stopped
+Page Name:: EMSBMSReportService  Function Name:: OnStop()  Date Time :: 12/8/2023 9:23:11 AM Error Message :: Service Stopped

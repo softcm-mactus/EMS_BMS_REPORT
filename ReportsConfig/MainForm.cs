@@ -382,5 +382,22 @@ namespace EmsBMSReports
                 error.Text = ex.Message;
             }
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            CreateDB createDB = new CreateDB();
+            createDB.serverValue = server.Text;
+            createDB.databaseValue = database.Text;
+            createDB.usernameValue = username.Text; 
+            createDB.passwordValue = password.Text; 
+
+            createDB.ShowDialog();
+            if(createDB.databaseValue != null && createDB.databaseValue.Length>0) {
+                server.Text = createDB.serverValue;
+                database.Text = createDB.databaseValue;
+                password.Text = createDB.passwordValue;
+                username.Text = createDB.usernameValue;
+            }
+        }
     }
 }

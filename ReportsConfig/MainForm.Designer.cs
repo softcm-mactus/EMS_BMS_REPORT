@@ -75,6 +75,7 @@ namespace EmsBMSReports
             this.webport = new System.Windows.Forms.NumericUpDown();
             this.servicename = new System.Windows.Forms.TextBox();
             this.label19 = new System.Windows.Forms.Label();
+            this.button2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.webport)).BeginInit();
             this.SuspendLayout();
             // 
@@ -85,7 +86,7 @@ namespace EmsBMSReports
             this.Label1.ForeColor = System.Drawing.Color.White;
             this.Label1.Location = new System.Drawing.Point(2, -3);
             this.Label1.Name = "Label1";
-            this.Label1.Size = new System.Drawing.Size(861, 39);
+            this.Label1.Size = new System.Drawing.Size(932, 39);
             this.Label1.TabIndex = 0;
             this.Label1.Text = "Mactus EMS Reports Setup";
             this.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -94,7 +95,7 @@ namespace EmsBMSReports
             // bGenerate
             // 
             this.bGenerate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bGenerate.Location = new System.Drawing.Point(655, 44);
+            this.bGenerate.Location = new System.Drawing.Point(701, 44);
             this.bGenerate.Name = "bGenerate";
             this.bGenerate.Size = new System.Drawing.Size(178, 28);
             this.bGenerate.TabIndex = 328;
@@ -293,7 +294,7 @@ namespace EmsBMSReports
             // 
             // eboserver
             // 
-            this.eboserver.Location = new System.Drawing.Point(557, 92);
+            this.eboserver.Location = new System.Drawing.Point(603, 92);
             this.eboserver.Name = "eboserver";
             this.eboserver.Size = new System.Drawing.Size(276, 22);
             this.eboserver.TabIndex = 374;
@@ -302,7 +303,7 @@ namespace EmsBMSReports
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(438, 93);
+            this.label15.Location = new System.Drawing.Point(484, 93);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(78, 16);
             this.label15.TabIndex = 373;
@@ -312,7 +313,7 @@ namespace EmsBMSReports
             // ebodb
             // 
             this.ebodb.FormattingEnabled = true;
-            this.ebodb.Location = new System.Drawing.Point(557, 175);
+            this.ebodb.Location = new System.Drawing.Point(603, 175);
             this.ebodb.Name = "ebodb";
             this.ebodb.Size = new System.Drawing.Size(276, 24);
             this.ebodb.TabIndex = 376;
@@ -321,7 +322,7 @@ namespace EmsBMSReports
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(438, 179);
+            this.label16.Location = new System.Drawing.Point(484, 179);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(57, 16);
             this.label16.TabIndex = 375;
@@ -329,7 +330,7 @@ namespace EmsBMSReports
             // 
             // ebopassword
             // 
-            this.ebopassword.Location = new System.Drawing.Point(557, 253);
+            this.ebopassword.Location = new System.Drawing.Point(603, 253);
             this.ebopassword.Name = "ebopassword";
             this.ebopassword.Size = new System.Drawing.Size(276, 22);
             this.ebopassword.TabIndex = 380;
@@ -338,7 +339,7 @@ namespace EmsBMSReports
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(438, 257);
+            this.label17.Location = new System.Drawing.Point(484, 257);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(98, 16);
             this.label17.TabIndex = 379;
@@ -346,7 +347,7 @@ namespace EmsBMSReports
             // 
             // ebouser
             // 
-            this.ebouser.Location = new System.Drawing.Point(557, 215);
+            this.ebouser.Location = new System.Drawing.Point(603, 215);
             this.ebouser.Name = "ebouser";
             this.ebouser.Size = new System.Drawing.Size(276, 22);
             this.ebouser.TabIndex = 378;
@@ -355,7 +356,7 @@ namespace EmsBMSReports
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(438, 219);
+            this.label18.Location = new System.Drawing.Point(484, 219);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(101, 16);
             this.label18.TabIndex = 377;
@@ -364,7 +365,7 @@ namespace EmsBMSReports
             // ebotypelabel
             // 
             this.ebotypelabel.AutoSize = true;
-            this.ebotypelabel.Location = new System.Drawing.Point(438, 133);
+            this.ebotypelabel.Location = new System.Drawing.Point(484, 133);
             this.ebotypelabel.Name = "ebotypelabel";
             this.ebotypelabel.Size = new System.Drawing.Size(113, 16);
             this.ebotypelabel.TabIndex = 381;
@@ -378,7 +379,7 @@ namespace EmsBMSReports
             "PostgreSQL",
             "PostgreSQL ANSI",
             "PostgreSQL UNICODE"});
-            this.ebotype.Location = new System.Drawing.Point(557, 129);
+            this.ebotype.Location = new System.Drawing.Point(603, 129);
             this.ebotype.Name = "ebotype";
             this.ebotype.Size = new System.Drawing.Size(276, 24);
             this.ebotype.TabIndex = 382;
@@ -427,11 +428,22 @@ namespace EmsBMSReports
             this.label19.TabIndex = 385;
             this.label19.Text = "Service";
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(400, 129);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 26);
+            this.button2.TabIndex = 387;
+            this.button2.Text = "New DB";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(863, 641);
+            this.ClientSize = new System.Drawing.Size(912, 641);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.servicename);
             this.Controls.Add(this.label19);
             this.Controls.Add(this.webport);
@@ -520,5 +532,6 @@ namespace EmsBMSReports
         private NumericUpDown webport;
         private TextBox servicename;
         private Label label19;
+        private Button button2;
     }
 }

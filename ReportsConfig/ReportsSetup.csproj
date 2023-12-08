@@ -121,6 +121,7 @@
     </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Console, Version=4.0.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Console.4.3.1\lib\net46\System.Console.dll</HintPath>
       <Private>True</Private>
@@ -300,6 +301,13 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Class1.cs" />
+    <Compile Include="CreateDB.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CreateDB.Designer.cs">
+      <DependentUpon>CreateDB.cs</DependentUpon>
+    </Compile>
     <Compile Include="ForceInstall.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -346,6 +354,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="CreateDB.resx">
+      <DependentUpon>CreateDB.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ForceInstall.resx">
       <DependentUpon>ForceInstall.cs</DependentUpon>
     </EmbeddedResource>

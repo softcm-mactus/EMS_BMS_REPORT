@@ -23,6 +23,8 @@ using System.IO;
 using System.Data.Odbc;
 using System.Data.SqlClient;
 using Newtonsoft.Json;
+using System.Configuration.Install;
+using System.Security.Policy;
 
 namespace ReportsSetup
 {
@@ -48,6 +50,7 @@ namespace ReportsSetup
         {
             close.Enabled = false;
             errorMsg.Text = "";
+            Directory.CreateDirectory(installInfo.appInfo.path);
             installLog = new FileStream(installInfo.appInfo.path + "/install.log", FileMode.Create);
             Thread thread = new Thread(install);
             thread.Start();
@@ -225,6 +228,18 @@ namespace ReportsSetup
             Invoke(new Action(() => { progressBar.Value = 90; }));
             try
             {
+                if (!isUpgrade)
+                {
+                    logInfo("Installing Service");
+                    installService();
+                }
+            }
+            catch (Exception ex)
+            {
+                logError(ex.ToString());
+            }
+            try
+            {
                 logInfo("Starting Service");
                 startService(installInfo.appInfo.service);
             }
@@ -291,7 +306,7 @@ namespace ReportsSetup
             {
                 var process = new Process();
                 var startinfo = new ProcessStartInfo("sqlcmd.exe");
-                startinfo.Arguments = $"-S {installInfo.dbInfo.server} -d {installInfo.dbInfo.database} -U {installInfo.dbInfo.username} -P {installInfo.dbInfo.password} -i update.sql";
+                startinfo.Arguments = $"-S {installInfo.dbInfo.server} -d {installInfo.dbInfo.database} -U {installInfo.dbInfo.username} -P {installInfo.dbInfo.password} -i update.sql -r0";
                 startinfo.RedirectStandardOutput = true;
                 startinfo.RedirectStandardError = true;
                 startinfo.CreateNoWindow = false;
@@ -370,6 +385,25 @@ namespace ReportsSetup
                     newPool.Enable32BitAppOnWin64 = true;
                     newPool.ManagedPipelineMode = mode;
                     serverManager.CommitChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                logError(ex.ToString());
+            }
+        }
+        void installService()
+        {
+            try
+            { 
+                if(ServiceInstaller.isInstalled(installInfo.appInfo.service))
+                {
+                    ServiceInstaller.Uninstall(installInfo.appInfo.service);
+                }
+                ServiceInstaller.Install(installInfo.appInfo.service, installInfo.appInfo.service, installInfo.appInfo.path + "/service/EmsBMSReportService.exe");
+                if(!ServiceInstaller.isInstalled(installInfo.appInfo.service))
+                {
+                    logError($"Service {installInfo.appInfo.service} is not installed");
                 }
             }
             catch (Exception ex)
