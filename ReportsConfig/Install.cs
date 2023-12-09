@@ -41,11 +41,6 @@ namespace ReportsSetup
             InitializeComponent();
         }
 
-        private void richTextBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void Install_Load(object sender, EventArgs e)
         {
             close.Enabled = false;
@@ -127,6 +122,60 @@ namespace ReportsSetup
             }
         }
 
+        private void updateAppConfig()
+        {
+            var files = new string[]{
+                "../Client/EmsBMSReports.exe.config",
+                "../ExceptionReport/ExceptionReport.exe.config",
+                "../Service/EmsBMSReportService.exe.config",
+                "../Service2/EmsBMSReportService2.exe.config",
+                "../ServiceTest/EMSBMSReportServiceTest.exe.config",
+                "../Web/Web.Config",
+            };
+            string connectionString = installInfo.dbInfo.connectionString;
+
+            foreach (string file in files)
+            {
+                try
+                {
+                    XmlDocument document = new XmlDocument();
+                    document.Load(file);
+                    var root = document.DocumentElement;
+                    XPathNavigator navigator = document.CreateNavigator();
+                    XmlNamespaceManager ns = new XmlNamespaceManager(navigator.NameTable);
+
+                    foreach (XPathNavigator nav in navigator.Select(@"/configuration/connectionStrings/add"))
+                    {
+                        try
+                        {
+                            if (nav.HasAttributes && nav.GetAttribute("name", "") == "DBConStr")
+                            {
+                                try
+                                {
+                                    nav.MoveToAttribute("connectionString", "");
+                                    nav.SetValue(connectionString);
+                                    break;
+                                }
+                                catch (Exception ex)
+                                {
+                                    nav.CreateAttribute("", "connectionString", "", connectionString);
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            continue;
+                        }
+                    }
+                    document.Save(file);
+                }
+                catch (Exception ex)
+                {
+                    logError(ex.ToString());
+                }
+            }
+        }
+
         void install()
         {
             if (isForce || isUpgrade)
@@ -137,6 +186,8 @@ namespace ReportsSetup
                 stopService(installInfo.appInfo.service);
                 Invoke(new Action(() => { progressBar.Value = 10; }));
             }
+            logInfo("Updating App Config");
+            updateAppConfig();
             if (isUpgrade)
             {
                 logInfo("Updating files");
@@ -153,7 +204,7 @@ namespace ReportsSetup
             Invoke(new Action(() => { progressBar.Value = 50; }));
             if (!isUpgrade)
             {
-                logInfo("Updating EBO DB info in configuration database");
+                logInfo($"Updating EBO DB info in configuration database: \"{installInfo.eboInfo.connectionString}\"");
                 try
                 {
                     string query = $"Update TBL_ReportAppConfig set Value = '{installInfo.eboInfo.connectionString}' where Code = 'EMSDBODBCLocation'";
@@ -170,6 +221,40 @@ namespace ReportsSetup
                 {
                     logError(e.ToString());
                 }
+
+                logInfo($"Updating Directory info in configuration database: \"{installInfo.eboInfo.connectionString}\"");
+                try
+                {
+                    string query = $"Update TBL_ReportAppConfig set Value = '{installInfo.appInfo.path}' where Code = 'InFileDir'";
+                    using (var oConnection = new OdbcConnection(installInfo.dbInfo.connectionString))
+                    {
+                        oConnection.Open();
+                        var cmd = oConnection.CreateCommand();
+                        var oCmd = new OdbcCommand(query, oConnection);
+                        var oReader = oCmd.ExecuteNonQuery();
+                        oConnection.Close();
+                    }
+                }
+                catch (Exception e)
+                {
+                    logError(e.ToString());
+                }
+                try
+                {
+                    string query = $"Update TBL_ReportAppConfig set Value = '{installInfo.appInfo.path}\\output' where Code = 'OutFileDir'";
+                    using (var oConnection = new OdbcConnection(installInfo.dbInfo.connectionString))
+                    {
+                        oConnection.Open();
+                        var cmd = oConnection.CreateCommand();
+                        var oCmd = new OdbcCommand(query, oConnection);
+                        var oReader = oCmd.ExecuteNonQuery();
+                        oConnection.Close();
+                    }
+                }
+                catch (Exception e)
+                {
+                    logError(e.ToString());
+                }
             }
             Invoke(new Action(() => { progressBar.Value = 60; }));
             try
@@ -177,7 +262,7 @@ namespace ReportsSetup
                 if (!isUpgrade)
                 {
                     logInfo("Creating application pool");
-                    CreateAppPool("MactusReports", true, ManagedPipelineMode.Classic);
+                    CreateAppPool("MactusReports", true, ManagedPipelineMode.Integrated);
                 }
             }
             catch (Exception ex)
@@ -302,11 +387,15 @@ namespace ReportsSetup
         }
         void runDBUpdateScript()
         {
-            if(File.Exists("update.sql"))
+            string filename = "update.sql";
+#if DEBUG
+            filename = "../../../../InstallScripts/update.sql";
+#endif
+            if (File.Exists(filename))
             {
                 var process = new Process();
                 var startinfo = new ProcessStartInfo("sqlcmd.exe");
-                startinfo.Arguments = $"-S {installInfo.dbInfo.server} -d {installInfo.dbInfo.database} -U {installInfo.dbInfo.username} -P {installInfo.dbInfo.password} -i update.sql -r0";
+                startinfo.Arguments = $"-S {installInfo.dbInfo.server} -d {installInfo.dbInfo.database} -U {installInfo.dbInfo.username} -P {installInfo.dbInfo.password} -i {filename} -r0";
                 startinfo.RedirectStandardOutput = true;
                 startinfo.RedirectStandardError = true;
                 startinfo.CreateNoWindow = false;
@@ -326,12 +415,12 @@ namespace ReportsSetup
         {
             logInfo("Setting app config");
             var files = new string[]{
-                "Client/EmsBMSReports.exe.config",
-                "ExceptionReport/ExceptionReport.exe.config",
-                "Service/EmsBMSReportService.exe.config",
-                "Service2/EmsBMSReportService2.exe.config",
-                "ServiceTest/EMSBMSReportServiceTest.exe.config",
-                "Web/Web.Config",
+                "../Client/EmsBMSReports.exe.config",
+                "../ExceptionReport/ExceptionReport.exe.config",
+                "../Service/EmsBMSReportService.exe.config",
+                "../Service2/EmsBMSReportService2.exe.config",
+                "../ServiceTest/EMSBMSReportServiceTest.exe.config",
+                "../Web/Web.Config",
             };
             foreach (string file in files)
             {
@@ -382,7 +471,6 @@ namespace ReportsSetup
                 {
                     ApplicationPool newPool = serverManager.ApplicationPools.Add(poolname);
                     newPool.ManagedRuntimeVersion = runtimeVersion;
-                    newPool.Enable32BitAppOnWin64 = true;
                     newPool.ManagedPipelineMode = mode;
                     serverManager.CommitChanges();
                 }
@@ -553,6 +641,11 @@ namespace ReportsSetup
         }
 
         private void errorMsg_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void output_TextChanged(object sender, EventArgs e)
         {
 
         }

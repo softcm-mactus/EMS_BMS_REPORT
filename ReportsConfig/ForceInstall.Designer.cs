@@ -46,6 +46,7 @@
             this.msg.Size = new System.Drawing.Size(302, 286);
             this.msg.TabIndex = 0;
             this.msg.Text = "label1";
+            this.msg.Click += new System.EventHandler(this.msg_Click);
             // 
             // label2
             // 

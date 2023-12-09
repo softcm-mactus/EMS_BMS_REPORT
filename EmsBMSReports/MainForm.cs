@@ -10,9 +10,19 @@ using System.Drawing;
 
 namespace EmsBMSReports
 {
-
+    
     public partial class MainForm
     {
+
+        public class GroupInfo
+        {
+            public int index = 0;
+            public string name = "";
+            public override string ToString()
+            {
+                return name;
+            }
+        }
 
         private ReportType m_nSelectedReportType;
         private int m_nIntervalMin = 1;
@@ -83,7 +93,12 @@ namespace EmsBMSReports
                         var oCmd = new OdbcCommand(sQuery, oConnection);
                         oReader = oCmd.ExecuteReader();
                         while (oReader.Read())
-                            cGroup.Items.Add(oReader["groupname"]);
+                        {
+                            var g = new GroupInfo();
+                            g.index = int.Parse(oReader["GroupId"].ToString());
+                            g.name = oReader["GroupName"].ToString();
+                            cGroup.Items.Add(g);
+                        }
                         oConnection.Close();
                     }
                 }
@@ -95,6 +110,7 @@ namespace EmsBMSReports
                 try
                 {
                     cGroup.SelectedIndex = 0;
+                    cGroup_SelectedIndexChanged(null, null);
                 }
                 catch (Exception )
                 {
@@ -139,9 +155,6 @@ namespace EmsBMSReports
             tr_FromDate.Value = argdtFrom;
             tr_ToDate.Value = argdtTo;
             m_nSelectedReportType = (ReportType)argnReportType;
-
-
-
         }
 
         private void oReportGrid_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -197,7 +210,6 @@ namespace EmsBMSReports
 
         private void bAlarmReports_CheckedChanged(object sender, EventArgs e)
         {
-            cGroup.SelectedIndex = -1;
             cGroup.Enabled = false;
             var argoReportGrid = oReportGrid;
             LoadReportsIntoListBox(ref argoReportGrid, (int)ReportType.AlarmReport);
@@ -209,7 +221,6 @@ namespace EmsBMSReports
 
         private void bEventReport_CheckedChanged(object sender, EventArgs e)
         {
-            cGroup.SelectedIndex = -1;
             cGroup.Enabled = false;
             var argoReportGrid = oReportGrid;
             LoadReportsIntoListBox(ref argoReportGrid, (int)ReportType.EventReport);
@@ -265,9 +276,12 @@ namespace EmsBMSReports
 
             try
             {
-                if (nReportType == (int)ReportType.DataReport)
+                if (nReportType == (int)ReportType.DataReport )
                 {
-                    sQuery = "SELECT * FROM TBL_ReportsConfiguration WHERE AlmGroupID=" + cGroup.SelectedIndex.ToString() + " AND ReportType=" + nReportType.ToString() + " ORDER BY ReportTitle";
+                    string index = "0";
+                    if (cGroup.SelectedIndex >= 0)
+                        index = ((GroupInfo)(cGroup.Items[cGroup.SelectedIndex])).index.ToString();
+                    sQuery = "SELECT * FROM TBL_ReportsConfiguration WHERE AlmGroupID=" + index + " AND ReportType=" + nReportType.ToString() + " ORDER BY ReportTitle";
                 }
                 else
                 {
@@ -357,9 +371,9 @@ namespace EmsBMSReports
                         oGrid.Rows[nRow].Tag = oReader["id"];
                         oGrid.Rows[nRow].Cells[0].Value = oReader["reportheader"];
                         oGrid.Rows[nRow].Cells[1].Value = oReader["reporttitle"];
-                        oGrid.Rows[nRow].Cells[2].Value = oReader["fromdate"].ToString();
-                        oGrid.Rows[nRow].Cells[3].Value = oReader["todate"].ToString();
-                        oGrid.Rows[nRow].Cells[4].Value = oReader["username"];
+                        oGrid.Rows[nRow].Cells[2].Value = oReader["username"];
+                        oGrid.Rows[nRow].Cells[3].Value = oReader["fromdate"].ToString();
+                        oGrid.Rows[nRow].Cells[4].Value = oReader["todate"].ToString();
                         oGrid.Rows[nRow].Cells[5].Value = oReader["progress"].ToString()+"%";
                         if (oReader["status"].ToString() == "3")
                         {
@@ -492,6 +506,40 @@ namespace EmsBMSReports
         private void oGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void cGroup_DropDown(object sender, EventArgs e)
+        {
+            string sQuery = "SELECT * FROM TBL_DataGroups WHERE grouptype=0 ORDER BY groupid";
+            cGroup.Items.Clear();
+            try
+            {
+                using (var oConnection = new OdbcConnection(g_sConString))
+                {
+                    oConnection.Open();
+                    var oCmd = new OdbcCommand(sQuery, oConnection);
+                    var oReader = oCmd.ExecuteReader();
+                    while (oReader.Read())
+                    {
+                        var g = new GroupInfo();
+                        g.index = int.Parse(oReader["GroupId"].ToString());
+                        g.name = oReader["GroupName"].ToString();
+                        cGroup.Items.Add(g);
+                    }
+                    oReader.Close();
+                    oConnection.Close();
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
+        private void oGrid_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
+        {
+            string sQuery = "delete from tbl_reportstatus WHERE id=" + e.Row.Tag.ToString();
+            ExecuteSQLInDb(sQuery);
         }
     }
 }

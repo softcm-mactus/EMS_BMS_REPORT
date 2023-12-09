@@ -56,6 +56,13 @@ namespace EmsBMSReports
             this.cInterval = new System.Windows.Forms.ComboBox();
             this.oProgress = new System.Windows.Forms.ProgressBar();
             this.oGrid = new System.Windows.Forms.DataGridView();
+            this.ReportHeader = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ReportTitle = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Username = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.FromDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ToDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Progress = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Output = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Label6 = new System.Windows.Forms.Label();
             this.cGroup = new System.Windows.Forms.ComboBox();
             this.bCOnfigureReports = new System.Windows.Forms.Button();
@@ -67,13 +74,6 @@ namespace EmsBMSReports
             this.btnBatteryPercentage = new System.Windows.Forms.Button();
             this.ViewData = new System.Windows.Forms.Button();
             this.ViewGroups = new System.Windows.Forms.Button();
-            this.ReportHeader = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ReportTitle = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Username = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.FromDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ToDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Progress = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Output = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.oReportGrid)).BeginInit();
             this.GroupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.oGrid)).BeginInit();
@@ -292,7 +292,6 @@ namespace EmsBMSReports
             // oGrid
             // 
             this.oGrid.AllowUserToAddRows = false;
-            this.oGrid.AllowUserToDeleteRows = false;
             this.oGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.oGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ReportHeader,
@@ -304,12 +303,54 @@ namespace EmsBMSReports
             this.Output});
             this.oGrid.Location = new System.Drawing.Point(60, 700);
             this.oGrid.Name = "oGrid";
-            this.oGrid.RowHeadersVisible = false;
             this.oGrid.RowHeadersWidth = 51;
             this.oGrid.Size = new System.Drawing.Size(925, 150);
             this.oGrid.TabIndex = 336;
             this.oGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.oGrid_CellClick);
             this.oGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.oGrid_CellContentClick);
+            this.oGrid.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.oGrid_UserDeletedRow);
+            // 
+            // ReportHeader
+            // 
+            this.ReportHeader.HeaderText = "Report Header";
+            this.ReportHeader.Name = "ReportHeader";
+            this.ReportHeader.Width = 200;
+            // 
+            // ReportTitle
+            // 
+            this.ReportTitle.HeaderText = "Report Title";
+            this.ReportTitle.Name = "ReportTitle";
+            this.ReportTitle.Width = 200;
+            // 
+            // Username
+            // 
+            this.Username.HeaderText = "User Name";
+            this.Username.Name = "Username";
+            // 
+            // FromDate
+            // 
+            this.FromDate.HeaderText = "From Date";
+            this.FromDate.Name = "FromDate";
+            this.FromDate.Width = 120;
+            // 
+            // ToDate
+            // 
+            this.ToDate.HeaderText = "To Date";
+            this.ToDate.Name = "ToDate";
+            this.ToDate.Width = 120;
+            // 
+            // Progress
+            // 
+            this.Progress.HeaderText = "Progress";
+            this.Progress.Name = "Progress";
+            this.Progress.Width = 60;
+            // 
+            // Output
+            // 
+            this.Output.HeaderText = "Output";
+            this.Output.Name = "Output";
+            this.Output.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Output.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // Label6
             // 
@@ -329,7 +370,8 @@ namespace EmsBMSReports
             this.cGroup.Name = "cGroup";
             this.cGroup.Size = new System.Drawing.Size(325, 24);
             this.cGroup.TabIndex = 337;
-            this.cGroup.SelectedIndexChanged += new System.EventHandler(this.cGroup_SelectedIndexChanged);
+            this.cGroup.DropDown += new System.EventHandler(this.cGroup_DropDown);
+            this.cGroup.SelectionChangeCommitted += new System.EventHandler(this.cGroup_SelectedIndexChanged);
             // 
             // bCOnfigureReports
             // 
@@ -433,48 +475,6 @@ namespace EmsBMSReports
             this.ViewGroups.Text = "Configure View Groups";
             this.ViewGroups.UseVisualStyleBackColor = true;
             this.ViewGroups.Click += new System.EventHandler(this.Button2_Click_1);
-            // 
-            // ReportHeader
-            // 
-            this.ReportHeader.HeaderText = "Report Header";
-            this.ReportHeader.Name = "ReportHeader";
-            this.ReportHeader.Width = 200;
-            // 
-            // ReportTitle
-            // 
-            this.ReportTitle.HeaderText = "Report Title";
-            this.ReportTitle.Name = "ReportTitle";
-            this.ReportTitle.Width = 200;
-            // 
-            // Username
-            // 
-            this.Username.HeaderText = "User Name";
-            this.Username.Name = "Username";
-            // 
-            // FromDate
-            // 
-            this.FromDate.HeaderText = "From Date";
-            this.FromDate.Name = "FromDate";
-            this.FromDate.Width = 120;
-            // 
-            // ToDate
-            // 
-            this.ToDate.HeaderText = "To Date";
-            this.ToDate.Name = "ToDate";
-            this.ToDate.Width = 120;
-            // 
-            // Progress
-            // 
-            this.Progress.HeaderText = "Progress";
-            this.Progress.Name = "Progress";
-            this.Progress.Width = 60;
-            // 
-            // Output
-            // 
-            this.Output.HeaderText = "Output";
-            this.Output.Name = "Output";
-            this.Output.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Output.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // MainForm
             // 

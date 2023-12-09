@@ -4,6 +4,8 @@ using System.Windows.Forms;
 using static MactusReportLib.MactusReportLib;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using static EmsBMSReports.DlgSelectTrentDataPoint;
+using System.Collections.Generic;
 
 namespace EmsBMSReports
 {
@@ -495,7 +497,10 @@ namespace EmsBMSReports
                 {
                     if (MessageBox.Show(sColTitle + " : Do you Really Want To Delete The  Column?", "Columns Configuration", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
-
+                        if(PointNames.ContainsKey(nColID.ToString()))
+                        {
+                            PointNames[nColID.ToString()].isUsed = false;
+                        }
                         sQuery = "DELETE FROM tbl_reportcolumns WHERE columnid=" + nColID.ToString();
                         ExecuteSQLInDb(sQuery);
 
@@ -510,84 +515,116 @@ namespace EmsBMSReports
                 }
             }
         }
+        public Dictionary<string, PointName> PointNames = new Dictionary<string, PointName>();
+        void loadPointNames()
+        {
+            if (PointNames.Count == 0)
+            {
+                string sQuery = "SELECT * FROM tbl_pointidname ORDER BY id";
+                using (var oConnection = new OdbcConnection(MactusReportLib.MactusReportLib.g_sConString))
+                {
+                    oConnection.Open();
+                    var oCmd = new OdbcCommand(sQuery, oConnection);
+                    var oReader = oCmd.ExecuteReader();
+                    while (oReader.Read())
+                    {
+                        var p = new PointName();
+                        p.id = oReader["id"].ToString();
+                        p.name = oReader["pointname"].ToString();
+                        PointNames.Add(p.id, p);
+                    }
+                    oReader.Close();
+                    oConnection.Close();
+                }
+            }
+       }
+        public class PointName
+        {
+            public string id;
+            public string name;
+            public bool isSelected=false;
+            public bool isUsed=false;
+        }
 
         private void bAddNewColumn_Click(object sender, EventArgs e)
         {
-
+            loadPointNames();
+            foreach(var v in PointNames.Values)
+            {
+                v.isSelected = false;
+            }
             var oDlg = new DlgSelectTrentDataPoint();
-
-
+            oDlg.PointNames= PointNames;
 
             int nRow;
-            if (oDlg.ShowDialog() == DialogResult.OK & oDlg.m_nLogID > 0)
+            if (oDlg.ShowDialog() == DialogResult.OK)
             {
-
-                bool bFound = false;
-                if (g_bIsBMS == 1)
+                foreach (var v in PointNames.Values)
                 {
-                    var loopTo = oGrid.Rows.Count - 1;
-                    for (nRow = 0; nRow <= loopTo; nRow++)
+                    if (v.isSelected && !v.isUsed)
                     {
-                        if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(oDlg.m_nLogID, oGrid.Rows[nRow].Cells[1].Value, false)))
+                        v.isUsed = true;
+                        //bool bFound = false;
+                        //if (g_bIsBMS == 1)
+                        //{
+                        //    var loopTo = oGrid.Rows.Count - 1;
+                        //    for (nRow = 0; nRow <= loopTo; nRow++)
+                        //    {
+                        //        if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(v.id, oGrid.Rows[nRow].Cells[1].Value, false)))
+                        //        {
+                        //            bFound = true;
+                        //        }
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    var loopTo1 = oGrid.Rows.Count - 1;
+                        //    for (nRow = 0; nRow <= loopTo1; nRow++)
+                        //    {
+                        //        if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(v.name, oGrid.Rows[nRow].Cells[1].Value, false)))
+                        //        {
+                        //            bFound = true;
+                        //        }
+                        //    }
+                        //}
+                        //if (bFound == false)
                         {
-                            bFound = true;
+                            nRow = oGrid.Rows.Add();
+                            oGrid.Rows[nRow].Cells[0].Value = 0;
+                            if (g_bIsBMS == 1)
+                            {
+                                oGrid.Rows[nRow].Cells[1].Value = v.id;
+                            }
+                            else
+                            {
+                                oGrid.Rows[nRow].Cells[1].Value = v.name;
+                            }
+                            oGrid.Rows[nRow].Cells[2].Value = MactusReportLib.MactusReportLib.ColType.Other.ToString();
+                            oGrid.Rows[nRow].Cells[3].Value = 1.0d;
+                            oGrid.Rows[nRow].Cells[4].Value = "";
+                            oGrid.Rows[nRow].Cells[5].Value = MactusReportLib.MactusReportLib.ColJust.Center.ToString();
+                            oGrid.Rows[nRow].Cells[6].Value = v.name;
+                            oGrid.Rows[nRow].Cells[7].Value = "";
+
+                            oGrid.Rows[nRow].Cells[8].Value = false;
+                            oGrid.Rows[nRow].Cells[9].Value = false;
+                            oGrid.Rows[nRow].Cells[10].Value = 0;
+
+                            oGrid.Rows[nRow].Cells[11].Value = false;
+                            oGrid.Rows[nRow].Cells[12].Value = false;
+                            oGrid.Rows[nRow].Cells[13].Value = 0;
+
+                            oGrid.Rows[nRow].Cells[14].Value = 0;
+                            oGrid.Rows[nRow].Cells[15].Value = 0;
+
+                            oGrid.Rows[nRow].Cells[16].Value = false;
+                            oGrid.Rows[nRow].Cells[17].Value = false;
+                            oGrid.Rows[nRow].Cells[18].Value = 0;
                         }
-                    }
-                }
-                else
-                {
-                    var loopTo1 = oGrid.Rows.Count - 1;
-                    for (nRow = 0; nRow <= loopTo1; nRow++)
-                    {
-                        if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(oDlg.m_sPointName, oGrid.Rows[nRow].Cells[1].Value, false)))
-                        {
-                            bFound = true;
-                        }
+
                     }
                 }
 
-
-                if (bFound == false)
-                {
-                    nRow = oGrid.Rows.Add();
-                    oGrid.Rows[nRow].Cells[0].Value = 0;
-                    if (g_bIsBMS == 1)
-                    {
-                        oGrid.Rows[nRow].Cells[1].Value = oDlg.m_nLogID;
-                    }
-                    else
-                    {
-                        oGrid.Rows[nRow].Cells[1].Value = oDlg.m_sPointName;
-                    }
-                    oGrid.Rows[nRow].Cells[2].Value = MactusReportLib.MactusReportLib.ColType.Other.ToString();
-                    oGrid.Rows[nRow].Cells[3].Value = 1.0d;
-                    oGrid.Rows[nRow].Cells[4].Value = "";
-                    oGrid.Rows[nRow].Cells[5].Value = MactusReportLib.MactusReportLib.ColJust.Center.ToString();
-                    oGrid.Rows[nRow].Cells[6].Value = oDlg.m_sPointName;
-                    oGrid.Rows[nRow].Cells[7].Value = oDlg.m_sPointType;
-
-                    oGrid.Rows[nRow].Cells[8].Value = false;
-                    oGrid.Rows[nRow].Cells[9].Value = false;
-                    oGrid.Rows[nRow].Cells[10].Value = 0;
-
-                    oGrid.Rows[nRow].Cells[11].Value = false;
-                    oGrid.Rows[nRow].Cells[12].Value = false;
-                    oGrid.Rows[nRow].Cells[13].Value = 0;
-
-                    oGrid.Rows[nRow].Cells[14].Value = 0;
-                    oGrid.Rows[nRow].Cells[15].Value = 0;
-
-                    oGrid.Rows[nRow].Cells[16].Value = false;
-                    oGrid.Rows[nRow].Cells[17].Value = false;
-                    oGrid.Rows[nRow].Cells[18].Value = 0;
-                }
-
-
-
-                else
-                {
-                    MessageBox.Show("Trend Log Point is Already Added To The Report");
-                }
             }
 
         }
@@ -616,51 +653,51 @@ namespace EmsBMSReports
             }
             else if (e.ColumnIndex == 13)
             {
-                if (Conversions.ToBoolean(oGrid.Rows[e.RowIndex].Cells[12].Value))
-                {
-                    var oDlg = new DlgSelectTrentDataPoint();
-                    if (oDlg.ShowDialog() == DialogResult.OK)
-                    {
-                        oGrid.Rows[e.RowIndex].Cells[13].Value = oDlg.m_nLogID;
-                    }
-                }
+                //if (Conversions.ToBoolean(oGrid.Rows[e.RowIndex].Cells[12].Value))
+                //{
+                //    var oDlg = new DlgSelectTrentDataPoint();
+                //    if (oDlg.ShowDialog() == DialogResult.OK)
+                //    {
+                //        //oGrid.Rows[e.RowIndex].Cells[13].Value = oDlg.m_nLogID;
+                //    }
+                //}
             }
             else if (e.ColumnIndex == 10)
             {
-                if (Conversions.ToBoolean(oGrid.Rows[e.RowIndex].Cells[9].Value))
-                {
-                    var oDlg = new DlgSelectTrentDataPoint();
-                    if (oDlg.ShowDialog() == DialogResult.OK)
-                    {
-                        oGrid.Rows[e.RowIndex].Cells[10].Value = oDlg.m_nLogID;
-                    }
-                }
+                //if (Conversions.ToBoolean(oGrid.Rows[e.RowIndex].Cells[9].Value))
+                //{
+                //    var oDlg = new DlgSelectTrentDataPoint();
+                //    if (oDlg.ShowDialog() == DialogResult.OK)
+                //    {
+                //        //oGrid.Rows[e.RowIndex].Cells[10].Value = oDlg.m_nLogID;
+                //    }
+                //}
             }
             else if (e.ColumnIndex == 18)
             {
-                if (Conversions.ToBoolean(oGrid.Rows[e.RowIndex].Cells[17].Value))
-                {
-                    var oDlg = new DlgSelectTrentDataPoint();
-                    if (oDlg.ShowDialog() == DialogResult.OK)
-                    {
-                        oGrid.Rows[e.RowIndex].Cells[18].Value = oDlg.m_nLogID;
-                    }
-                }
+                //if (Conversions.ToBoolean(oGrid.Rows[e.RowIndex].Cells[17].Value))
+                //{
+                //    var oDlg = new DlgSelectTrentDataPoint();
+                //    if (oDlg.ShowDialog() == DialogResult.OK)
+                //    {
+                //        //oGrid.Rows[e.RowIndex].Cells[18].Value = oDlg.m_nLogID;
+                //    }
+                //}
             }
             else if (e.ColumnIndex == 1)
             {
-                var oDlg = new DlgSelectTrentDataPoint();
-                if (oDlg.ShowDialog() == DialogResult.OK)
-                {
-                    if (g_bIsBMS == 1)
-                    {
-                        oGrid.Rows[e.RowIndex].Cells[1].Value = oDlg.m_nLogID;
-                    }
-                    else
-                    {
-                        oGrid.Rows[e.RowIndex].Cells[1].Value = oDlg.m_sPointName;
-                    }
-                }
+                //var oDlg = new DlgSelectTrentDataPoint();
+                //if (oDlg.ShowDialog() == DialogResult.OK)
+                //{
+                //    if (g_bIsBMS == 1)
+                //    {
+                //        //oGrid.Rows[e.RowIndex].Cells[1].Value = oDlg.m_nLogID;
+                //    }
+                //    else
+                //    {
+                //        //oGrid.Rows[e.RowIndex].Cells[1].Value = oDlg.m_sPointName;
+                //    }
+                //}
 
             }
 

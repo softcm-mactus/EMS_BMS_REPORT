@@ -35,230 +35,301 @@ namespace EmsBMSReports
         [DebuggerStepThrough()]
         private void InitializeComponent()
         {
-            var DataGridViewCellStyle1 = new DataGridViewCellStyle();
-            var DataGridViewCellStyle2 = new DataGridViewCellStyle();
-            var DataGridViewCellStyle3 = new DataGridViewCellStyle();
-            TableLayoutPanel1 = new TableLayoutPanel();
-            OK_Button = new Button();
-            OK_Button.Click += new EventHandler(OK_Button_Click);
-            Cancel_Button = new Button();
-            Cancel_Button.Click += new EventHandler(Cancel_Button_Click);
-            oGrid = new DataGridView();
-            oGrid.DataError += new DataGridViewDataErrorEventHandler(oGrid_DataError);
-            oGrid.CellClick += new DataGridViewCellEventHandler(oGrid_CellClick);
-            bAddNewReport = new Button();
-            bAddNewReport.Click += new EventHandler(bAddNewReport_Click);
-            bDeleteReport = new Button();
-            bDeleteReport.Click += new EventHandler(bDeleteReport_Click);
-            ReportID = new DataGridViewTextBoxColumn();
-            ReportTemplate = new DataGridViewComboBoxColumn();
-            ReportType = new DataGridViewComboBoxColumn();
-            ReportGroup = new DataGridViewTextBoxColumn();
-            ReportTitle = new DataGridViewTextBoxColumn();
-            ReportTitlle2 = new DataGridViewTextBoxColumn();
-            PrntTime = new DataGridViewCheckBoxColumn();
-            PrintBy = new DataGridViewCheckBoxColumn();
-            PrintDates = new DataGridViewCheckBoxColumn();
-            DefaultTimeInterval = new DataGridViewComboBoxColumn();
-            DataAggType = new DataGridViewComboBoxColumn();
-            ConfCol = new DataGridViewButtonColumn();
-            PrMinMax = new DataGridViewCheckBoxColumn();
-            PrSV = new DataGridViewCheckBoxColumn();
-            TableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)oGrid).BeginInit();
-            SuspendLayout();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            this.TableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.OK_Button = new System.Windows.Forms.Button();
+            this.Cancel_Button = new System.Windows.Forms.Button();
+            this.oGrid = new System.Windows.Forms.DataGridView();
+            this.ReportID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ReportGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ReportTitle = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ReportTitlle2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PrntTime = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.PrintBy = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.PrintDates = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.ConfCol = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.PrMinMax = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.PrSV = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.bAddNewReport = new System.Windows.Forms.Button();
+            this.bDeleteReport = new System.Windows.Forms.Button();
+            this.dataGridViewComboBoxColumn1 = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.dataGridViewComboBoxColumn2 = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.dataGridViewComboBoxColumn3 = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.dataGridViewComboBoxColumn4 = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.ReportTemplate = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.ReportType = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.DefaultTimeInterval = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.DataAggType = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.TableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.oGrid)).BeginInit();
+            this.SuspendLayout();
             // 
             // TableLayoutPanel1
             // 
-            TableLayoutPanel1.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            TableLayoutPanel1.ColumnCount = 2;
-            TableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50.0f));
-            TableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50.0f));
-            TableLayoutPanel1.Controls.Add(OK_Button, 0, 0);
-            TableLayoutPanel1.Controls.Add(Cancel_Button, 1, 0);
-            TableLayoutPanel1.Location = new Point(1094, 489);
-            TableLayoutPanel1.Margin = new Padding(4);
-            TableLayoutPanel1.Name = "TableLayoutPanel1";
-            TableLayoutPanel1.RowCount = 1;
-            TableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50.0f));
-            TableLayoutPanel1.Size = new Size(195, 36);
-            TableLayoutPanel1.TabIndex = 0;
+            this.TableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.TableLayoutPanel1.ColumnCount = 2;
+            this.TableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.TableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.TableLayoutPanel1.Controls.Add(this.OK_Button, 0, 0);
+            this.TableLayoutPanel1.Controls.Add(this.Cancel_Button, 1, 0);
+            this.TableLayoutPanel1.Location = new System.Drawing.Point(1094, 489);
+            this.TableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
+            this.TableLayoutPanel1.Name = "TableLayoutPanel1";
+            this.TableLayoutPanel1.RowCount = 1;
+            this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.TableLayoutPanel1.Size = new System.Drawing.Size(195, 36);
+            this.TableLayoutPanel1.TabIndex = 0;
             // 
             // OK_Button
             // 
-            OK_Button.Anchor = AnchorStyles.None;
-            OK_Button.Location = new Point(4, 4);
-            OK_Button.Margin = new Padding(4);
-            OK_Button.Name = "OK_Button";
-            OK_Button.Size = new Size(89, 28);
-            OK_Button.TabIndex = 0;
-            OK_Button.Text = "Update";
+            this.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.OK_Button.Location = new System.Drawing.Point(4, 4);
+            this.OK_Button.Margin = new System.Windows.Forms.Padding(4);
+            this.OK_Button.Name = "OK_Button";
+            this.OK_Button.Size = new System.Drawing.Size(89, 28);
+            this.OK_Button.TabIndex = 0;
+            this.OK_Button.Text = "Update";
+            this.OK_Button.Click += new System.EventHandler(this.OK_Button_Click);
             // 
             // Cancel_Button
             // 
-            Cancel_Button.Anchor = AnchorStyles.None;
-            Cancel_Button.DialogResult = DialogResult.Cancel;
-            Cancel_Button.Location = new Point(101, 4);
-            Cancel_Button.Margin = new Padding(4);
-            Cancel_Button.Name = "Cancel_Button";
-            Cancel_Button.Size = new Size(89, 28);
-            Cancel_Button.TabIndex = 1;
-            Cancel_Button.Text = "Close";
+            this.Cancel_Button.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.Cancel_Button.Location = new System.Drawing.Point(101, 4);
+            this.Cancel_Button.Margin = new System.Windows.Forms.Padding(4);
+            this.Cancel_Button.Name = "Cancel_Button";
+            this.Cancel_Button.Size = new System.Drawing.Size(89, 28);
+            this.Cancel_Button.TabIndex = 1;
+            this.Cancel_Button.Text = "Close";
+            this.Cancel_Button.Click += new System.EventHandler(this.Cancel_Button_Click);
             // 
             // oGrid
             // 
-            oGrid.AllowUserToAddRows = false;
-            oGrid.AllowUserToDeleteRows = false;
-            oGrid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            oGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            oGrid.Columns.AddRange(new DataGridViewColumn[] { ReportID, ReportTemplate, ReportType, ReportGroup, ReportTitle, ReportTitlle2, PrntTime, PrintBy, PrintDates, DefaultTimeInterval, DataAggType, ConfCol, PrMinMax, PrSV });
-            oGrid.Location = new Point(13, 12);
-            oGrid.Name = "oGrid";
-            oGrid.Size = new Size(1276, 461);
-            oGrid.TabIndex = 1;
-            // 
-            // bAddNewReport
-            // 
-            bAddNewReport.Location = new Point(42, 491);
-            bAddNewReport.Name = "bAddNewReport";
-            bAddNewReport.Size = new Size(175, 33);
-            bAddNewReport.TabIndex = 2;
-            bAddNewReport.Text = "Add New Report";
-            bAddNewReport.UseVisualStyleBackColor = true;
-            // 
-            // bDeleteReport
-            // 
-            bDeleteReport.Location = new Point(261, 492);
-            bDeleteReport.Name = "bDeleteReport";
-            bDeleteReport.Size = new Size(175, 33);
-            bDeleteReport.TabIndex = 3;
-            bDeleteReport.Text = "Delete Report";
-            bDeleteReport.UseVisualStyleBackColor = true;
+            this.oGrid.AllowUserToAddRows = false;
+            this.oGrid.AllowUserToDeleteRows = false;
+            this.oGrid.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.oGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.oGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ReportID,
+            this.ReportTemplate,
+            this.ReportType,
+            this.ReportGroup,
+            this.ReportTitle,
+            this.ReportTitlle2,
+            this.PrntTime,
+            this.PrintBy,
+            this.PrintDates,
+            this.DefaultTimeInterval,
+            this.DataAggType,
+            this.ConfCol,
+            this.PrMinMax,
+            this.PrSV});
+            this.oGrid.Location = new System.Drawing.Point(13, 12);
+            this.oGrid.Name = "oGrid";
+            this.oGrid.Size = new System.Drawing.Size(1276, 461);
+            this.oGrid.TabIndex = 1;
+            this.oGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.oGrid_CellClick);
+            this.oGrid.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.oGrid_DataError);
             // 
             // ReportID
             // 
-            ReportID.HeaderText = "ReportID";
-            ReportID.Name = "ReportID";
-            ReportID.Visible = false;
-            ReportID.Width = 80;
-            // 
-            // ReportTemplate
-            // 
-            ReportTemplate.HeaderText = "Report Template";
-            ReportTemplate.Items.AddRange(new object[] { "ProtraitWiderMargin", "LandScapeWiderMargin", "ProtraitNarrowMargin", "LandScapeNarrowMargin" });
-            ReportTemplate.Name = "ReportTemplate";
-            // 
-            // ReportType
-            // 
-            ReportType.HeaderText = "Report Type";
-            ReportType.Items.AddRange(new object[] { "DataReport", "AlarmReport" });
-            ReportType.Name = "ReportType";
-            ReportType.Visible = false;
+            this.ReportID.HeaderText = "ReportID";
+            this.ReportID.Name = "ReportID";
+            this.ReportID.Visible = false;
+            this.ReportID.Width = 80;
             // 
             // ReportGroup
             // 
-            DataGridViewCellStyle1.BackColor = Color.Silver;
-            ReportGroup.DefaultCellStyle = DataGridViewCellStyle1;
-            ReportGroup.HeaderText = "Report Group";
-            ReportGroup.Name = "ReportGroup";
-            ReportGroup.ReadOnly = true;
-            ReportGroup.Resizable = DataGridViewTriState.True;
-            ReportGroup.SortMode = DataGridViewColumnSortMode.NotSortable;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Silver;
+            this.ReportGroup.DefaultCellStyle = dataGridViewCellStyle1;
+            this.ReportGroup.HeaderText = "Report Group";
+            this.ReportGroup.Name = "ReportGroup";
+            this.ReportGroup.ReadOnly = true;
+            this.ReportGroup.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.ReportGroup.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // ReportTitle
             // 
-            DataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            DataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            ReportTitle.DefaultCellStyle = DataGridViewCellStyle2;
-            ReportTitle.HeaderText = "Report Title";
-            ReportTitle.Name = "ReportTitle";
-            ReportTitle.Width = 200;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.ReportTitle.DefaultCellStyle = dataGridViewCellStyle2;
+            this.ReportTitle.HeaderText = "Report Title";
+            this.ReportTitle.Name = "ReportTitle";
+            this.ReportTitle.Width = 200;
             // 
             // ReportTitlle2
             // 
-            DataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            DataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            ReportTitlle2.DefaultCellStyle = DataGridViewCellStyle3;
-            ReportTitlle2.HeaderText = "Report Title 2";
-            ReportTitlle2.Name = "ReportTitlle2";
-            ReportTitlle2.Width = 200;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.ReportTitlle2.DefaultCellStyle = dataGridViewCellStyle3;
+            this.ReportTitlle2.HeaderText = "Report Title 2";
+            this.ReportTitlle2.Name = "ReportTitlle2";
+            this.ReportTitlle2.Width = 200;
             // 
             // PrntTime
             // 
-            PrntTime.HeaderText = "Print Gen Time";
-            PrntTime.Name = "PrntTime";
-            PrntTime.Width = 70;
+            this.PrntTime.HeaderText = "Print Gen Time";
+            this.PrntTime.Name = "PrntTime";
+            this.PrntTime.Width = 70;
             // 
             // PrintBy
             // 
-            PrintBy.HeaderText = "Print Gen By";
-            PrintBy.Name = "PrintBy";
-            PrintBy.Width = 60;
+            this.PrintBy.HeaderText = "Print Gen By";
+            this.PrintBy.Name = "PrintBy";
+            this.PrintBy.Width = 60;
             // 
             // PrintDates
             // 
-            PrintDates.HeaderText = "PrintFrom ToDate";
-            PrintDates.Name = "PrintDates";
-            PrintDates.Width = 70;
-            // 
-            // DefaultTimeInterval
-            // 
-            DefaultTimeInterval.AutoComplete = false;
-            DefaultTimeInterval.HeaderText = "Default TimeInterval";
-            DefaultTimeInterval.Items.AddRange(new object[] { "1", "5", "15", "30" });
-            DefaultTimeInterval.Name = "DefaultTimeInterval";
-            // 
-            // DataAggType
-            // 
-            DataAggType.AutoComplete = false;
-            DataAggType.HeaderText = "Data Agg Type";
-            DataAggType.Items.AddRange(new object[] { "Instance", "Minimum", "Average", "Maximum" });
-            DataAggType.Name = "DataAggType";
+            this.PrintDates.HeaderText = "PrintFrom ToDate";
+            this.PrintDates.Name = "PrintDates";
+            this.PrintDates.Width = 70;
             // 
             // ConfCol
             // 
-            ConfCol.FlatStyle = FlatStyle.Popup;
-            ConfCol.HeaderText = "Configure Columns";
-            ConfCol.Name = "ConfCol";
-            ConfCol.UseColumnTextForButtonValue = true;
-            ConfCol.Width = 80;
+            this.ConfCol.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.ConfCol.HeaderText = "Configure Columns";
+            this.ConfCol.Name = "ConfCol";
+            this.ConfCol.UseColumnTextForButtonValue = true;
+            this.ConfCol.Width = 80;
             // 
             // PrMinMax
             // 
-            PrMinMax.HeaderText = "Pr Min Max";
-            PrMinMax.Name = "PrMinMax";
-            PrMinMax.Width = 70;
+            this.PrMinMax.HeaderText = "Pr Min Max";
+            this.PrMinMax.Name = "PrMinMax";
+            this.PrMinMax.Width = 70;
             // 
             // PrSV
             // 
-            PrSV.HeaderText = "Pr SV";
-            PrSV.Name = "PrSV";
-            PrSV.Width = 50;
+            this.PrSV.HeaderText = "Pr SV";
+            this.PrSV.Name = "PrSV";
+            this.PrSV.Width = 50;
+            // 
+            // bAddNewReport
+            // 
+            this.bAddNewReport.Location = new System.Drawing.Point(42, 491);
+            this.bAddNewReport.Name = "bAddNewReport";
+            this.bAddNewReport.Size = new System.Drawing.Size(175, 33);
+            this.bAddNewReport.TabIndex = 2;
+            this.bAddNewReport.Text = "Add New Report";
+            this.bAddNewReport.UseVisualStyleBackColor = true;
+            this.bAddNewReport.Click += new System.EventHandler(this.bAddNewReport_Click);
+            // 
+            // bDeleteReport
+            // 
+            this.bDeleteReport.Location = new System.Drawing.Point(261, 492);
+            this.bDeleteReport.Name = "bDeleteReport";
+            this.bDeleteReport.Size = new System.Drawing.Size(175, 33);
+            this.bDeleteReport.TabIndex = 3;
+            this.bDeleteReport.Text = "Delete Report";
+            this.bDeleteReport.UseVisualStyleBackColor = true;
+            this.bDeleteReport.Click += new System.EventHandler(this.bDeleteReport_Click);
+            // 
+            // dataGridViewComboBoxColumn1
+            // 
+            this.dataGridViewComboBoxColumn1.HeaderText = "Report Template";
+            this.dataGridViewComboBoxColumn1.Items.AddRange(new object[] {
+            "ProtraitWiderMargin",
+            "LandScapeWiderMargin",
+            "ProtraitNarrowMargin",
+            "LandScapeNarrowMargin"});
+            this.dataGridViewComboBoxColumn1.Name = "dataGridViewComboBoxColumn1";
+            // 
+            // dataGridViewComboBoxColumn2
+            // 
+            this.dataGridViewComboBoxColumn2.HeaderText = "Report Type";
+            this.dataGridViewComboBoxColumn2.Items.AddRange(new object[] {
+            "DataReport",
+            "AlarmReport"});
+            this.dataGridViewComboBoxColumn2.Name = "dataGridViewComboBoxColumn2";
+            this.dataGridViewComboBoxColumn2.Visible = false;
+            // 
+            // dataGridViewComboBoxColumn3
+            // 
+            this.dataGridViewComboBoxColumn3.AutoComplete = false;
+            this.dataGridViewComboBoxColumn3.HeaderText = "Default TimeInterval";
+            this.dataGridViewComboBoxColumn3.Items.AddRange(new object[] {
+            "1",
+            "5",
+            "15",
+            "30"});
+            this.dataGridViewComboBoxColumn3.Name = "dataGridViewComboBoxColumn3";
+            // 
+            // dataGridViewComboBoxColumn4
+            // 
+            this.dataGridViewComboBoxColumn4.AutoComplete = false;
+            this.dataGridViewComboBoxColumn4.HeaderText = "Data Agg Type";
+            this.dataGridViewComboBoxColumn4.Items.AddRange(new object[] {
+            "Instance",
+            "Minimum",
+            "Average",
+            "Maximum"});
+            this.dataGridViewComboBoxColumn4.Name = "dataGridViewComboBoxColumn4";
+            // 
+            // ReportTemplate
+            // 
+            this.ReportTemplate.HeaderText = "Report Template";
+            this.ReportTemplate.Items.AddRange(new object[] {
+            "ProtraitWiderMargin",
+            "LandScapeWiderMargin",
+            "ProtraitNarrowMargin",
+            "LandScapeNarrowMargin"});
+            this.ReportTemplate.Name = "ReportTemplate";
+            // 
+            // ReportType
+            // 
+            this.ReportType.HeaderText = "Report Type";
+            this.ReportType.Items.AddRange(new object[] {
+            "DataReport",
+            "AlarmReport"});
+            this.ReportType.Name = "ReportType";
+            this.ReportType.Visible = false;
+            // 
+            // DefaultTimeInterval
+            // 
+            this.DefaultTimeInterval.AutoComplete = false;
+            this.DefaultTimeInterval.HeaderText = "Default TimeInterval";
+            this.DefaultTimeInterval.Items.AddRange(new object[] {
+            "1",
+            "5",
+            "15",
+            "30"});
+            this.DefaultTimeInterval.Name = "DefaultTimeInterval";
+            // 
+            // DataAggType
+            // 
+            this.DataAggType.AutoComplete = false;
+            this.DataAggType.HeaderText = "Data Agg Type";
+            this.DataAggType.Items.AddRange(new object[] {
+            "Instance",
+            "Minimum",
+            "Average",
+            "Maximum"});
+            this.DataAggType.Name = "DataAggType";
             // 
             // DlgReportsConfiguration
             // 
-            AcceptButton = OK_Button;
-            AutoScaleDimensions = new SizeF(8.0f, 16.0f);
-            AutoScaleMode = AutoScaleMode.Font;
-            CancelButton = Cancel_Button;
-            ClientSize = new Size(1305, 540);
-            Controls.Add(bDeleteReport);
-            Controls.Add(bAddNewReport);
-            Controls.Add(oGrid);
-            Controls.Add(TableLayoutPanel1);
-            Font = new Font("Microsoft Sans Serif", 9.75f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            FormBorderStyle = FormBorderStyle.FixedDialog;
-            Margin = new Padding(4);
-            MaximizeBox = false;
-            MinimizeBox = false;
-            Name = "DlgReportsConfiguration";
-            ShowInTaskbar = false;
-            StartPosition = FormStartPosition.CenterParent;
-            Text = "DlgReportsConfiguration";
-            TableLayoutPanel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)oGrid).EndInit();
-            Load += new EventHandler(DlgReportsConfiguration_Load);
-            ResumeLayout(false);
+            this.AcceptButton = this.OK_Button;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.Cancel_Button;
+            this.ClientSize = new System.Drawing.Size(1305, 540);
+            this.Controls.Add(this.bDeleteReport);
+            this.Controls.Add(this.bAddNewReport);
+            this.Controls.Add(this.oGrid);
+            this.Controls.Add(this.TableLayoutPanel1);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Margin = new System.Windows.Forms.Padding(4);
+            this.Name = "DlgReportsConfiguration";
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "DlgReportsConfiguration";
+            this.Load += new System.EventHandler(this.DlgReportsConfiguration_Load);
+            this.TableLayoutPanel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.oGrid)).EndInit();
+            this.ResumeLayout(false);
 
         }
         internal TableLayoutPanel TableLayoutPanel1;
@@ -281,5 +352,9 @@ namespace EmsBMSReports
         internal DataGridViewButtonColumn ConfCol;
         internal DataGridViewCheckBoxColumn PrMinMax;
         internal DataGridViewCheckBoxColumn PrSV;
+        private DataGridViewComboBoxColumn dataGridViewComboBoxColumn1;
+        private DataGridViewComboBoxColumn dataGridViewComboBoxColumn2;
+        private DataGridViewComboBoxColumn dataGridViewComboBoxColumn3;
+        private DataGridViewComboBoxColumn dataGridViewComboBoxColumn4;
     }
 }

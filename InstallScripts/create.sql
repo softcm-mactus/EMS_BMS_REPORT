@@ -71,10 +71,7 @@ GO
 PRINT 'creating tables';
 
 /****** Object:  Table [dbo].[TBL_DataGroups]    Script Date: 07-12-2023 18:51:24 ******/
-IF  NOT EXISTS (SELECT * FROM sys.objects 
-WHERE object_id = OBJECT_ID(N'[dbo].[TBL_DataGroups]') AND type in (N'U'))
-
-BEGIN
+PRINT 'creating table TBL_DataGroups'
 CREATE TABLE [dbo].[TBL_DataGroups](
 	[GroupID] [int] NOT NULL,
 	[GroupName] [varchar](100) NULL,
@@ -85,24 +82,19 @@ CREATE TABLE [dbo].[TBL_DataGroups](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 ALTER TABLE [dbo].[TBL_DataGroups] ADD  CONSTRAINT [DF_TBL_DataGroups_GroupType]  DEFAULT ((0)) FOR [GroupType]
-END
-
 GO
 /****** Object:  Table [dbo].[tbl_enumvalue]    Script Date: 07-12-2023 18:51:24 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF  NOT EXISTS (SELECT * FROM sys.objects 
-WHERE object_id = OBJECT_ID(N'[dbo].[tbl_enumvalue]') AND type in (N'U'))
-BEGIN
+PRINT 'creating table TBL_EnumValue'
 CREATE TABLE [dbo].[tbl_enumvalue](
 	[enumid] [int] NOT NULL,
 	[enumvalue] [int] NOT NULL,
 	[enumdesc] [varchar](50) NULL
 ) ON [PRIMARY]
-END
-GO
+
 IF (Select count(*) from tbl_enumvalue)=0
 BEGIN
 INSERT [dbo].[tbl_enumvalue] ([enumid], [enumvalue], [enumdesc]) VALUES (1, 0, N'OFF ')
@@ -114,9 +106,7 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF  NOT EXISTS (SELECT * FROM sys.objects 
-WHERE object_id = OBJECT_ID(N'[dbo].[tbl_pointidname]') AND type in (N'U'))
-BEGIN
+PRINT 'creating table TBL_PointIdName'
 CREATE TABLE [dbo].[tbl_pointidname](
 	[id] [int] NOT NULL,
 	[pointname] [varchar](100) NULL,
@@ -125,17 +115,13 @@ CREATE TABLE [dbo].[tbl_pointidname](
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
-end
 GO
 /****** Object:  Table [dbo].[TBL_ReportAppConfig]    Script Date: 07-12-2023 18:51:24 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF  NOT EXISTS (SELECT * FROM sys.objects 
-WHERE object_id = OBJECT_ID(N'[dbo].[tbl_ReportAppConfig]') AND type in (N'U'))
-BEGIN
-
+PRINT 'creating table TBL_ReportAppConfig'
 CREATE TABLE [dbo].[TBL_ReportAppConfig](
 	[ID] [int] NOT NULL,
 	[Code] [nvarchar](50) NULL,
@@ -148,7 +134,6 @@ CREATE TABLE [dbo].[TBL_ReportAppConfig](
 	[ID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
-END
 GO
 
 
@@ -186,9 +171,7 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF  NOT EXISTS (SELECT * FROM sys.objects 
-WHERE object_id = OBJECT_ID(N'[dbo].[TBL_ReportColumns]') AND type in (N'U'))
-BEGIN
+PRINT 'creating table TBL_ReportColumns'
 CREATE TABLE [dbo].[TBL_ReportColumns](
 	[columnid] [int] NOT NULL,
 	[ReportID] [int] NOT NULL,
@@ -230,22 +213,17 @@ ALTER TABLE [dbo].[TBL_ReportColumns] ADD  CONSTRAINT [DF_TBL_ReportColumns_SetP
 ALTER TABLE [dbo].[TBL_ReportColumns] ADD  CONSTRAINT [DF_TBL_ReportColumns_SetPointValue]  DEFAULT ((0)) FOR [SetPointValue]
 ALTER TABLE [dbo].[TBL_ReportColumns] ADD  CONSTRAINT [DF_TBL_ReportColumns_enumid]  DEFAULT ((0)) FOR [enumid]
 ALTER TABLE [dbo].[TBL_ReportColumns] ADD  CONSTRAINT [DF_TBL_ReportColumns_colmerge]  DEFAULT ((0)) FOR [colmerge]
-
-END
 GO
 /****** Object:  Table [dbo].[tbl_reportedevents]    Script Date: 07-12-2023 18:51:24 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF  NOT EXISTS (SELECT * FROM sys.objects 
-WHERE object_id = OBJECT_ID(N'[dbo].[tbl_reportedevents]') AND type in (N'U'))
-BEGIN
+PRINT 'creating table TBL_ReportedEvents'
 CREATE TABLE [dbo].[tbl_reportedevents](
 	[eventid] [int] NOT NULL,
 	[description] [varchar](50) NOT NULL
 ) ON [PRIMARY]
-END
 GO
 
 IF (Select count(*) from tbl_reportedevents)=0
@@ -266,25 +244,20 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF  NOT EXISTS (SELECT * FROM sys.objects 
-WHERE object_id = OBJECT_ID(N'[dbo].[tbl_enumvalue]') AND type in (N'U'))
-BEGIN
+PRINT 'creating table TBL_ReportGroups'
 CREATE TABLE [dbo].[TBL_ReportGroups](
 	[ExternalLogId] [int] NOT NULL,
 	[ColumnName] [varchar](100) NOT NULL,
 	[GroupName] [varchar](100) NOT NULL,
 	[CategoryName] [varchar](100) NOT NULL
 ) ON [PRIMARY]
-END
 GO
 /****** Object:  Table [dbo].[TBL_ReportsConfiguration]    Script Date: 07-12-2023 18:51:24 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF  NOT EXISTS (SELECT * FROM sys.objects 
-WHERE object_id = OBJECT_ID(N'[dbo].[tbl_enumvalue]') AND type in (N'U'))
-BEGIN
+PRINT 'creating table TBL_ReportsConfiguration'
 CREATE TABLE [dbo].[TBL_ReportsConfiguration](
 	[ReportID] [int] IDENTITY(1,1) NOT NULL,
 	[TemplateID] [int] NULL,
@@ -324,17 +297,13 @@ ALTER TABLE [dbo].[TBL_ReportsConfiguration] ADD  CONSTRAINT [DF_TBL_ReportsConf
 ALTER TABLE [dbo].[TBL_ReportsConfiguration] ADD  CONSTRAINT [DF_TBL_ReportsConfiguration_ReportToBeGenerated]  DEFAULT ((0)) FOR [ReportToBeGenerated]
 ALTER TABLE [dbo].[TBL_ReportsConfiguration] ADD  CONSTRAINT [DF_TBL_ReportsConfiguration_PrintAlarmSpRow]  DEFAULT ((1)) FOR [printalarmsprows1]
 ALTER TABLE [dbo].[TBL_ReportsConfiguration] ADD  CONSTRAINT [DF_TBL_ReportsConfiguration_PtintMinMaxRow]  DEFAULT ((1)) FOR [printminmaxrows1]
-
-END
 GO
 /****** Object:  Table [dbo].[tbl_reportstatus]    Script Date: 07-12-2023 18:51:24 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF  NOT EXISTS (SELECT * FROM sys.objects 
-WHERE object_id = OBJECT_ID(N'[dbo].[tbl_enumvalue]') AND type in (N'U'))
-BEGIN
+PRINT 'creating table TBL_ReportStatus'
 CREATE TABLE [dbo].[tbl_reportstatus](
 	[id] [bigint] IDENTITY(1,1) NOT NULL,
 	[reportid] [int] NULL,
@@ -355,16 +324,14 @@ CREATE TABLE [dbo].[tbl_reportstatus](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 ALTER TABLE [dbo].[tbl_reportstatus] ADD  CONSTRAINT [DF_tbl_reportstatus_generatechart]  DEFAULT ((0)) FOR [generatechart]
-END
 GO
 /****** Object:  Table [dbo].[TBL_ReportTemplates]    Script Date: 07-12-2023 18:51:24 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF  NOT EXISTS (SELECT * FROM sys.objects 
-WHERE object_id = OBJECT_ID(N'[dbo].[TBL_ReportTemplates]') AND type in (N'U'))
-BEGIN
+
+PRINT 'creating table TBL_ReportTemplates'
 CREATE TABLE [dbo].[TBL_ReportTemplates](
 	[TemplateID] [int] IDENTITY(1,1) NOT NULL,
 	[TemplateName] [varchar](200) NULL,
@@ -418,7 +385,6 @@ ALTER TABLE [dbo].[TBL_ReportTemplates] ADD  CONSTRAINT [DF_Table_1_BodyHeaderPa
 ALTER TABLE [dbo].[TBL_ReportTemplates] ADD  CONSTRAINT [DF_Table_1_BodyPadding]  DEFAULT ((1)) FOR [BodyPadding]
 ALTER TABLE [dbo].[TBL_ReportTemplates] ADD  CONSTRAINT [DF_Table_1_FooterPadding]  DEFAULT ((3)) FOR [FooterPadding]
 ALTER TABLE [dbo].[TBL_ReportTemplates] ADD  CONSTRAINT [DF_TBL_ReportTemplates_bodyheadermargin]  DEFAULT ((0)) FOR [bodyheadermargin]
-END
 GO
 IF (Select count(*) from tbl_ReportTemplates)=0
 BEGIN

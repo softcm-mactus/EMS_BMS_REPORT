@@ -228,7 +228,7 @@ namespace EmsBMSReports
                     oCmd.Parameters.Add("@7", OdbcType.Int).Value = 1; // fromtodatesprinted
                     if (g_bIsBMS == 1) // datatablename
                     {
-                        oCmd.Parameters.Add("@8", OdbcType.VarChar).Value = "trend_data";
+                        oCmd.Parameters.Add("@8", OdbcType.VarChar).Value = "nsp.trend_data";
                     }
                     else if (g_bIsBMS == 2)
                     {

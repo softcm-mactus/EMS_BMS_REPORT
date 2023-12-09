@@ -72,5 +72,10 @@ namespace ReportsSetup
             result = "cancel";
             this.Close();
         }
+
+        private void msg_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

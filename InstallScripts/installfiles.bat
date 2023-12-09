@@ -13,6 +13,8 @@ md "%~1\Service2" 2>$null
 md "%~1\PingErrorApp" 2>$null
 md "%~1\ExceptionReport" 2>$null
 md "%~1\ServiceTest" 2>$null
+md "%~1\Images" 2>$null
+md "%~1\Output" 2>$null
 
 xcopy "..\Client\*" "%~1\Client\" /s /Y
 xcopy "..\Service\*" "%~1\Service\" /s /Y
@@ -21,6 +23,7 @@ xcopy "..\PingErrorApp\*" "%~1\PingErrorApp\" /s /Y
 xcopy "..\ExceptionReport\*" "%~1\ExceptionReport\" /s /Y
 xcopy "..\ServiceTest\*" "%~1\ServiceTest\" /s /Y
 xcopy "..\SetupConfig\*" "%~1\SetupConfig\" /s /Y
+xcopy "..\Web\images\*" "%~1\Images\" /s /Y
 
 
 md %~2 2>$null

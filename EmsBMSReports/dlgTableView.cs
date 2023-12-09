@@ -256,6 +256,10 @@ namespace EmsBMSReports
             try
             {
                 oCol.m_sColTitle = Conversions.ToString(oReader["ColTitle"]);
+                if(oCol.m_sColTitle==null || oCol.m_sColTitle.Length==0)
+                {
+                    oCol.m_sColTitle = Conversions.ToString(oReader["ColHeader"]);
+                }
             }
             catch (Exception )
             {
@@ -462,8 +466,8 @@ namespace EmsBMSReports
             }
 
             string sQuery = "select ExternalSeqNo, ExternalLogId, Timestamp, Value from nsp.Trend_Data where ExternalLogId in (" + columnIds + ") and Timestamp >= '" + StartTime.ToUniversalTime().ToString("s") + "' and Timestamp <='" + EndTime.ToUniversalTime().ToString("s") + "'" + includeEventsClause + " order by Timestamp";
-
-            var eConnection = new OdbcConnection(g_sEMSDbConString);
+            string dbcon = g_sEMSDbConString;
+            var eConnection = new OdbcConnection(dbcon);
             eConnection.Open();
             var oCmd = new OdbcCommand(sQuery, eConnection);
             var oReader = oCmd.ExecuteReader();
@@ -476,7 +480,7 @@ namespace EmsBMSReports
                 try
                 {
                     var timestamp = DateTime.Parse(Conversions.ToString(oReader["Timestamp"]));
-                    if (oLastTime > timestamp | (timestamp - oLastTime).TotalMilliseconds > (double)oTolerance.Value)
+                    if (oLastTime > timestamp | (timestamp - oLastTime).TotalMilliseconds > (double)oTolerance.Value*1000)
                     {
                         index = oGrid.Rows.Add();
                         oLastTime = timestamp;

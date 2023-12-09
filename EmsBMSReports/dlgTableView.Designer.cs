@@ -35,338 +35,358 @@ namespace EmsBMSReports
         [DebuggerStepThrough()]
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
-            oGrid = new DataGridView();
-            oGrid.CellContentClick += new DataGridViewCellEventHandler(oGrid_CellContentClick);
-            oGrid.CurrentCellChanged += new EventHandler(oGrid_CurrentCellChanged);
-            viewData = new Button();
-            viewData.Click += new EventHandler(ViewData_Click);
-            Label4 = new Label();
-            Label3 = new Label();
-            cGroup = new ComboBox();
-            cGroup.SelectedIndexChanged += new EventHandler(cGroup_SelectedIndexChanged);
-            Label6 = new Label();
-            oReports = new ComboBox();
-            oReports.SelectedIndexChanged += new EventHandler(Reports_SelectedIndexChanged);
-            Label1 = new Label();
-            SelectColumn = new Button();
-            SelectColumn.Click += new EventHandler(Button1_Click);
-            ColInfo = new TextBox();
-            CheckInfo = new TextBox();
-            CheckInfo.TextChanged += new EventHandler(CheckInfo_TextChanged);
-            ColQuery = new TextBox();
-            ColQuery.MouseClick += new MouseEventHandler(ColQuery_MouseClick);
-            oEndTime = new DateTimePicker();
-            oEndTime.ValueChanged += new EventHandler(oEndTime_ValueChanged);
-            oStartTime = new DateTimePicker();
-            oStartTime.ValueChanged += new EventHandler(oStartTime_ValueChanged);
-            oEndDate = new DateTimePicker();
-            oEndDate.ValueChanged += new EventHandler(oEndDate_ValueChanged);
-            oStartDate = new DateTimePicker();
-            oStartDate.ValueChanged += new EventHandler(oStartDate_ValueChanged);
-            Label2 = new Label();
-            Label2.Click += new EventHandler(Label2_Click);
-            oTolerance = new NumericUpDown();
-            oTolerance.ValueChanged += new EventHandler(oTolerance_ValueChanged);
-            oPrecision = new NumericUpDown();
-            oPrecision.ValueChanged += new EventHandler(NumericUpDown2_ValueChanged);
-            Label5 = new Label();
-            Label5.Click += new EventHandler(Label5_Click);
-            Label7 = new Label();
-            oIncludeEvents = new CheckBox();
-            oIncludeEvents.CheckedChanged += new EventHandler(CheckBox1_CheckedChanged);
-            RowQuery = new TextBox();
-            RowQuery.MouseClick += new MouseEventHandler(RowQuery_MouseClick);
-            Timer1 = new Timer(components);
-            Timer1.Tick += new EventHandler(Timer1_Tick);
-            ToolTip1 = new ToolTip(components);
-            ToolTip2 = new ToolTip(components);
-            ((System.ComponentModel.ISupportInitialize)oGrid).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)oTolerance).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)oPrecision).BeginInit();
-            SuspendLayout();
+            this.components = new System.ComponentModel.Container();
+            this.oGrid = new System.Windows.Forms.DataGridView();
+            this.viewData = new System.Windows.Forms.Button();
+            this.Label4 = new System.Windows.Forms.Label();
+            this.Label3 = new System.Windows.Forms.Label();
+            this.cGroup = new System.Windows.Forms.ComboBox();
+            this.Label6 = new System.Windows.Forms.Label();
+            this.oReports = new System.Windows.Forms.ComboBox();
+            this.Label1 = new System.Windows.Forms.Label();
+            this.SelectColumn = new System.Windows.Forms.Button();
+            this.ColInfo = new System.Windows.Forms.TextBox();
+            this.CheckInfo = new System.Windows.Forms.TextBox();
+            this.ColQuery = new System.Windows.Forms.TextBox();
+            this.oEndTime = new System.Windows.Forms.DateTimePicker();
+            this.oStartTime = new System.Windows.Forms.DateTimePicker();
+            this.oEndDate = new System.Windows.Forms.DateTimePicker();
+            this.oStartDate = new System.Windows.Forms.DateTimePicker();
+            this.Label2 = new System.Windows.Forms.Label();
+            this.oTolerance = new System.Windows.Forms.NumericUpDown();
+            this.oPrecision = new System.Windows.Forms.NumericUpDown();
+            this.Label5 = new System.Windows.Forms.Label();
+            this.Label7 = new System.Windows.Forms.Label();
+            this.oIncludeEvents = new System.Windows.Forms.CheckBox();
+            this.RowQuery = new System.Windows.Forms.TextBox();
+            this.Timer1 = new System.Windows.Forms.Timer(this.components);
+            this.ToolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.ToolTip2 = new System.Windows.Forms.ToolTip(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.oGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.oTolerance)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.oPrecision)).BeginInit();
+            this.SuspendLayout();
             // 
             // oGrid
             // 
-            oGrid.AllowUserToAddRows = false;
-            oGrid.AllowUserToDeleteRows = false;
-            oGrid.AllowUserToResizeRows = false;
-            oGrid.Location = new Point(13, 117);
-            oGrid.MultiSelect = false;
-            oGrid.Name = "oGrid";
-            oGrid.Size = new Size(1361, 516);
-            oGrid.TabIndex = 1;
+            this.oGrid.AllowUserToAddRows = false;
+            this.oGrid.AllowUserToDeleteRows = false;
+            this.oGrid.AllowUserToResizeRows = false;
+            this.oGrid.Location = new System.Drawing.Point(13, 117);
+            this.oGrid.MultiSelect = false;
+            this.oGrid.Name = "oGrid";
+            this.oGrid.Size = new System.Drawing.Size(1361, 516);
+            this.oGrid.TabIndex = 1;
+            this.oGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.oGrid_CellContentClick);
+            this.oGrid.CurrentCellChanged += new System.EventHandler(this.oGrid_CurrentCellChanged);
             // 
             // viewData
             // 
-            viewData.Location = new Point(1312, 18);
-            viewData.Name = "viewData";
-            viewData.Size = new Size(62, 56);
-            viewData.TabIndex = 4;
-            viewData.Text = "View";
-            viewData.UseVisualStyleBackColor = true;
+            this.viewData.Location = new System.Drawing.Point(1312, 18);
+            this.viewData.Name = "viewData";
+            this.viewData.Size = new System.Drawing.Size(62, 56);
+            this.viewData.TabIndex = 4;
+            this.viewData.Text = "View";
+            this.viewData.UseVisualStyleBackColor = true;
+            this.viewData.Click += new System.EventHandler(this.ViewData_Click);
             // 
             // Label4
             // 
-            Label4.AutoSize = true;
-            Label4.Font = new Font("Microsoft Sans Serif", 12.0f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            Label4.Location = new Point(14, 50);
-            Label4.Name = "Label4";
-            Label4.Size = new Size(73, 20);
-            Label4.TabIndex = 328;
-            Label4.Text = "To Date";
+            this.Label4.AutoSize = true;
+            this.Label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label4.Location = new System.Drawing.Point(14, 50);
+            this.Label4.Name = "Label4";
+            this.Label4.Size = new System.Drawing.Size(73, 20);
+            this.Label4.TabIndex = 328;
+            this.Label4.Text = "To Date";
             // 
             // Label3
             // 
-            Label3.AutoSize = true;
-            Label3.Font = new Font("Microsoft Sans Serif", 12.0f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            Label3.Location = new Point(14, 17);
-            Label3.Name = "Label3";
-            Label3.Size = new Size(94, 20);
-            Label3.TabIndex = 329;
-            Label3.Text = "From Date";
+            this.Label3.AutoSize = true;
+            this.Label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label3.Location = new System.Drawing.Point(14, 17);
+            this.Label3.Name = "Label3";
+            this.Label3.Size = new System.Drawing.Size(94, 20);
+            this.Label3.TabIndex = 329;
+            this.Label3.Text = "From Date";
             // 
             // cGroup
             // 
-            cGroup.DropDownStyle = ComboBoxStyle.DropDownList;
-            cGroup.FormattingEnabled = true;
-            cGroup.Location = new Point(465, 13);
-            cGroup.Name = "cGroup";
-            cGroup.Size = new Size(312, 24);
-            cGroup.TabIndex = 339;
+            this.cGroup.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cGroup.FormattingEnabled = true;
+            this.cGroup.Location = new System.Drawing.Point(465, 13);
+            this.cGroup.Name = "cGroup";
+            this.cGroup.Size = new System.Drawing.Size(312, 24);
+            this.cGroup.TabIndex = 339;
+            this.cGroup.SelectedIndexChanged += new System.EventHandler(this.cGroup_SelectedIndexChanged);
             // 
             // Label6
             // 
-            Label6.AutoSize = true;
-            Label6.Font = new Font("Microsoft Sans Serif", 12.0f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            Label6.Location = new Point(349, 16);
-            Label6.Name = "Label6";
-            Label6.Size = new Size(110, 20);
-            Label6.TabIndex = 338;
-            Label6.Text = "Group Name";
+            this.Label6.AutoSize = true;
+            this.Label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label6.Location = new System.Drawing.Point(349, 16);
+            this.Label6.Name = "Label6";
+            this.Label6.Size = new System.Drawing.Size(110, 20);
+            this.Label6.TabIndex = 338;
+            this.Label6.Text = "Group Name";
             // 
             // oReports
             // 
-            oReports.DropDownStyle = ComboBoxStyle.DropDownList;
-            oReports.FormattingEnabled = true;
-            oReports.Location = new Point(465, 47);
-            oReports.Name = "oReports";
-            oReports.Size = new Size(312, 24);
-            oReports.TabIndex = 341;
+            this.oReports.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.oReports.FormattingEnabled = true;
+            this.oReports.Location = new System.Drawing.Point(465, 47);
+            this.oReports.Name = "oReports";
+            this.oReports.Size = new System.Drawing.Size(312, 24);
+            this.oReports.TabIndex = 341;
+            this.oReports.SelectedIndexChanged += new System.EventHandler(this.Reports_SelectedIndexChanged);
             // 
             // Label1
             // 
-            Label1.AutoSize = true;
-            Label1.Font = new Font("Microsoft Sans Serif", 12.0f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            Label1.Location = new Point(349, 50);
-            Label1.Name = "Label1";
-            Label1.Size = new Size(115, 20);
-            Label1.TabIndex = 340;
-            Label1.Text = "Report Name";
+            this.Label1.AutoSize = true;
+            this.Label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label1.Location = new System.Drawing.Point(349, 50);
+            this.Label1.Name = "Label1";
+            this.Label1.Size = new System.Drawing.Size(115, 20);
+            this.Label1.TabIndex = 340;
+            this.Label1.Text = "Report Name";
             // 
             // SelectColumn
             // 
-            SelectColumn.Location = new Point(1182, 18);
-            SelectColumn.Name = "SelectColumn";
-            SelectColumn.Size = new Size(124, 56);
-            SelectColumn.TabIndex = 344;
-            SelectColumn.Text = "Select Columns";
-            SelectColumn.UseVisualStyleBackColor = true;
+            this.SelectColumn.Location = new System.Drawing.Point(1182, 18);
+            this.SelectColumn.Name = "SelectColumn";
+            this.SelectColumn.Size = new System.Drawing.Size(124, 56);
+            this.SelectColumn.TabIndex = 344;
+            this.SelectColumn.Text = "Select Columns";
+            this.SelectColumn.UseVisualStyleBackColor = true;
+            this.SelectColumn.Click += new System.EventHandler(this.Button1_Click);
             // 
             // ColInfo
             // 
-            ColInfo.BackColor = SystemColors.ControlLightLight;
-            ColInfo.Font = new Font("Courier New", 11.25f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            ColInfo.Location = new Point(13, 630);
-            ColInfo.Multiline = true;
-            ColInfo.Name = "ColInfo";
-            ColInfo.ReadOnly = true;
-            ColInfo.Size = new Size(446, 58);
-            ColInfo.TabIndex = 347;
+            this.ColInfo.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.ColInfo.Font = new System.Drawing.Font("Courier New", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ColInfo.Location = new System.Drawing.Point(13, 630);
+            this.ColInfo.Multiline = true;
+            this.ColInfo.Name = "ColInfo";
+            this.ColInfo.ReadOnly = true;
+            this.ColInfo.Size = new System.Drawing.Size(446, 58);
+            this.ColInfo.TabIndex = 347;
             // 
             // CheckInfo
             // 
-            CheckInfo.BackColor = SystemColors.ControlLightLight;
-            CheckInfo.Font = new Font("Courier New", 11.25f, FontStyle.Bold);
-            CheckInfo.Location = new Point(465, 630);
-            CheckInfo.Multiline = true;
-            CheckInfo.Name = "CheckInfo";
-            CheckInfo.ReadOnly = true;
-            CheckInfo.Size = new Size(253, 58);
-            CheckInfo.TabIndex = 348;
+            this.CheckInfo.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.CheckInfo.Font = new System.Drawing.Font("Courier New", 11.25F, System.Drawing.FontStyle.Bold);
+            this.CheckInfo.Location = new System.Drawing.Point(465, 630);
+            this.CheckInfo.Multiline = true;
+            this.CheckInfo.Name = "CheckInfo";
+            this.CheckInfo.ReadOnly = true;
+            this.CheckInfo.Size = new System.Drawing.Size(253, 58);
+            this.CheckInfo.TabIndex = 348;
+            this.CheckInfo.TextChanged += new System.EventHandler(this.CheckInfo_TextChanged);
             // 
             // ColQuery
             // 
-            ColQuery.BackColor = SystemColors.ControlLightLight;
-            ColQuery.Font = new Font("Courier New", 11.25f, FontStyle.Bold);
-            ColQuery.Location = new Point(724, 630);
-            ColQuery.Multiline = true;
-            ColQuery.Name = "ColQuery";
-            ColQuery.ReadOnly = true;
-            ColQuery.Size = new Size(250, 58);
-            ColQuery.TabIndex = 349;
+            this.ColQuery.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.ColQuery.Font = new System.Drawing.Font("Courier New", 11.25F, System.Drawing.FontStyle.Bold);
+            this.ColQuery.Location = new System.Drawing.Point(724, 630);
+            this.ColQuery.Multiline = true;
+            this.ColQuery.Name = "ColQuery";
+            this.ColQuery.ReadOnly = true;
+            this.ColQuery.Size = new System.Drawing.Size(250, 58);
+            this.ColQuery.TabIndex = 349;
+            this.ColQuery.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ColQuery_MouseClick);
             // 
             // oEndTime
             // 
-            oEndTime.Format = DateTimePickerFormat.Time;
-            oEndTime.ImeMode = ImeMode.Disable;
-            oEndTime.Location = new Point(222, 51);
-            oEndTime.Name = "oEndTime";
-            oEndTime.ShowUpDown = true;
-            oEndTime.Size = new Size(102, 22);
-            oEndTime.TabIndex = 346;
-            oEndTime.Value = new DateTime(2023, 11, 22, 21, 0, 13, 0);
+            this.oEndTime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.oEndTime.ImeMode = System.Windows.Forms.ImeMode.Disable;
+            this.oEndTime.Location = new System.Drawing.Point(222, 51);
+            this.oEndTime.Name = "oEndTime";
+            this.oEndTime.ShowUpDown = true;
+            this.oEndTime.Size = new System.Drawing.Size(102, 22);
+            this.oEndTime.TabIndex = 346;
+            this.oEndTime.Value = new System.DateTime(2023, 11, 22, 21, 0, 13, 0);
+            this.oEndTime.ValueChanged += new System.EventHandler(this.oEndTime_ValueChanged);
             // 
             // oStartTime
             // 
-            oStartTime.Format = DateTimePickerFormat.Time;
-            oStartTime.Location = new Point(222, 17);
-            oStartTime.Name = "oStartTime";
-            oStartTime.ShowUpDown = true;
-            oStartTime.Size = new Size(102, 22);
-            oStartTime.TabIndex = 345;
-            oStartTime.Value = new DateTime(2023, 11, 22, 21, 0, 13, 0);
+            this.oStartTime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.oStartTime.Location = new System.Drawing.Point(222, 17);
+            this.oStartTime.Name = "oStartTime";
+            this.oStartTime.ShowUpDown = true;
+            this.oStartTime.Size = new System.Drawing.Size(102, 22);
+            this.oStartTime.TabIndex = 345;
+            this.oStartTime.Value = new System.DateTime(2023, 11, 22, 21, 0, 13, 0);
+            this.oStartTime.ValueChanged += new System.EventHandler(this.oStartTime_ValueChanged);
             // 
             // oEndDate
             // 
-            oEndDate.Format = DateTimePickerFormat.Short;
-            oEndDate.Location = new Point(114, 50);
-            oEndDate.Name = "oEndDate";
-            oEndDate.Size = new Size(102, 22);
-            oEndDate.TabIndex = 343;
-            oEndDate.Value = new DateTime(2023, 11, 22, 20, 59, 38, 0);
+            this.oEndDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.oEndDate.Location = new System.Drawing.Point(114, 50);
+            this.oEndDate.Name = "oEndDate";
+            this.oEndDate.Size = new System.Drawing.Size(102, 22);
+            this.oEndDate.TabIndex = 343;
+            this.oEndDate.Value = new System.DateTime(2023, 11, 22, 20, 59, 38, 0);
+            this.oEndDate.ValueChanged += new System.EventHandler(this.oEndDate_ValueChanged);
             // 
             // oStartDate
             // 
-            oStartDate.Format = DateTimePickerFormat.Short;
-            oStartDate.Location = new Point(114, 16);
-            oStartDate.Name = "oStartDate";
-            oStartDate.Size = new Size(102, 22);
-            oStartDate.TabIndex = 342;
-            oStartDate.Value = new DateTime(2023, 11, 20, 21, 37, 0, 0);
+            this.oStartDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.oStartDate.Location = new System.Drawing.Point(114, 16);
+            this.oStartDate.Name = "oStartDate";
+            this.oStartDate.Size = new System.Drawing.Size(102, 22);
+            this.oStartDate.TabIndex = 342;
+            this.oStartDate.Value = new System.DateTime(2023, 11, 20, 21, 37, 0, 0);
+            this.oStartDate.ValueChanged += new System.EventHandler(this.oStartDate_ValueChanged);
             // 
             // Label2
             // 
-            Label2.AutoSize = true;
-            Label2.Font = new Font("Microsoft Sans Serif", 12.0f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            Label2.Location = new Point(790, 16);
-            Label2.Name = "Label2";
-            Label2.Size = new Size(88, 20);
-            Label2.TabIndex = 350;
-            Label2.Text = "Tolerance";
+            this.Label2.AutoSize = true;
+            this.Label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label2.Location = new System.Drawing.Point(790, 16);
+            this.Label2.Name = "Label2";
+            this.Label2.Size = new System.Drawing.Size(88, 20);
+            this.Label2.TabIndex = 350;
+            this.Label2.Text = "Tolerance";
+            this.Label2.Click += new System.EventHandler(this.Label2_Click);
             // 
             // oTolerance
             // 
-            oTolerance.Location = new Point(885, 17);
-            oTolerance.Maximum = new decimal(new int[] { 5000, 0, 0, 0 });
-            oTolerance.Name = "oTolerance";
-            oTolerance.Size = new Size(96, 22);
-            oTolerance.TabIndex = 352;
-            oTolerance.Value = new decimal(new int[] { 100, 0, 0, 0 });
+            this.oTolerance.Location = new System.Drawing.Point(885, 17);
+            this.oTolerance.Maximum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.oTolerance.Name = "oTolerance";
+            this.oTolerance.Size = new System.Drawing.Size(96, 22);
+            this.oTolerance.TabIndex = 352;
+            this.oTolerance.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.oTolerance.ValueChanged += new System.EventHandler(this.oTolerance_ValueChanged);
             // 
             // oPrecision
             // 
-            oPrecision.Location = new Point(885, 52);
-            oPrecision.Maximum = new decimal(new int[] { 8, 0, 0, 0 });
-            oPrecision.Minimum = new decimal(new int[] { 1, 0, 0, (int)-2147483648L });
-            oPrecision.Name = "oPrecision";
-            oPrecision.Size = new Size(96, 22);
-            oPrecision.TabIndex = 354;
-            oPrecision.Value = new decimal(new int[] { 1, 0, 0, (int)-2147483648L });
+            this.oPrecision.Location = new System.Drawing.Point(885, 52);
+            this.oPrecision.Maximum = new decimal(new int[] {
+            8,
+            0,
+            0,
+            0});
+            this.oPrecision.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            this.oPrecision.Name = "oPrecision";
+            this.oPrecision.Size = new System.Drawing.Size(96, 22);
+            this.oPrecision.TabIndex = 354;
+            this.oPrecision.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            this.oPrecision.ValueChanged += new System.EventHandler(this.NumericUpDown2_ValueChanged);
             // 
             // Label5
             // 
-            Label5.AutoSize = true;
-            Label5.Font = new Font("Microsoft Sans Serif", 12.0f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            Label5.Location = new Point(796, 51);
-            Label5.Name = "Label5";
-            Label5.Size = new Size(82, 20);
-            Label5.TabIndex = 353;
-            Label5.Text = "Precision";
+            this.Label5.AutoSize = true;
+            this.Label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label5.Location = new System.Drawing.Point(796, 51);
+            this.Label5.Name = "Label5";
+            this.Label5.Size = new System.Drawing.Size(82, 20);
+            this.Label5.TabIndex = 353;
+            this.Label5.Text = "Precision";
+            this.Label5.Click += new System.EventHandler(this.Label5_Click);
             // 
             // Label7
             // 
-            Label7.AutoSize = true;
-            Label7.Font = new Font("Microsoft Sans Serif", 12.0f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            Label7.Location = new Point(987, 18);
-            Label7.Name = "Label7";
-            Label7.Size = new Size(32, 20);
-            Label7.TabIndex = 355;
-            Label7.Text = "ms";
+            this.Label7.AutoSize = true;
+            this.Label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label7.Location = new System.Drawing.Point(987, 18);
+            this.Label7.Name = "Label7";
+            this.Label7.Size = new System.Drawing.Size(37, 20);
+            this.Label7.TabIndex = 355;
+            this.Label7.Text = "sec";
             // 
             // oIncludeEvents
             // 
-            oIncludeEvents.AutoSize = true;
-            oIncludeEvents.Location = new Point(1049, 19);
-            oIncludeEvents.Name = "oIncludeEvents";
-            oIncludeEvents.Size = new Size(113, 20);
-            oIncludeEvents.TabIndex = 356;
-            oIncludeEvents.Text = "Include Events";
-            oIncludeEvents.UseVisualStyleBackColor = true;
+            this.oIncludeEvents.AutoSize = true;
+            this.oIncludeEvents.Location = new System.Drawing.Point(1049, 19);
+            this.oIncludeEvents.Name = "oIncludeEvents";
+            this.oIncludeEvents.Size = new System.Drawing.Size(113, 20);
+            this.oIncludeEvents.TabIndex = 356;
+            this.oIncludeEvents.Text = "Include Events";
+            this.oIncludeEvents.UseVisualStyleBackColor = true;
+            this.oIncludeEvents.CheckedChanged += new System.EventHandler(this.CheckBox1_CheckedChanged);
             // 
             // RowQuery
             // 
-            RowQuery.BackColor = SystemColors.ControlLightLight;
-            RowQuery.Font = new Font("Courier New", 11.25f, FontStyle.Bold);
-            RowQuery.Location = new Point(1010, 630);
-            RowQuery.Multiline = true;
-            RowQuery.Name = "RowQuery";
-            RowQuery.ReadOnly = true;
-            RowQuery.Size = new Size(250, 58);
-            RowQuery.TabIndex = 357;
+            this.RowQuery.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.RowQuery.Font = new System.Drawing.Font("Courier New", 11.25F, System.Drawing.FontStyle.Bold);
+            this.RowQuery.Location = new System.Drawing.Point(1010, 630);
+            this.RowQuery.Multiline = true;
+            this.RowQuery.Name = "RowQuery";
+            this.RowQuery.ReadOnly = true;
+            this.RowQuery.Size = new System.Drawing.Size(250, 58);
+            this.RowQuery.TabIndex = 357;
+            this.RowQuery.MouseClick += new System.Windows.Forms.MouseEventHandler(this.RowQuery_MouseClick);
             // 
             // Timer1
             // 
-            Timer1.Interval = 1500;
+            this.Timer1.Interval = 1500;
+            this.Timer1.Tick += new System.EventHandler(this.Timer1_Tick);
             // 
             // ToolTip1
             // 
-            ToolTip1.AutoPopDelay = 5000;
-            ToolTip1.InitialDelay = 0;
-            ToolTip1.ReshowDelay = 0;
+            this.ToolTip1.AutoPopDelay = 5000;
+            this.ToolTip1.InitialDelay = 0;
+            this.ToolTip1.ReshowDelay = 0;
             // 
             // dlgTableView
             // 
-            AutoScaleDimensions = new SizeF(8.0f, 16.0f);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1386, 689);
-            Controls.Add(RowQuery);
-            Controls.Add(oIncludeEvents);
-            Controls.Add(Label7);
-            Controls.Add(oPrecision);
-            Controls.Add(Label5);
-            Controls.Add(oTolerance);
-            Controls.Add(Label2);
-            Controls.Add(ColQuery);
-            Controls.Add(CheckInfo);
-            Controls.Add(ColInfo);
-            Controls.Add(oEndTime);
-            Controls.Add(oStartTime);
-            Controls.Add(SelectColumn);
-            Controls.Add(oEndDate);
-            Controls.Add(oStartDate);
-            Controls.Add(oReports);
-            Controls.Add(Label1);
-            Controls.Add(cGroup);
-            Controls.Add(Label6);
-            Controls.Add(Label4);
-            Controls.Add(Label3);
-            Controls.Add(viewData);
-            Controls.Add(oGrid);
-            Font = new Font("Microsoft Sans Serif", 9.75f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            FormBorderStyle = FormBorderStyle.FixedDialog;
-            Margin = new Padding(4);
-            Name = "dlgTableView";
-            ShowInTaskbar = false;
-            StartPosition = FormStartPosition.CenterParent;
-            Text = "dlgColumnsConfiguration";
-            ((System.ComponentModel.ISupportInitialize)oGrid).EndInit();
-            ((System.ComponentModel.ISupportInitialize)oTolerance).EndInit();
-            ((System.ComponentModel.ISupportInitialize)oPrecision).EndInit();
-            Load += new EventHandler(dlgTableView_load);
-            Resize += new EventHandler(dlgTableView_Resize);
-            ResumeLayout(false);
-            PerformLayout();
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(1386, 689);
+            this.Controls.Add(this.RowQuery);
+            this.Controls.Add(this.oIncludeEvents);
+            this.Controls.Add(this.Label7);
+            this.Controls.Add(this.oPrecision);
+            this.Controls.Add(this.Label5);
+            this.Controls.Add(this.oTolerance);
+            this.Controls.Add(this.Label2);
+            this.Controls.Add(this.ColQuery);
+            this.Controls.Add(this.CheckInfo);
+            this.Controls.Add(this.ColInfo);
+            this.Controls.Add(this.oEndTime);
+            this.Controls.Add(this.oStartTime);
+            this.Controls.Add(this.SelectColumn);
+            this.Controls.Add(this.oEndDate);
+            this.Controls.Add(this.oStartDate);
+            this.Controls.Add(this.oReports);
+            this.Controls.Add(this.Label1);
+            this.Controls.Add(this.cGroup);
+            this.Controls.Add(this.Label6);
+            this.Controls.Add(this.Label4);
+            this.Controls.Add(this.Label3);
+            this.Controls.Add(this.viewData);
+            this.Controls.Add(this.oGrid);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Margin = new System.Windows.Forms.Padding(4);
+            this.Name = "dlgTableView";
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "dlgColumnsConfiguration";
+            this.Load += new System.EventHandler(this.dlgTableView_load);
+            this.Resize += new System.EventHandler(this.dlgTableView_Resize);
+            ((System.ComponentModel.ISupportInitialize)(this.oGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.oTolerance)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.oPrecision)).EndInit();
+            this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
         internal DataGridView oGrid;

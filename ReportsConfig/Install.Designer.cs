@@ -44,13 +44,13 @@
             this.output.Size = new System.Drawing.Size(776, 258);
             this.output.TabIndex = 0;
             this.output.Text = "";
-            this.output.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
+            this.output.TextChanged += new System.EventHandler(this.output_TextChanged);
             // 
             // progressBar
             // 
             this.progressBar.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.progressBar.ForeColor = System.Drawing.Color.MediumSeaGreen;
-            this.progressBar.Location = new System.Drawing.Point(12, 316);
+            this.progressBar.Location = new System.Drawing.Point(15, 323);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(776, 23);
             this.progressBar.TabIndex = 1;
