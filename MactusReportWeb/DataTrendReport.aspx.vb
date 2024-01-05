@@ -16,7 +16,8 @@ Public Class DataTrendReport
 
         If IsPostBack = False Then
             LoadReportGroupCombo()
-            LoadReportsCombo(0)
+            Dim nGroupID = Convert.ToInt32(cReportGroup.SelectedItem.Value)
+            LoadReportsCombo(nGroupID)
         End If
 
 
