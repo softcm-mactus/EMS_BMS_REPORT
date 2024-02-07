@@ -761,11 +761,11 @@ Public Class EBOReport
                     If oCol.m_nColType = ColType.DateTime Then
                         oCol.m_sColType = "Date Time"
                     ElseIf oCol.m_nColType = ColType.Temperature Then
-                        oCol.m_sColType = "Temperature"
+                        oCol.m_sColType = "°C TEMP"
                     ElseIf oCol.m_nColType = ColType.Humidity Then
-                        oCol.m_sColType = "RH"
+                        oCol.m_sColType = "% RH"
                     ElseIf oCol.m_nColType = ColType.DP Then
-                        oCol.m_sColType = "Diffrential Pressure"
+                        oCol.m_sColType = "DP Pa"
                     Else
                         oCol.m_sColType = "Other"
                     End If
@@ -3153,35 +3153,6 @@ Public Class EBOReport
                 Next
                 oBodyHeaderTable2.SetWidths(sColWidths2)
 
-
-
-                If g_nReportType = ReportType.DataReport Then
-                    For nCol = 0 To g_oColList.Count - 1
-
-
-                        Dim oColHeader As PdfPCell = New PdfPCell(New Phrase(g_oColList(nCol).m_sColType, g_oBodyHeaderFont))
-                        oColHeader.PaddingBottom = g_nBodyPad
-                        oColHeader.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
-                        If g_oColList(nCol).m_nColJust = ColJust.Left Then
-                            oColHeader.HorizontalAlignment = Element.ALIGN_LEFT
-                        ElseIf g_oColList(nCol).m_nColJust = ColJust.Right Then
-                            oColHeader.HorizontalAlignment = Element.ALIGN_RIGHT
-                        Else
-                            oColHeader.HorizontalAlignment = Element.ALIGN_CENTER
-                        End If
-
-                        oColHeader.VerticalAlignment = Element.ALIGN_MIDDLE
-
-                        oBodyHeaderTable2.AddCell(oColHeader)
-                        nCol += g_oColList(nCol).m_nColMerge
-
-                    Next
-                End If
-                '      oBodyHeaderTable2.WriteSelectedRows(0, -1, g_fSideMargin * 1.5, nBodyDeaderYPos, writer.DirectContent)
-                nBodyDeaderYPos -= oBodyHeaderTable2.TotalHeight
-
-
-
                 For nCol = 0 To g_oColList.Count - 1
                     Dim oColHeader As PdfPCell
                     oColHeader = New PdfPCell(New Paragraph(g_oColList(nCol).m_sColTitle, g_oBodyHeaderFont))
@@ -3200,6 +3171,32 @@ Public Class EBOReport
                     oColHeader.VerticalAlignment = Element.ALIGN_MIDDLE
                     oBodyHeaderTable.AddCell(oColHeader)
                 Next
+
+                nBodyDeaderYPos -= oBodyHeaderTable2.TotalHeight
+
+                If g_nReportType = ReportType.DataReport Then
+                    For nCol = 0 To g_oColList.Count - 1
+                        Dim oColHeader As PdfPCell = New PdfPCell(New Phrase(g_oColList(nCol).m_sColType, g_oBodyHeaderFont))
+
+                        oColHeader.PaddingBottom = g_nBodyPad
+                        oColHeader.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
+                        If g_oColList(nCol).m_nColJust = ColJust.Left Then
+                            oColHeader.HorizontalAlignment = Element.ALIGN_LEFT
+                        ElseIf g_oColList(nCol).m_nColJust = ColJust.Right Then
+                            oColHeader.HorizontalAlignment = Element.ALIGN_RIGHT
+                        Else
+                            oColHeader.HorizontalAlignment = Element.ALIGN_CENTER
+                        End If
+
+                        oColHeader.VerticalAlignment = Element.ALIGN_MIDDLE
+
+                        oBodyHeaderTable2.AddCell(oColHeader)
+                        nCol += g_oColList(nCol).m_nColMerge
+
+                    Next
+                End If
+                '      oBodyHeaderTable2.WriteSelectedRows(0, -1, g_fSideMargin * 1.5, nBodyDeaderYPos, writer.DirectContent)
+
                 'oBodyHeaderTable.WriteSelectedRows(0, -1, g_fSideMargin * 1.5, nBodyDeaderYPos, writer.DirectContent)
                 nTopMargin = nTopMargin + oBodyHeaderTable.TotalHeight + oBodyHeaderTable2.TotalHeight + g_fTopBottomMargin + g_nFooterPad
 

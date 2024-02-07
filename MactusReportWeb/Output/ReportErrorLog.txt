@@ -4167,3 +4167,4 @@ Page Name:: NewIndusoftReport.vb  Function Name:: CalcualteTopBottomBodyMargins(
 Page Name:: NewIndusoftReport.vb  Function Name:: CalcualteTopBottomBodyMargins()  Date Time :: 21-06-2023 18:14:56 Error Message :: The number of columns in PdfPTable constructor must be greater than zero.
 Page Name:: MactusReportLib.vb  Function Name:: GenerateReport  Date Time :: 11-11-2023 09:15:36 Error Message :: Thread was being aborted.
 Page Name:: MactusReportLib.vb  Function Name:: GenerateReport  Date Time :: 13-11-2023 10:40:58 Error Message :: Thread was being aborted.
+Page Name:: MactusReportLib.vb  Function Name:: GenerateReport  Date Time :: 05-01-2024 18:37:11 Error Message :: Thread was being aborted.
