@@ -1713,7 +1713,7 @@ Public Class EBOReport
         For nCol = 1 To g_oColList.Count - 1
 
 
-            sQuery = "SELECT AVG(Value) as avgvalue, MIN(Value) as minvalue, MAX(Value) as maxvalue FROM " + g_sDataTableName + " WHERE timestamp < ? AND timestamp > ? AND externallogid =" + g_oColList(nCol).m_sColumnNameinTable
+            sQuery = "SELECT AVG(Value) as avgvalue, MIN(Value) as minvalue, MAX(Value) as maxvalue FROM " + g_sDataTableName + " WHERE timestamp < ? AND timestamp >= ? AND externallogid =" + g_oColList(nCol).m_sColumnNameinTable
             ' LogError(sQuery + " " + oFromDate.ToString() + " " + oToDate.ToString())
             Using oConnection As New OdbcConnection(g_sEMSDbConString)
                 Dim cmd As New OdbcCommand(sQuery, oConnection)
