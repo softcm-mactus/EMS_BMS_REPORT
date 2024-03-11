@@ -159,6 +159,7 @@ namespace EmsBMSReports
             "Humidity",
             "DP",
             "Other",
+            "Frequency",
             "Enumtype"});
             this.ColType.Name = "ColType";
             // 

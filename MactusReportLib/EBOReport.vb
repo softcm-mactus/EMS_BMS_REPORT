@@ -313,7 +313,26 @@ Public Class EBOReport
                         Next
                         oBodyHeaderTable2.SetWidths(sColWidths2)
 
+                        For nCol = 0 To g_oColList.Count - 1
+                            Dim oColHeader As PdfPCell
+                            oColHeader = New PdfPCell(New Paragraph(g_oColList(nCol).m_sColTitle, g_oBodyHeaderFont))
 
+                            oColHeader.PaddingBottom = g_nBodyPad
+                            oColHeader.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
+                            oColHeader.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
+                            If g_oColList(nCol).m_nColJust = ColJust.Left Then
+                                oColHeader.HorizontalAlignment = Element.ALIGN_LEFT
+                            ElseIf g_oColList(nCol).m_nColJust = ColJust.Right Then
+                                oColHeader.HorizontalAlignment = Element.ALIGN_RIGHT
+                            Else
+                                oColHeader.HorizontalAlignment = Element.ALIGN_CENTER
+                            End If
+
+                            oColHeader.VerticalAlignment = Element.ALIGN_MIDDLE
+                            oBodyHeaderTable.AddCell(oColHeader)
+                        Next
+                        oBodyHeaderTable.WriteSelectedRows(0, -1, g_fSideMargin * 1.5, nBodyDeaderYPos, writer.DirectContent)
+                        nBodyDeaderYPos -= oBodyHeaderTable.TotalHeight
 
                         If g_nReportType = ReportType.DataReport Then
                             For nCol = 0 To g_oColList.Count - 1
@@ -338,30 +357,6 @@ Public Class EBOReport
                             Next
                         End If
                         oBodyHeaderTable2.WriteSelectedRows(0, -1, g_fSideMargin * 1.5, nBodyDeaderYPos, writer.DirectContent)
-                        nBodyDeaderYPos -= oBodyHeaderTable2.TotalHeight
-
-
-
-                        For nCol = 0 To g_oColList.Count - 1
-                            Dim oColHeader As PdfPCell
-                            oColHeader = New PdfPCell(New Paragraph(g_oColList(nCol).m_sColTitle, g_oBodyHeaderFont))
-
-                            oColHeader.PaddingBottom = g_nBodyPad
-                            oColHeader.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
-                            oColHeader.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
-                            If g_oColList(nCol).m_nColJust = ColJust.Left Then
-                                oColHeader.HorizontalAlignment = Element.ALIGN_LEFT
-                            ElseIf g_oColList(nCol).m_nColJust = ColJust.Right Then
-                                oColHeader.HorizontalAlignment = Element.ALIGN_RIGHT
-                            Else
-                                oColHeader.HorizontalAlignment = Element.ALIGN_CENTER
-                            End If
-
-                            oColHeader.VerticalAlignment = Element.ALIGN_MIDDLE
-                            oBodyHeaderTable.AddCell(oColHeader)
-                        Next
-                        oBodyHeaderTable.WriteSelectedRows(0, -1, g_fSideMargin * 1.5, nBodyDeaderYPos, writer.DirectContent)
-
 
                     End If
                 End If
@@ -761,11 +756,13 @@ Public Class EBOReport
                     If oCol.m_nColType = ColType.DateTime Then
                         oCol.m_sColType = "Date Time"
                     ElseIf oCol.m_nColType = ColType.Temperature Then
-                        oCol.m_sColType = "°C TEMP"
+                        oCol.m_sColType = "°C Temp"
                     ElseIf oCol.m_nColType = ColType.Humidity Then
                         oCol.m_sColType = "% RH"
                     ElseIf oCol.m_nColType = ColType.DP Then
                         oCol.m_sColType = "DP Pa"
+                    ElseIf oCol.m_nColType = ColType.Frequency Then
+                        oCol.m_sColType = "Hz"
                     Else
                         oCol.m_sColType = "Other"
                     End If
@@ -871,6 +868,20 @@ Public Class EBOReport
                     oCol.m_nEnumID = 0
                 End Try
 
+                Try
+                    oCol.m_nMinAllowedValue = oReader("MinAllowedValue")
+                    oCol.m_bUseMinAllowedValue = True
+                Catch ex As Exception
+                    oCol.m_bUseMinAllowedValue = False
+                    oCol.m_nMinAllowedValue = 0
+                End Try
+                Try
+                    oCol.m_nMaxAllowedValue = oReader("MaxAllowedValue")
+                    oCol.m_bUseMaxAllowedValue = True
+                Catch ex As Exception
+                    oCol.m_bUseMaxAllowedValue = False
+                    oCol.m_nMaxAllowedValue = 0
+                End Try
 
                 oCol.m_fReportMax = -9999.0
                 oCol.m_fReportMin = 9999.0
@@ -1311,7 +1322,7 @@ Public Class EBOReport
 
     End Sub
 
-    Public Sub AddAlarmTableAndImageToDocument(ByRef ncol As Integer, ByRef oFrom As Date, ByRef oToDate As Date, ByRef oImage As itextsharp.text.image, ByRef nTopMargin As Integer, ByRef Writer As pdfwriter)
+    Public Sub AddAlarmTableAndImageToDocument(ByRef ncol As Integer, ByRef oFrom As Date, ByRef oToDate As Date, ByRef oImage As iTextSharp.text.Image, ByRef nTopMargin As Integer, ByRef Writer As PdfWriter)
 
         Dim sPointName As String
         Dim nPointID As Integer
@@ -1347,11 +1358,11 @@ Public Class EBOReport
             oPdfCel.HorizontalAlignment = Element.ALIGN_CENTER
             oPdfCel.VerticalAlignment = Element.ALIGN_MIDDLE
             oPdfCel.Padding = g_nBodyPad * 2
-            oPdfCel.borderwidth = 1.0F
-            oPdfCel.BorderColor = itextsharp.text.Color.black
+            oPdfCel.BorderWidth = 1.0F
+            oPdfCel.BorderColor = iTextSharp.text.Color.BLACK
 
             oTable.AddCell(oPdfCel)
-            oTable.WriteSelectedRows(0, -1, 600.0, 495.0, Writer.directcontent)
+            oTable.WriteSelectedRows(0, -1, 600.0, 495.0, Writer.DirectContent)
 
             oImage.SetAbsolutePosition(xtemp, ytemp)
             g_oDoc.Add(oImage)
@@ -1360,7 +1371,7 @@ Public Class EBOReport
 
 
 
-            Dim oTable As pdfptable
+            Dim oTable As PdfPTable
             Dim oPdfCel As PdfPCell
             oTable = New PdfPTable(3)
             oTable.TotalWidth = 220
@@ -1378,24 +1389,24 @@ Public Class EBOReport
                     oPdfCel = New PdfPCell(New Paragraph("Alarm Start Time", g_oBodyFont))
                     oPdfCel.HorizontalAlignment = Element.ALIGN_CENTER
                     oPdfCel.VerticalAlignment = Element.ALIGN_MIDDLE
-                    oPdfCel.borderwidth = 1.0F
-                    oPdfCel.BorderColor = itextsharp.text.Color.black
+                    oPdfCel.BorderWidth = 1.0F
+                    oPdfCel.BorderColor = iTextSharp.text.Color.BLACK
                     oPdfCel.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
                     oTable.AddCell(oPdfCel)
 
                     oPdfCel = New PdfPCell(New Paragraph("Duration", g_oBodyFont))
                     oPdfCel.HorizontalAlignment = Element.ALIGN_CENTER
                     oPdfCel.VerticalAlignment = Element.ALIGN_MIDDLE
-                    oPdfCel.borderwidth = 1.0F
-                    oPdfCel.BorderColor = itextsharp.text.Color.black
+                    oPdfCel.BorderWidth = 1.0F
+                    oPdfCel.BorderColor = iTextSharp.text.Color.BLACK
                     oPdfCel.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
                     oTable.AddCell(oPdfCel)
 
                     oPdfCel = New PdfPCell(New Paragraph("Type", g_oBodyFont))
                     oPdfCel.HorizontalAlignment = Element.ALIGN_CENTER
                     oPdfCel.VerticalAlignment = Element.ALIGN_MIDDLE
-                    oPdfCel.borderwidth = 1.0F
-                    oPdfCel.BorderColor = itextsharp.text.Color.black
+                    oPdfCel.BorderWidth = 1.0F
+                    oPdfCel.BorderColor = iTextSharp.text.Color.BLACK
                     oPdfCel.BackgroundColor = New iTextSharp.text.Color(90, 190, 243)
                     oTable.AddCell(oPdfCel)
 
@@ -1403,28 +1414,28 @@ Public Class EBOReport
                 oPdfCel = New PdfPCell(New Paragraph(oAlamList(nIndex).m_sStartTime, g_oBodyFont))
                 oPdfCel.HorizontalAlignment = Element.ALIGN_CENTER
                 oPdfCel.VerticalAlignment = Element.ALIGN_MIDDLE
-                oPdfCel.borderwidth = 1.0F
-                oPdfCel.BorderColor = itextsharp.text.Color.black
+                oPdfCel.BorderWidth = 1.0F
+                oPdfCel.BorderColor = iTextSharp.text.Color.BLACK
                 oTable.AddCell(oPdfCel)
 
                 oPdfCel = New PdfPCell(New Paragraph(oAlamList(nIndex).m_sDuration, g_oBodyFont))
                 oPdfCel.HorizontalAlignment = Element.ALIGN_CENTER
                 oPdfCel.VerticalAlignment = Element.ALIGN_MIDDLE
-                oPdfCel.borderwidth = 1.0F
-                oPdfCel.BorderColor = itextsharp.text.Color.black
+                oPdfCel.BorderWidth = 1.0F
+                oPdfCel.BorderColor = iTextSharp.text.Color.BLACK
                 oTable.AddCell(oPdfCel)
 
                 oPdfCel = New PdfPCell(New Paragraph(oAlamList(nIndex).m_sType, g_oBodyFont))
                 oPdfCel.HorizontalAlignment = Element.ALIGN_CENTER
                 oPdfCel.VerticalAlignment = Element.ALIGN_MIDDLE
-                oPdfCel.borderwidth = 1.0F
-                oPdfCel.BorderColor = itextsharp.text.Color.black
+                oPdfCel.BorderWidth = 1.0F
+                oPdfCel.BorderColor = iTextSharp.text.Color.BLACK
                 oTable.AddCell(oPdfCel)
                 nCount = nCount + 1
                 If nCount > 30 Then
                     oImage.SetAbsolutePosition(xtemp, ytemp)
                     g_oDoc.Add(oImage)
-                    oTable.WriteSelectedRows(0, -1, 600.0, 495.0, Writer.directcontent)
+                    oTable.WriteSelectedRows(0, -1, 600.0, 495.0, Writer.DirectContent)
 
                     If nIndex < oAlamList.Count - 1 Then
                         'Add Marker To Next Page
@@ -1440,11 +1451,11 @@ Public Class EBOReport
                         oPdfCel1.HorizontalAlignment = Element.ALIGN_CENTER
                         oPdfCel1.VerticalAlignment = Element.ALIGN_MIDDLE
                         oPdfCel1.Padding = g_nBodyPad * 2
-                        oPdfCel1.borderwidth = 1.0F
-                        oPdfCel1.BorderColor = itextsharp.text.Color.black
+                        oPdfCel1.BorderWidth = 1.0F
+                        oPdfCel1.BorderColor = iTextSharp.text.Color.BLACK
 
                         oTable1.AddCell(oPdfCel1)
-                        oTable1.WriteSelectedRows(0, -1, 600.0, 70.0, Writer.directcontent)
+                        oTable1.WriteSelectedRows(0, -1, 600.0, 70.0, Writer.DirectContent)
                     End If
 
                     g_oDoc.NewPage()
@@ -1455,7 +1466,7 @@ Public Class EBOReport
             If nCount > 0 Then
                 oImage.SetAbsolutePosition(xtemp, ytemp)
                 g_oDoc.Add(oImage)
-                oTable.WriteSelectedRows(0, -1, 600.0, 495.0, Writer.directcontent)
+                oTable.WriteSelectedRows(0, -1, 600.0, 495.0, Writer.DirectContent)
                 g_oDoc.NewPage()
                 nCount = 0
             End If
@@ -1567,6 +1578,7 @@ Public Class EBOReport
 
                         For nCol = 0 To g_oColList.Count - 1
                             Dim oPdfCel As PdfPCell
+
                             If g_oColList(nCol).m_bError Then
                                 oPdfCel = New PdfPCell(New Paragraph(g_oColList(nCol).m_sValue, g_oBodyFontLow))
                             Else
@@ -1648,7 +1660,7 @@ Public Class EBOReport
 
             oExTable.TotalWidth = g_oDoc.PageSize.Width - 3 * g_fSideMargin
             oExTable.WidthPercentage = g_fSideFactor
-            oExTable.spacingbefore = 20
+            oExTable.SpacingBefore = 20
 
             oExTable.HorizontalAlignment = Element.ALIGN_CENTER
             Dim oPdfCel As PdfPCell
@@ -1774,27 +1786,33 @@ Public Class EBOReport
                                 End If
 
 
-                                If g_oColList(nCol).m_bLowCheck And g_oColList(nCol).m_fLow <> 0 Then
-                                    If g_oColList(nCol).m_fValue <= g_oColList(nCol).m_fLow Then
-                                        g_oColList(nCol).m_bError = True
+                                If Not g_oColList(nCol).m_bUseMinAllowedValue Or g_oColList(nCol).m_nMinAllowedValue <= g_oColList(nCol).m_fValue Then
+                                    If g_oColList(nCol).m_bLowCheck And g_oColList(nCol).m_fLow <> 0 Then
+                                        If g_oColList(nCol).m_fValue <= g_oColList(nCol).m_fLow Then
+                                            g_oColList(nCol).m_bError = True
+                                        End If
                                     End If
-                                End If
-                                If g_oColList(nCol).m_bHighCheck And g_oColList(nCol).m_fHigh <> 0 Then
-
-                                    If g_oColList(nCol).m_fValue >= g_oColList(nCol).m_fHigh Then
-                                        g_oColList(nCol).m_bError = True
-
+                                    If g_oColList(nCol).m_fReportMin >= g_oColList(nCol).m_fValue Then
+                                        g_oColList(nCol).m_fReportMin = g_oColList(nCol).m_fValue
+                                        g_oColList(nCol).m_bReportMinAdded = True
                                     End If
+                                Else
+                                    g_oColList(nCol).m_sValue = "***"
                                 End If
 
-                                If g_oColList(nCol).m_fReportMin >= g_oColList(nCol).m_fValue Then
-                                    g_oColList(nCol).m_fReportMin = g_oColList(nCol).m_fValue
-                                    g_oColList(nCol).m_bReportMinAdded = True
-                                End If
+                                If Not g_oColList(nCol).m_bUseMaxAllowedValue Or g_oColList(nCol).m_nMaxAllowedValue >= g_oColList(nCol).m_fValue Then
+                                    If g_oColList(nCol).m_bHighCheck And g_oColList(nCol).m_fHigh <> 0 Then
+                                        If g_oColList(nCol).m_fValue >= g_oColList(nCol).m_fHigh Then
+                                            g_oColList(nCol).m_bError = True
+                                        End If
+                                    End If
+                                    If g_oColList(nCol).m_fReportMax <= g_oColList(nCol).m_fValue Then
+                                        g_oColList(nCol).m_fReportMax = g_oColList(nCol).m_fValue
+                                        g_oColList(nCol).m_bReportMaxAdded = True
+                                    End If
+                                Else
+                                    g_oColList(nCol).m_sValue = "***"
 
-                                If g_oColList(nCol).m_fReportMax <= g_oColList(nCol).m_fValue Then
-                                    g_oColList(nCol).m_fReportMax = g_oColList(nCol).m_fValue
-                                    g_oColList(nCol).m_bReportMaxAdded = True
                                 End If
 
                                 If g_bAddMeanKineticTempRow And g_oColList(nCol).m_nColType = ColType.Temperature And g_oColList(nCol).m_bError = False Then
@@ -2954,9 +2972,9 @@ Public Class EBOReport
 
         oFromDate = oStartDate.AddSeconds(-30)
         If bIsPoint = False Then
-            sQuery = "SELECT Value FROM trend_data WHERE timestamp > ? AND  timestamp < ?  AND Value IS NOT NULL AND externallogid =" + nPointID.ToString() + " Limit 1"
+            sQuery = "SELECT Top 1 Value FROM nsp.Trend_Data WHERE timestamp > ? AND  timestamp < ?  AND Value IS NOT NULL AND externallogid =" + nPointID.ToString()
         Else
-            sQuery = "SELECT Value FROM trend_data WHERE timestamp > ? AND Value IS NOT NULL AND externallogid =" + nPointID.ToString() + " order by timestamp Limit 1"
+            sQuery = "SELECT  Top 1  Value FROM nsp.trend_data WHERE timestamp > ? AND Value IS NOT NULL AND externallogid =" + nPointID.ToString() + " order by timestamp "
         End If
 
         Using oConnection As New OdbcConnection(g_sEMSDbConString)

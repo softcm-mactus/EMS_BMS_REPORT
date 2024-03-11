@@ -1,3 +1,4 @@
+
 IF  NOT EXISTS (
 	SELECT * FROM sys.objects 
 	WHERE object_id = OBJECT_ID(N'[dbo].[TBL_ReportGroups]') AND type in (N'U'))
@@ -9,4 +10,13 @@ CREATE TABLE dbo.TBL_ReportGroups(
 	CategoryName VARCHAR(100) NOT NULL,
 );
 END
+
+Alter table dbo.[TBL_ReportColumns]
+ADD 
+	MinAllowedValue [float] NULL;
+
+Alter table dbo.[TBL_ReportColumns]
+ADD 
+	MaxAllowedValue [float] NULL;
+
 GO

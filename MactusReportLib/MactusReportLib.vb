@@ -117,6 +117,7 @@ Public Module MactusReportLib
         DP = 4
         Other = 5
         Enumtype = 6
+        Frequency = 7
     End Enum
 
     Public Enum ReportType As Integer
@@ -199,6 +200,11 @@ Public Module MactusReportLib
         Public m_nExcursionLowCheckCount As Integer
         Public m_nExcursionHighCheckCount As Integer
         Public m_nDataTableRowId As Integer
+
+        Public m_nMinAllowedValue As Double
+        Public m_nMaxAllowedValue As Double
+        Public m_bUseMinAllowedValue As Boolean = False
+        Public m_bUseMaxAllowedValue As Boolean = False
 
     End Class
 

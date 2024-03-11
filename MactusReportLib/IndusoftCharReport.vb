@@ -649,6 +649,8 @@ Public Class IndusoftCharReport
                         oCol.m_sColType = "RH"
                     ElseIf oCol.m_nColType = ColType.DP Then
                         oCol.m_sColType = "Diffrential Pressure"
+                    ElseIf oCol.m_nColType = ColType.Frequency Then
+                        oCol.m_sColType = "Frequency"
                     Else
                         oCol.m_sColType = "Other"
                     End If
