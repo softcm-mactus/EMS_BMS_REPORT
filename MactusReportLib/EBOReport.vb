@@ -756,11 +756,11 @@ Public Class EBOReport
                     If oCol.m_nColType = ColType.DateTime Then
                         oCol.m_sColType = "Date Time"
                     ElseIf oCol.m_nColType = ColType.Temperature Then
-                        oCol.m_sColType = "°C Temp"
+                        oCol.m_sColType = "°C"
                     ElseIf oCol.m_nColType = ColType.Humidity Then
-                        oCol.m_sColType = "% RH"
+                        oCol.m_sColType = "%"
                     ElseIf oCol.m_nColType = ColType.DP Then
-                        oCol.m_sColType = "DP Pa"
+                        oCol.m_sColType = "Pa"
                     ElseIf oCol.m_nColType = ColType.Frequency Then
                         oCol.m_sColType = "Hz"
                     Else
