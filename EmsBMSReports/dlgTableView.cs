@@ -196,9 +196,9 @@ namespace EmsBMSReports
                 {
                     sQuery = "SELECT * FROM TBL_ReportGroups WHERE GroupName= '" + report.name + "' AND CategoryName = '" + group.name +"' ORDER BY ExternalLogId";
                     var oConnection = new OdbcConnection(g_sConString);
-                    var eConnection = new OdbcConnection(g_sEMSDbConString);
+                    //var eConnection = new OdbcConnection(g_sEMSDbConString);
                     oConnection.Open();
-                    eConnection.Open();
+                    //eConnection.Open();
                     var oGroupCmd = new OdbcCommand(sQuery, oConnection);
                     var oGroupReader = oGroupCmd.ExecuteReader();
 
@@ -231,7 +231,7 @@ namespace EmsBMSReports
                     }
                     oGroupReader.Close();
                     oConnection.Close();
-                    eConnection.Close();
+                    //eConnection.Close();
                 }
             }
             catch (Exception ex)
@@ -466,7 +466,7 @@ namespace EmsBMSReports
             }
 
             string sQuery = "select ExternalSeqNo, ExternalLogId, Timestamp, Value from nsp.Trend_Data where ExternalLogId in (" + columnIds + ") and Timestamp >= '" + StartTime.ToUniversalTime().ToString("s") + "' and Timestamp <='" + EndTime.ToUniversalTime().ToString("s") + "'" + includeEventsClause + " order by Timestamp";
-            string dbcon = g_sEMSDbConString;
+            string dbcon = g_sEBODBConString;
             var eConnection = new OdbcConnection(dbcon);
             eConnection.Open();
             var oCmd = new OdbcCommand(sQuery, eConnection);

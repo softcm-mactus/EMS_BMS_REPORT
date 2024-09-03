@@ -71,7 +71,7 @@ Public Class EMSBMSReportService
         m_tmrErrorCheck.Stop()
 
         Try
-            If g_bIsBMS = 0 Then
+            If g_trendDBType <> DBType.EBODB Then
                 Exit Sub
             End If
 

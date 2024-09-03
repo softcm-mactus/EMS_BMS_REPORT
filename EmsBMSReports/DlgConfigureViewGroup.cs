@@ -124,7 +124,7 @@ namespace EmsBMSReports
                 metaData.Clear();
                 metaDataValues.Clear();
                 string sQuery = "SELECT * FROM nsp.Trend_Meta order by ExternalLogId";
-                var eConnection = new OdbcConnection(g_sEMSDbConString);
+                var eConnection = new OdbcConnection(g_sEBODBConString);
                 eConnection.Open();
                 var oCmd = new OdbcCommand(sQuery, eConnection);
                 var oReader = oCmd.ExecuteReader();

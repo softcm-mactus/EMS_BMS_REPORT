@@ -48,7 +48,7 @@ namespace EmsBMSReports
 
         public void LoadGroupCombobox()
         {
-            if (m_bAlarmGroup & MactusReportLib.MactusReportLib.g_bIsBMS == 0)
+            if (m_bAlarmGroup & MactusReportLib.MactusReportLib.g_dbType != MactusReportLib.MactusReportLib.DBType.EBODB )
             {
                 LoadAlarmGroupComboboxIndusoft();
                 return;
@@ -99,7 +99,7 @@ namespace EmsBMSReports
             int nGroupID;
 
             sQuery = "SELECT DISTINCT Al_Group from ALARMHISTORY where Al_Group IS NOT NULL";
-            using (var oConnection = new OdbcConnection(MactusReportLib.MactusReportLib.g_sEMSDbConString))
+            using (var oConnection = new OdbcConnection(MactusReportLib.MactusReportLib.g_sColDBConString))
             {
                 oConnection.Open();
                 var oCmd = new OdbcCommand(sQuery, oConnection);

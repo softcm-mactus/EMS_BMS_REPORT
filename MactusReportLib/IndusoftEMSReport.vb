@@ -12,6 +12,8 @@ Public Class IndusoftEMSReport
     Public g_nReportID As Integer
     Public g_nReportType As ReportType
     Public g_nAlmGroupID As Integer
+    Public g_sEMSDbConString As String = ""
+    Public g_bIsGMTTime As Boolean
 
     Private g_fSideMargin As Single = 40
     Private g_fTopBottomMargin As Single = 30
@@ -382,6 +384,8 @@ Public Class IndusoftEMSReport
             g_nHeaderCount += 1
         End If
 
+        g_sEMSDbConString = g_sColDBConString
+        g_bIsGMTTime = g_isColGMTTime
         Try
             sQuery = "SELECT * FROM TBL_ReportsConfiguration WHERE ReportID=" + g_nReportID.ToString
             Dim oConnection As New OdbcConnection(g_sConString)
@@ -737,7 +741,7 @@ Public Class IndusoftEMSReport
         End Try
     End Sub
 
-    Public Function GenerateTrendReport(ByRef nReportStatusID As Long, ByVal dtFrom As Date, ByVal dtTo As Date, ByRef sOutFileName As String, ByRef nTimeInterval As Integer) As Boolean
+    Public Function GenerateTrendReport(reportId As Integer, nReportStatusID As Long, ByVal dtFrom As Date, ByVal dtTo As Date, ByRef sOutFileName As String, ByRef nTimeInterval As Integer) As Boolean
 
         GenerateTrendReport = False
         Dim nTopMargin As Integer = 0

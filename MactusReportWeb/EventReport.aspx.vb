@@ -116,7 +116,11 @@ Public Class EventReport
         End Try
 
         Dim nReportStatusID As Long
-        nReportStatusID = MactusReportLib.InsertNewReportStatusRecord(nReportID, oFromDate, oToDate, nInterval, m_sUserName, ReportType.EventReport)
+        If g_dbType = DBType.EBODB Then
+            nReportStatusID = InsertNewReportStatusRecord(ReportType.EventReport, nReportID, g_isEBOGMTTime, oFromDate, oToDate, nInterval, m_sUserName, ReportType.AlarmReport)
+        Else
+            nReportStatusID = InsertNewReportStatusRecord(ReportType.EventReport, nReportID, g_isColGMTTime, oFromDate, oToDate, nInterval, m_sUserName, ReportType.AlarmReport)
+        End If
         Response.Redirect("ReportProgress.aspx?ReportStatusID=" + nReportStatusID.ToString(), False)
 
         'Dim sFileName As String = ""

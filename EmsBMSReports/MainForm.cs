@@ -62,7 +62,7 @@ namespace EmsBMSReports
                 bAreaReports.Checked = true;
                 bAlarmReports.Checked = false;
                 bEventReport.Checked = false;
-                if (g_bIsBMS == 2)
+                if (g_dbType == DBType.EBOCOMBINEDDB)
                 {
                     btnBatteryPercentage.Visible = true;
                     btnExcursionReport.Visible = true;
@@ -137,6 +137,7 @@ namespace EmsBMSReports
 
         private void bGenerate_Click(object sender, EventArgs e)
         {
+            try { 
             if (m_nReportID == 0)
             {
                 Interaction.MsgBox("No Report Selected");
@@ -151,10 +152,36 @@ namespace EmsBMSReports
             var argdtTo = tr_ToDate.Value;
             string argsGeneratedUserName = "user Name";
             int argnReportType = (int)m_nSelectedReportType;
-            m_nReportStatusID = InsertNewReportStatusRecord(m_nReportID, ref argdtFrom, ref argdtTo, ref nTimeInterval, ref argsGeneratedUserName, ref argnReportType);
+            if (m_nSelectedReportType == ReportType.DataChartReport || m_nSelectedReportType == ReportType.DataReport)
+            {
+                if (g_trendDBType == DBType.EBODB)
+                {
+                    m_nReportStatusID = InsertNewReportStatusRecord(m_nSelectedReportType, m_nReportID, g_isEBOGMTTime, ref argdtFrom, ref argdtTo, ref nTimeInterval, ref argsGeneratedUserName, ref argnReportType);
+                }
+                else
+                {
+                    m_nReportStatusID = InsertNewReportStatusRecord(m_nSelectedReportType, m_nReportID, g_isColGMTTime, ref argdtFrom, ref argdtTo, ref nTimeInterval, ref argsGeneratedUserName, ref argnReportType);
+                }
+            }
+            else
+            {
+                if (g_dbType == DBType.EBODB)
+                {
+                    m_nReportStatusID = InsertNewReportStatusRecord(m_nSelectedReportType, m_nReportID, g_isEBOGMTTime, ref argdtFrom, ref argdtTo, ref nTimeInterval, ref argsGeneratedUserName, ref argnReportType);
+                }
+                else
+                {
+                    m_nReportStatusID = InsertNewReportStatusRecord(m_nSelectedReportType, m_nReportID, g_isColGMTTime, ref argdtFrom, ref argdtTo, ref nTimeInterval, ref argsGeneratedUserName, ref argnReportType);
+                }
+            }
             tr_FromDate.Value = argdtFrom;
             tr_ToDate.Value = argdtTo;
             m_nSelectedReportType = (ReportType)argnReportType;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         private void oReportGrid_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -353,7 +380,8 @@ namespace EmsBMSReports
                              status.progress progress,  
                              status.errormessage errormessage,  
                              status.filename filename,  
-                             status.outputfilename outputfilename  
+                             status.outputfilename outputfilename  ,
+                             status.reporttype reportType
                         FROM tbl_reportstatus as status  
                         Join TBL_ReportsConfiguration rc on rc.ReportID = status.reportid  
                         WHERE Status< 4";
@@ -449,24 +477,47 @@ namespace EmsBMSReports
 
             var argdtFrom = tr_FromDate.Value;
             var argdtTo = tr_ToDate.Value;
-            int argnTimeInterval = 1;
+            int nTimeInterval = 1;
             string argsGeneratedUserName = "user Name";
             int argnReportType = 1;
-            m_nReportStatusID = InsertNewReportStatusRecord(m_nReportID, ref argdtFrom, ref argdtTo, ref argnTimeInterval, ref argsGeneratedUserName, ref argnReportType);
+
+            if (m_nSelectedReportType == ReportType.DataChartReport || m_nSelectedReportType == ReportType.DataReport)
+            {
+                if (g_trendDBType == DBType.EBODB)
+                {
+                    m_nReportStatusID = InsertNewReportStatusRecord(m_nSelectedReportType, m_nReportID, g_isEBOGMTTime, ref argdtFrom, ref argdtTo, ref nTimeInterval, ref argsGeneratedUserName, ref argnReportType);
+                }
+                else
+                {
+                    m_nReportStatusID = InsertNewReportStatusRecord(m_nSelectedReportType, m_nReportID, g_isColGMTTime, ref argdtFrom, ref argdtTo, ref nTimeInterval, ref argsGeneratedUserName, ref argnReportType);
+                }
+            }
+            else
+            {
+                if (g_dbType == DBType.EBODB)
+                {
+                    m_nReportStatusID = InsertNewReportStatusRecord(m_nSelectedReportType, m_nReportID, g_isEBOGMTTime, ref argdtFrom, ref argdtTo, ref nTimeInterval, ref argsGeneratedUserName, ref argnReportType);
+                }
+                else
+                {
+                    m_nReportStatusID = InsertNewReportStatusRecord(m_nSelectedReportType, m_nReportID, g_isColGMTTime, ref argdtFrom, ref argdtTo, ref nTimeInterval, ref argsGeneratedUserName, ref argnReportType);
+                }
+            }
+
             tr_FromDate.Value = argdtFrom;
             tr_ToDate.Value = argdtTo;
         }
 
         private void Button1_Click(object sender, EventArgs e)
         {
-            if (g_bIsBMS == 1)
+            if (g_trendDBType == DBType.EBODB)
             {
                 SynchronizeEBOPointIDNamesTable();
             }
-            else if (g_bIsBMS == 2)
-            {
-                SynchronizeWirelessCDUPointIDNamesTable();
-            }
+            //else if (g_)
+            //{
+            //    SynchronizeWirelessCDUPointIDNamesTable();
+            //}
             else
             {
                 SynchronizeIndusoftPointIDNamesTable();

@@ -226,14 +226,15 @@ namespace EmsBMSReports
                     oCmd.Parameters.Add("@5", OdbcType.Int).Value = 1; // generatedtime
                     oCmd.Parameters.Add("@6", OdbcType.Int).Value = 1; // generatedby
                     oCmd.Parameters.Add("@7", OdbcType.Int).Value = 1; // fromtodatesprinted
-                    if (g_bIsBMS == 1) // datatablename
-                    {
-                        oCmd.Parameters.Add("@8", OdbcType.VarChar).Value = "trend_data";
-                    }
-                    else
-                    {
-                        oCmd.Parameters.Add("@8", OdbcType.VarChar).Value = "alldata";
-                    }
+                    oCmd.Parameters.Add("@8", OdbcType.VarChar).Value = g_sTrendTableName;
+                    //if (g_trendDBType == DBType.EBODB) // datatablename
+                    //{
+                    //    oCmd.Parameters.Add("@8", OdbcType.VarChar).Value = "trend_data";
+                    //}
+                    //else
+                    //{
+                    //    oCmd.Parameters.Add("@8", OdbcType.VarChar).Value = "alldata";
+                    //}
                     oCmd.Parameters.Add("@9", OdbcType.Int).Value = 1; // timeintervalinmin
                     oCmd.Parameters.Add("@10", OdbcType.Int).Value = DataAgg.Instance; // dataaggregationtype
                     oCmd.Parameters.Add("@11", OdbcType.Int).Value = 0; // PrintAlarmSpRows
@@ -245,7 +246,7 @@ namespace EmsBMSReports
                     nReportID = Conversions.ToInteger(oCmd.ExecuteScalar());
                     if (nReportID > 0)
                     {
-                        AddDateTimeColumnToReport(nReportID);
+                        AddDateTimeColumnToReport(nReportID, g_dbType, MactusReportLib.MactusReportLib.ReportType.ExcursionReport);
                     }
                     oConnection.Close();
 

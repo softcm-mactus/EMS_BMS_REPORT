@@ -1,13 +1,28 @@
 ﻿Imports System.Configuration
+Imports System.Data.Common
 Imports System.Data.Odbc
 Imports System.IO
+Imports System.Reflection
 Imports iTextSharp.text
 Imports iTextSharp.text.pdf
 
 Public Module MactusReportLib
-    Public g_sConString As String = "Driver={PostgreSQL ANSI};Server=localhost;Port=5432;Database=ems_reportconfiguration_wirelesscdu;UID=postgres;PWD=Mactus@123"
-    Public g_sEMSDbConString As String = "Driver={PostgreSQL ANSI};Server=localhost;Port=5432;Database=ems_wirelesscdu;UID=postgres;PWD=Mactus@123"
-
+    Public g_sConString As String = ""
+    'Public g_sEMSDbConString As String = "Driver={PostgreSQL ANSI};Server=localhost;Port=5432;Database=ems_wirelesscdu;UID=postgres;PWD=Mactus@123"
+    Public g_sEBODBConString As String = ""
+    Public g_sColDBConString As String = ""
+    'Public g_sEMSDataDbConString As String = ""
+    Public g_nReportType As ReportType
+    Public g_trendDBType As DBType
+    Public g_dbType As DBType
+    Public g_sTrendTableName As String = ""
+    Public g_sAlarmTableName As String = ""
+    Public g_sEventTableName As String = ""
+    Public g_sTrendTimestampCol As String = ""
+    Public g_sAlarmTimestampCol As String = ""
+    Public g_sEventTimestampCol As String = ""
+    Public g_isEBOGMTTime As Boolean
+    Public g_isColGMTTime As Boolean
     Public g_sAppName As String
     Public g_sSiteName As String
     Public g_sVersion As String
@@ -22,8 +37,10 @@ Public Module MactusReportLib
     Public g_sPspace As String
     Public g_bError As Boolean
     Public g_sErro As String
-    Public g_bIsBMS As Integer = 0
-    Public g_bIsGMTTime As Boolean = False
+    'Public g_bIsBMS As Integer = 0
+    'Public g_bIsGMTTime As Boolean = False
+    Public EBO_GMTtime As String
+    Public Col_GMTtime As String
     Public g_bEnableConfiguration As Boolean = False
     Public g_bGenerateTrendChart As Boolean = False
     Public g_bPrintReviewTableEveryPage As Boolean = True
@@ -41,6 +58,11 @@ Public Module MactusReportLib
         COURIER = 0
         HELVETICA = 1
         TIMES_ROMAN = 2
+    End Enum
+    Public Enum DBType As Integer
+        EBODB = 1
+        COLDB = 2
+        EBOCOMBINEDDB = 3
     End Enum
 
 
@@ -118,6 +140,11 @@ Public Module MactusReportLib
         Other = 5
         Enumtype = 6
         Frequency = 7
+        Voltage = 8
+        Current = 9
+        Percntage = 10
+        Time_Min = 11
+        Time_Hour = 12
     End Enum
 
     Public Enum ReportType As Integer
@@ -367,19 +394,19 @@ Public Module MactusReportLib
             sTemp = ConfigurationManager.ConnectionStrings("DBConStr").ToString
             g_sConString = sTemp
 
-            Try
-                sTemp = ConfigurationManager.ConnectionStrings("IsBMS").ToString
-                g_bIsBMS = CInt(sTemp)
-            Catch ex As Exception
-                g_bIsBMS = 0
-            End Try
+            'Try
+            '    sTemp = ConfigurationManager.ConnectionStrings("IsBMS").ToString
+            '    g_bIsBMS = CInt(sTemp)
+            'Catch ex As Exception
+            '    g_bIsBMS = 0
+            'End Try
 
-            Try
-                sTemp = ConfigurationManager.ConnectionStrings("IsGMTTime").ToString
-                g_bIsGMTTime = CBool(sTemp)
-            Catch ex As Exception
-                g_bIsGMTTime = False
-            End Try
+            'Try
+            '    sTemp = ConfigurationManager.ConnectionStrings("IsGMTTime").ToString
+            '    g_bIsGMTTime = CBool(sTemp)
+            'Catch ex As Exception
+            '    g_bIsGMTTime = False
+            'End Try
 
             Try
                 sTemp = ConfigurationManager.ConnectionStrings("EnableConfiguration").ToString
@@ -408,17 +435,95 @@ Public Module MactusReportLib
             sError = g_sConString + "  " + ex.Message
             Exit Function
         End Try
-        If GetPlantConfigParamValue("EMSDBODBCLocation", g_sEMSDbConString) = False Then
+        If GetPlantConfigParamValue("COLDBLocation", g_sColDBConString) = False Then
             MsgBox("ReadConfiguration Parameter EMDDBConString Not There")
             Exit Function
         End If
+        If GetPlantConfigParamValue("EBODBLocation", g_sEBODBConString) = False Then
+            MsgBox("ReadConfiguration Parameter EMSDataDBLocation Not There")
+            Exit Function
+        End If
+        Dim sDBType As String = ""
+        If GetPlantConfigParamValue("DataTrendDBType", sDBType) = False Then
+            MsgBox("ReadConfiguration Parameter DataTrendConfig Not There")
+            Exit Function
+        Else
+            If sDBType = "1" Then
+                g_trendDBType = DBType.EBODB
+            ElseIf sDBType = "2" Then
+                g_trendDBType = DBType.COLDB
+            End If
+        End If
+        sDBType = ""
+        If GetPlantConfigParamValue("DBType", sDBType) = False Then
+            MsgBox("ReadConfiguration Parameter DataTrendConfig Not There")
+            Exit Function
+        Else
+            If sDBType = "1" Then
+                g_dbType = DBType.EBODB
+            ElseIf sDBType = "2" Then
+                g_dbType = DBType.COLDB
+            End If
+        End If
 
+        If GetPlantConfigParamValue("TrendDataTableName", g_sTrendTableName) = False Then
+            MsgBox("ReadConfiguration Parameter DataTrendConfig Not There")
+            Exit Function
+        End If
+
+        If GetPlantConfigParamValue("EventDataTableName", g_sEventTableName) = False Then
+            MsgBox("ReadConfiguration Parameter DataTrendConfig Not There")
+            Exit Function
+        End If
+
+        If GetPlantConfigParamValue("AlarmDataTableName", g_sAlarmTableName) = False Then
+            MsgBox("ReadConfiguration Parameter DataTrendConfig Not There")
+            Exit Function
+        End If
+
+        If GetPlantConfigParamValue("TrendTimestampColName", g_sTrendTimestampCol) = False Then
+            MsgBox("ReadConfiguration Parameter DataTrendConfig Not There")
+            Exit Function
+        End If
+
+        If GetPlantConfigParamValue("EventTimestampColName", g_sEventTimestampCol) = False Then
+            MsgBox("ReadConfiguration Parameter DataTrendConfig Not There")
+            Exit Function
+        End If
+
+        If GetPlantConfigParamValue("AlarmTimestampColName", g_sAlarmTimestampCol) = False Then
+            MsgBox("ReadConfiguration Parameter DataTrendConfig Not There")
+            Exit Function
+        End If
+
+        Dim sConString As String = ""
         Try
-            Dim oConnection As New OdbcConnection(g_sEMSDbConString)
-            oConnection.Open()
-            oConnection.Close()
+            If g_dbType = DBType.EBODB Then
+                sConString = g_sEBODBConString
+                Dim oConnection As New OdbcConnection(g_sEBODBConString)
+                oConnection.Open()
+                oConnection.Close()
+            Else
+                sConString = g_sColDBConString
+                Dim oConnection As New OdbcConnection(g_sColDBConString)
+                oConnection.Open()
+                oConnection.Close()
+            End If
+
+            If g_trendDBType = DBType.EBODB Then
+                sConString = g_sEBODBConString
+                Dim oConnection As New OdbcConnection(g_sEBODBConString)
+                oConnection.Open()
+                oConnection.Close()
+            Else
+                sConString = g_sColDBConString
+                Dim oConnection As New OdbcConnection(g_sColDBConString)
+                oConnection.Open()
+                oConnection.Close()
+            End If
+
         Catch ex As Exception
-            sError = g_sEMSDbConString + "  " + ex.Message
+            sError = sConString + "  " + ex.Message
             Exit Function
         End Try
 
@@ -568,6 +673,35 @@ Public Module MactusReportLib
             g_nAutoReportStartHour = 6
             sError = ex.Message
         End Try
+        If GetPlantConfigParamValue("IsEBODBGMTime", EBO_GMTtime) = False Then
+            MsgBox("ReadConfiguration Parameter IsEBODBGMTime Not There")
+            Exit Function
+        End If
+        If GetPlantConfigParamValue("ISColDBGMTime", Col_GMTtime) = False Then
+            MsgBox("ReadConfiguration Parameter ISColDBGMTime Not There")
+            Exit Function
+        End If
+        'Try
+        '    Dim oConnection As New OdbcConnection(g_sEMSDbConString)
+        '    oConnection.Open()
+        '    oConnection.Close()
+        'Catch ex As Exception
+        '    sError = g_sEMSDbConString + "  " + ex.Message
+        '    Exit Function
+        'End Try
+
+        If EBO_GMTtime = 1 Then
+            g_isEBOGMTTime = True
+        Else
+            g_isEBOGMTTime = False
+        End If
+
+
+        If Col_GMTtime = 1 Then
+            g_isColGMTTime = True
+        Else
+            g_isColGMTTime = False
+        End If
 
         ReadDatabaseConnection = True
 
@@ -614,7 +748,7 @@ Public Module MactusReportLib
     End Function
 
     ' Insert new report data in tbl_reportstatus table to trace the report status
-    Public Function InsertNewReportStatusRecord(ByVal nReportID As Integer, ByRef dtFrom As Date, ByRef dtTo As Date, ByRef nTimeInterval As Integer, ByRef sGeneratedUserName As String, ByRef nReportType As Integer, Optional ByVal nChart As Integer = 0) As Long
+    Public Function InsertNewReportStatusRecord(reportType As ReportType, ByVal nReportID As Integer, ByVal isGMTTime As Boolean, ByRef dtFrom As Date, ByRef dtTo As Date, ByRef nTimeInterval As Integer, ByRef sGeneratedUserName As String, ByRef nReportType As Integer, Optional ByVal nChart As Integer = 0) As Long
         InsertNewReportStatusRecord = 0
         Dim sQuery As String
         Dim sFileName As String = ""
@@ -625,13 +759,13 @@ Public Module MactusReportLib
             Exit Function
         End If
 
-        sQuery = "INSERT INTO tbl_reportstatus (reportid, fromdate, todate, intervalmin, username, outputfilename, status, progress,filename,reporttitle,generatechart) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?) "
+        sQuery = "INSERT INTO tbl_reportstatus (reportid, fromdate, todate, intervalmin, username, outputfilename, status, progress,filename,reporttitle,generatechart, reportType) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?) "
         Try
             Using oConnection As New OdbcConnection(g_sConString)
                 oConnection.Open()
                 Dim oCmd As New OdbcCommand(sQuery, oConnection)
                 oCmd.Parameters.Add("@0", OdbcType.Int).Value = nReportID
-                If g_bIsGMTTime Then
+                If isGMTTime Then
                     oCmd.Parameters.Add(GetTimeODBCParam("@1", dtFrom.ToUniversalTime))
                     oCmd.Parameters.Add(GetTimeODBCParam("@2", dtTo.ToUniversalTime))
                 Else
@@ -646,6 +780,7 @@ Public Module MactusReportLib
                 oCmd.Parameters.Add("@8", OdbcType.VarChar).Value = sFileName
                 oCmd.Parameters.Add("@9", OdbcType.VarChar).Value = sReportName
                 oCmd.Parameters.Add("@10", OdbcType.Int).Value = nChart
+                oCmd.Parameters.Add("@11", OdbcType.Int).Value = reportType
 
                 oCmd.ExecuteNonQuery()
 
@@ -818,6 +953,31 @@ Public Module MactusReportLib
 
         End Try
     End Sub
+    Public Sub UpdateReportError(ByRef nReportStatusID As Long, errormsg As String)
+        Try
+            Dim nProgress As Integer
+            Dim nProgressSec As Integer
+            Dim nTotalSec As ULong
+
+            Dim sQuery As String
+            If errormsg.Length > 0 Then
+                sQuery = $"UPDATE tbl_reportstatus SET status=4, errormessage = '{errormsg}' WHERE id=? "
+            Else
+                sQuery = "UPDATE tbl_reportstatus SET status=4, WHERE id=? "
+            End If
+
+            Using oConnection As New OdbcConnection(g_sConString)
+                oConnection.Open()
+                Dim oCmd As New OdbcCommand(sQuery, oConnection)
+                oCmd.Parameters.Add("@0", OdbcType.BigInt).Value = nReportStatusID
+                oCmd.ExecuteNonQuery()
+                oConnection.Close()
+            End Using
+
+        Catch ex As Exception
+
+        End Try
+    End Sub
 
     Public Function GetReportProgress(ByRef nReportStatusID As Long) As Integer
         GetReportProgress = 0
@@ -872,7 +1032,7 @@ Public Module MactusReportLib
             m_oThread.Priority = System.Threading.ThreadPriority.BelowNormal
             m_oThread.Start()
         Catch ex As Exception
-
+            MsgBox($"Error creating report - {ex.Message}")
         End Try
     End Sub
 
@@ -886,94 +1046,119 @@ Public Module MactusReportLib
         Dim nInternal As Integer
         Dim sUserName As String
         Dim sPathFileName As String
+        Dim reportType As ReportType
 
         sQuery = "SELECT * FROM tbl_reportstatus WHERE status=0 and progress=0"
 
         Try
             While m_bStopThread = False
-                GenerateAutoReportRecords()
-                Using oConnection As New OdbcConnection(g_sConString)
-                    oConnection.Open()
-                    Dim oCmd As New OdbcCommand(sQuery, oConnection)
-                    oReader = oCmd.ExecuteReader()
-                    If oReader.Read() Then
-                        nReportStatusID = oReader("id")
-                        nReportID = oReader("reportid")
-                        dtFrom = oReader("fromdate")
-                        dtTo = oReader("todate")
-                        nInternal = oReader("intervalmin")
-                        sUserName = oReader("username")
-                        sPathFileName = oReader("outputfilename")
-                        Dim bGenerateTrendChart As Boolean = False
-                        Try
-                            bGenerateTrendChart = oReader("generatechart")
-                        Catch ex As Exception
-                            bGenerateTrendChart = False
+                Try
+                    GenerateAutoReportRecords()
+                    Using oConnection As New OdbcConnection(g_sConString)
+                        oConnection.Open()
+                        Dim oCmd As New OdbcCommand(sQuery, oConnection)
+                        oReader = oCmd.ExecuteReader()
+                        If oReader.Read() Then
+                            nReportStatusID = oReader("id")
+                            nReportID = oReader("reportid")
+                            dtFrom = oReader("fromdate")
+                            dtTo = oReader("todate")
+                            nInternal = oReader("intervalmin")
+                            sUserName = oReader("username")
+                            sPathFileName = oReader("outputfilename")
+                            reportType = Convert.ToInt32(oReader("reportType"))
+                            g_nReportType = reportType
+                            Dim bGenerateTrendChart As Boolean = False
+                            Try
+                                bGenerateTrendChart = oReader("generatechart")
+                            Catch ex As Exception
+                                bGenerateTrendChart = False
 
-                        End Try
+                            End Try
 
-                        UpdateReportProgress(nReportStatusID, dtFrom, dtTo, dtFrom)
+                            UpdateReportProgress(nReportStatusID, dtFrom, dtTo, dtFrom)
 
-                        Try
-                            'bIsBMS Configurations is from Web.Config or App.config 
-                            If g_bIsBMS = 1 Then ' 
-                                m_oEBOReprots.ReadReportConfiguration(nReportID)
-                                If m_oEBOReprots.g_nReportType = ReportType.DataReport Then
-                                    If bGenerateTrendChart Then
-                                        m_oEBOReprots.GenerateTrendChartReport(nReportStatusID, dtFrom, dtTo, sPathFileName, 1)
-                                    Else
-                                        m_oEBOReprots.GenerateTrendReport(nReportStatusID, dtFrom, dtTo, sPathFileName, nInternal)
+                            Try
+                                'bIsBMS Configurations is from Web.Config or App.config 
+
+                                If reportType = reportType.DataReport Then
+                                    If g_trendDBType = DBType.EBODB Then
+                                        If bGenerateTrendChart Then
+                                            m_oEBOReprots.GenerateTrendChartReport(nReportID, nReportStatusID, dtFrom, dtTo, sPathFileName, 1)
+                                        Else
+                                            m_oEBOReprots.GenerateTrendReport(nReportID, nReportStatusID, dtFrom, dtTo, sPathFileName, nInternal)
+                                        End If
+                                    ElseIf g_trendDBType = DBType.COLDB Then
+                                        If bGenerateTrendChart Then
+                                            m_oIndusoftReports.GenerateTrendChartReport(nReportID, nReportStatusID, dtFrom, dtTo, sPathFileName, 1)
+                                        Else
+                                            m_oIndusoftReports.GenerateTrendReport(nReportID, nReportStatusID, dtFrom, dtTo, sPathFileName, nInternal)
+                                        End If
+                                    ElseIf g_trendDBType = DBType.EBOCOMBINEDDB Then
+                                        If bGenerateTrendChart Then
+                                            m_oEBOCombinedIndusoftReport.GenerateTrendChartReport(nReportID, nReportStatusID, dtFrom, dtTo, sPathFileName, 1)
+                                        Else
+                                            m_oEBOCombinedIndusoftReport.GenerateTrendReport(nReportID, nReportStatusID, dtFrom, dtTo, sPathFileName, nInternal)
+                                        End If
                                     End If
-                                ElseIf m_oEBOReprots.g_nReportType = ReportType.DataChartReport Then
-                                    m_oEBOReprots.GenerateTrendChartReport(nReportStatusID, dtFrom, dtTo, sPathFileName, 1)
-                                ElseIf m_oEBOReprots.g_nReportType = ReportType.AlarmReport Then
-                                    m_oEBOReprots.GenerateAlarmReport(nReportStatusID, dtFrom, dtTo, sPathFileName)
-                                ElseIf m_oEBOReprots.g_nReportType = ReportType.EventReport Then
-                                    m_oEBOReprots.GenerateEventReport(nReportStatusID, dtFrom, dtTo, sPathFileName)
-                                End If
-                            ElseIf g_bIsBMS = 2 Then
-                                m_oEBOCombinedIndusoftReport.ReadReportConfiguration(nReportID)
-                                If m_oEBOCombinedIndusoftReport.g_nReportType = ReportType.DataReport Then
-                                    If bGenerateTrendChart Then
-                                        m_oEBOCombinedIndusoftReport.GenerateTrendChartReport(nReportStatusID, dtFrom, dtTo, sPathFileName, 1)
-                                    Else
-                                        m_oEBOCombinedIndusoftReport.GenerateTrendReport(nReportStatusID, dtFrom, dtTo, sPathFileName, nInternal)
+                                ElseIf reportType = reportType.AlarmReport Then
+                                    If g_dbType = DBType.EBODB Then
+                                        m_oEBOReprots.GenerateAlarmReport(nReportID, nReportStatusID, dtFrom, dtTo, sPathFileName)
+                                    ElseIf g_dbType = DBType.COLDB Then
+                                        m_oIndusoftReports.GenerateAlarmReport(nReportID, nReportStatusID, dtFrom, dtTo, sPathFileName)
+                                    ElseIf g_dbType = DBType.EBOCOMBINEDDB Then
+                                        m_oEBOCombinedIndusoftReport.GenerateAlarmReport(nReportID, nReportStatusID, dtFrom, dtTo, sPathFileName)
                                     End If
-                                ElseIf m_oEBOCombinedIndusoftReport.g_nReportType = ReportType.DataChartReport Then
-                                    m_oEBOCombinedIndusoftReport.GenerateTrendChartReport(nReportStatusID, dtFrom, dtTo, sPathFileName, 1)
-                                ElseIf m_oEBOCombinedIndusoftReport.g_nReportType = ReportType.AlarmReport Then
-                                    m_oEBOCombinedIndusoftReport.GenerateAlarmReport(nReportStatusID, dtFrom, dtTo, sPathFileName)
-                                ElseIf m_oEBOCombinedIndusoftReport.g_nReportType = ReportType.EventReport Then
-                                    m_oEBOCombinedIndusoftReport.GenerateEventReport(nReportStatusID, dtFrom, dtTo, sPathFileName)
-                                ElseIf m_oEBOCombinedIndusoftReport.g_nReportType = ReportType.ExcursionReport Then
-                                    m_oEBOCombinedIndusoftReport.GenerateExcursionReport(nReportStatusID, dtFrom, dtTo, sPathFileName, nInternal)
-                                ElseIf m_oEBOCombinedIndusoftReport.g_nReportType = ReportType.DataTrendAlarmReport Then
-                                    m_oEBOCombinedIndusoftReport.GenerateAlarmReportUsingTrendData(nReportStatusID, dtFrom, dtTo, sPathFileName, nInternal)
-                                ElseIf m_oEBOCombinedIndusoftReport.g_nReportType = ReportType.BatteryStatusReport Then
-                                    m_oEBOCombinedIndusoftReport.GenerateCDUDevicesBatteryStatus(nReportStatusID, dtFrom, dtTo, sPathFileName, nInternal)
+                                ElseIf reportType = reportType.EventReport Then
+                                    If g_dbType = DBType.EBODB Then
+                                        m_oEBOReprots.GenerateEventReport(nReportID, nReportStatusID, dtFrom, dtTo, sPathFileName)
+                                    ElseIf g_dbType = DBType.COLDB Then
+                                        m_oIndusoftReports.GenerateEventReport(nReportID, nReportStatusID, dtFrom, dtTo, sPathFileName)
+                                    ElseIf g_dbType = DBType.EBOCOMBINEDDB Then
+                                        m_oEBOCombinedIndusoftReport.GenerateEventReport(nReportID, nReportStatusID, dtFrom, dtTo, sPathFileName)
+                                    End If
+                                ElseIf reportType = reportType.DataTrendAlarmReport Then
+                                    If g_dbType = DBType.EBODB Then
+
+                                    ElseIf g_dbType = DBType.COLDB Then
+
+                                    ElseIf g_dbType = DBType.EBOCOMBINEDDB Then
+                                        m_oEBOCombinedIndusoftReport.GenerateAlarmReportUsingTrendData(nReportID, nReportStatusID, dtFrom, dtTo, sPathFileName, nInternal)
+                                    End If
+                                ElseIf reportType = reportType.ExcursionReport Then
+                                    If g_dbType = DBType.EBODB Then
+
+                                    ElseIf g_dbType = DBType.COLDB Then
+
+                                    ElseIf g_dbType = DBType.EBOCOMBINEDDB Then
+                                        m_oEBOCombinedIndusoftReport.GenerateExcursionReport(nReportID, nReportStatusID, dtFrom, dtTo, sPathFileName, nInternal)
+                                    End If
+                                ElseIf g_nReportType = reportType.BatteryStatusReport Then
+                                    If g_dbType = DBType.EBODB Then
+
+                                    ElseIf g_dbType = DBType.COLDB Then
+
+                                    ElseIf g_dbType = DBType.EBOCOMBINEDDB Then
+                                        m_oEBOCombinedIndusoftReport.GenerateCDUDevicesBatteryStatus(nReportID, nReportStatusID, dtFrom, dtTo, sPathFileName, nInternal)
+                                    End If
                                 End If
 
-                            Else
-                                m_oIndusoftReports.ReadReportConfiguration(nReportID)
-                                If m_oIndusoftReports.g_nReportType = ReportType.DataReport Then
-                                    m_oIndusoftReports.GenerateTrendReport(nReportStatusID, dtFrom, dtTo, sPathFileName, nInternal)
-                                ElseIf m_oEBOReprots.g_nReportType = ReportType.DataChartReport Then
-                                    m_oEBOReprots.GenerateTrendChartReport(nReportStatusID, dtFrom, dtTo, sPathFileName, 1)
-                                ElseIf m_oIndusoftReports.g_nReportType = ReportType.AlarmReport Then
-                                    m_oIndusoftReports.GenerateAlarmReport(nReportStatusID, dtFrom, dtTo, sPathFileName)
-                                ElseIf m_oIndusoftReports.g_nReportType = ReportType.EventReport Then
-                                    m_oIndusoftReports.GenerateEventReport(nReportStatusID, dtFrom, dtTo, sPathFileName)
-                                End If
-                            End If
-                        Catch ex As Exception
+                            Catch ex As Exception
+                                LogError("MactusReportLib.vb", "GenerateReport", ex.Message)
+                                oReader.Close()
+                                oConnection.Close()
+                                Throw ex
+                            End Try
 
-                        End Try
-
-                    End If
-                    oReader.Close()
-                    oConnection.Close()
-                End Using
-                Threading.Thread.Sleep(100)
+                        End If
+                        oReader.Close()
+                        oConnection.Close()
+                    End Using
+                    Threading.Thread.Sleep(100)
+                Catch ex As Exception
+                    LogError("MactusReportLib.vb", "GenerateReport", ex.Message)
+                    UpdateReportError(nReportStatusID, ex.Message)
+                End Try
             End While
         Catch ex As Exception
             LogError("MactusReportLib.vb", "GenerateReport", ex.Message)
@@ -1044,11 +1229,11 @@ Public Module MactusReportLib
         End Try
     End Sub
 
-    Public Function FormatTimeToString(ByRef oAlmTime As Date, ByRef sForamtString As String) As String
+    Public Function FormatTimeToString(ByRef oAlmTime As Date, isGMTTime As Boolean, ByRef sForamtString As String) As String
         FormatTimeToString = "Exception"
         Try
             Dim oTime As Date
-            If g_bIsGMTTime Then
+            If isGMTTime Then
                 oTime = oAlmTime.ToLocalTime
             Else
                 oTime = oAlmTime
@@ -1121,14 +1306,22 @@ Public Module MactusReportLib
 
     End Function
 
-    Public Sub AddDateTimeColumnToReport(ByVal nReportID As Integer)
+    Public Sub AddDateTimeColumnToReport(ByVal nReportID As Integer, dbtype As DBType, reportType As ReportType)
         Dim sQuery As String
         Dim nColID As Integer
         Dim sTimeCol As String
-        If g_bIsBMS = 1 Then
-            sTimeCol = "timestamp"
+        If reportType = ReportType.AlarmReport Then
+            sTimeCol = g_sAlarmTimestampCol
+        ElseIf reportType = ReportType.DataReport Or reportType = ReportType.DataChartReport Or reportType = ReportType.DataTrendAlarmReport Then
+            sTimeCol = g_sTrendTimestampCol
+        ElseIf reportType = ReportType.EventReport Then
+            sTimeCol = g_sEventTimestampCol
         Else
-            sTimeCol = "Time_Stamp"
+            If dbtype = DBType.EBODB Then
+                sTimeCol = "timestamp"
+            Else
+                sTimeCol = "Time_Stamp"
+            End If
         End If
         nColID = GetNewColumnID()
         sQuery = "INSERT INTO tbl_reportcolumns(columnid,reportid, colnameindb, colseq, coltype, colwidth, colformat, coljust, colheader, lowcheck, lowcheckvalue, highcheck, highcheckvalue, coltitle, enumid)"
@@ -1168,7 +1361,7 @@ Public Module MactusReportLib
 
     Public Function GetGroupName(ByVal nGroupID As Integer, Optional ByVal nReportType As ReportType = ReportType.DataReport) As String
 
-        If g_bIsBMS = 0 And nReportType = ReportType.AlarmReport Then
+        If g_dbType <> DBType.EBODB And nReportType = ReportType.AlarmReport Then
             GetGroupName = nGroupID.ToString()
             Exit Function
         End If
@@ -1196,7 +1389,7 @@ Public Module MactusReportLib
 
     Public Function GetGroupID(ByRef sGroupName As String, Optional ByVal nReportType As ReportType = ReportType.DataReport) As Integer
 
-        If g_bIsBMS = 0 And nReportType = ReportType.AlarmReport Then
+        If g_dbType <> DBType.EBODB And nReportType = ReportType.AlarmReport Then
             GetGroupID = CInt(sGroupName)
             Exit Function
         End If
@@ -1345,25 +1538,28 @@ Public Module MactusReportLib
         Dim sQuery As String
         Dim nLogID As Integer
         Dim sPointName As String
-
+        Dim sTemp As String
+        Dim nIndex As Integer
         sQuery = "TRUNCATE TABLE tbl_pointidname"
         ExecuteSQLInDb(sQuery)
         Try
 
-            sQuery = "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'TREND001' AND ORDINAL_POSITION >2  "
-            Using oConnection As New OdbcConnection(g_sEMSDbConString)
+            sQuery = $"SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'{g_sTrendTableName}' AND ORDINAL_POSITION >2  "
+            Using oConnection As New OdbcConnection(g_sColDBConString)
                 oConnection.Open()
                 Dim oCmd As New OdbcCommand(sQuery, oConnection)
                 oReader = oCmd.ExecuteReader()
                 While oReader.Read()
                     nLogID = oReader("ORDINAL_POSITION")
                     sPointName = oReader("COLUMN_NAME")
-                    sQuery = "INSERT INTO tbl_pointidname (id,pointname) VALUES (" + nLogID.ToString() + ",'" + sPointName + "')"
+                    sQuery = $"INSERT INTO tbl_pointidname (id,pointname,DisplayName) VALUES ({nLogID.ToString()},'{sPointName}','{sPointName}')"
                     ExecuteSQLInDb(sQuery)
 
                 End While
                 oConnection.Close()
             End Using
+
+
         Catch ex As Exception
 
         End Try
@@ -1380,24 +1576,25 @@ Public Module MactusReportLib
         ExecuteSQLInDb(sQuery)
         Try
 
-            sQuery = "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'alldata' AND ORDINAL_POSITION >2  "
-            Using oConnection As New OdbcConnection(g_sEMSDbConString)
+            sQuery = $"SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'{g_sTrendTableName}' AND ORDINAL_POSITION >2  "
+            Using oConnection As New OdbcConnection(g_sColDBConString)
                 oConnection.Open()
                 Dim oCmd As New OdbcCommand(sQuery, oConnection)
                 oReader = oCmd.ExecuteReader()
                 While oReader.Read()
                     nLogID = oReader("ORDINAL_POSITION")
                     sPointName = oReader("COLUMN_NAME")
-                    sQuery = "INSERT INTO tbl_pointidname (id,pointname) VALUES (" + nLogID.ToString() + ",'" + sPointName + "')"
+                    sQuery = $"INSERT INTO tbl_pointidname (id,pointname,DisplayName) VALUES ({nLogID.ToString()},'{sPointName}','{sPointName}')"
                     ExecuteSQLInDb(sQuery)
 
                 End While
                 oConnection.Close()
             End Using
+
         Catch ex As Exception
-
+            ' Handle exceptions
+            Console.WriteLine("An error occurred: " & ex.Message)
         End Try
-
     End Sub
 
     Public Sub SynchronizeEBOPointIDNamesTable()
@@ -1417,7 +1614,7 @@ Public Module MactusReportLib
             sQuery = "SELECT * FROM [nsp].[Trend_Meta] ORDER BY externallogid"
 
 
-            Using oConnection As New OdbcConnection(g_sEMSDbConString)
+            Using oConnection As New OdbcConnection(g_sEBODBConString)
                 oConnection.Open()
                 Dim oCmd As New OdbcCommand(sQuery, oConnection)
                 oReader = oCmd.ExecuteReader()
@@ -1435,7 +1632,7 @@ Public Module MactusReportLib
                     sPointName = sTemp
                     'End If
                     ' MsgBox(sPointName)
-                    sQuery = "INSERT INTO tbl_pointidname (id,pointname) VALUES (" + nLogID.ToString() + ",'" + sPointName + "')"
+                    sQuery = $"INSERT INTO tbl_pointidname (id,pointname,DisplayName) VALUES ({nLogID.ToString()},'{sPointName}','{sPointName}')"
                     ExecuteSQLInDb(sQuery)
 
                 End While

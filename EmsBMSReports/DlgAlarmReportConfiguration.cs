@@ -28,7 +28,7 @@ namespace EmsBMSReports
 
         private void DlgAlarmReportConfiguration_Load(object sender, EventArgs e)
         {
-            if (g_bIsBMS == 1)
+            if (g_dbType==DBType.EBODB)
             {
                 SynchronizeAlarmGroupName();
             }
@@ -279,14 +279,14 @@ namespace EmsBMSReports
                         {
                             sQuery += "0,";
                         }
-                        if (g_bIsBMS == 1)
-                        {
-                            sQuery += "'event_data',";
-                        }
-                        else
-                        {
-                            sQuery += "'ALARMHISTORY',";
-                        }
+                        sQuery += $"'{g_sEventTableName}'";
+                        //if (g_dbType == DBType.EBODB)
+                        //{
+                        //}
+                        //else
+                        //{
+                        //    sQuery += "'ALARMHISTORY',";
+                        //}
 
                         DataAgg nAggtype = (DataAgg)Conversions.ToInteger(Enum.Parse(typeof(DataAgg), oGrid.Rows[nRow].Cells[10].Value.ToString()));
                         sQuery += oGrid.Rows[nRow].Cells[9].Value.ToString() + "," + Conversion.Str(nAggtype) + ")";

@@ -565,7 +565,7 @@ namespace EmsBMSReports
                     {
                         v.isUsed = true;
                         //bool bFound = false;
-                        //if (g_bIsBMS == 1)
+                        //if (g_dbType==DBType.EBODB)
                         //{
                         //    var loopTo = oGrid.Rows.Count - 1;
                         //    for (nRow = 0; nRow <= loopTo; nRow++)
@@ -591,7 +591,7 @@ namespace EmsBMSReports
                         {
                             nRow = oGrid.Rows.Add();
                             oGrid.Rows[nRow].Cells[0].Value = 0;
-                            if (g_bIsBMS == 1)
+                            if (g_trendDBType == DBType.EBODB)
                             {
                                 oGrid.Rows[nRow].Cells[1].Value = v.id;
                             }
@@ -689,7 +689,7 @@ namespace EmsBMSReports
                 //var oDlg = new DlgSelectTrentDataPoint();
                 //if (oDlg.ShowDialog() == DialogResult.OK)
                 //{
-                //    if (g_bIsBMS == 1)
+                //    if (g_dbType==DBType.EBODB)
                 //    {
                 //        //oGrid.Rows[e.RowIndex].Cells[1].Value = oDlg.m_nLogID;
                 //    }

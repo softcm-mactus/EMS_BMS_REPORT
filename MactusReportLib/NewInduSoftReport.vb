@@ -13,6 +13,9 @@ Public Class NewInduSoftReport
     Public g_nReportType As ReportType
     Public g_nAlmGroupID As Integer
 
+    Public g_sEMSDbConString As String = ""
+    Public g_bIsGMTTime As Boolean = False
+
     Private g_fSideMargin As Single = 40
     Private g_fTopBottomMargin As Single = 30
     Private g_fSideFactor As Single = 79.9
@@ -455,7 +458,8 @@ Public Class NewInduSoftReport
                 End If
 
             Catch ex As Exception
-                MsgBox("OnEndPage" + ex.Message)
+                LogError("NewIndusoftReport.vb", "ReadReportConfiguration()", ex.Message)
+                Throw ex
             End Try
 
         End Sub
@@ -496,6 +500,8 @@ Public Class NewInduSoftReport
             g_nHeaderCount += 1
         End If
 
+        g_sEMSDbConString = g_sColDBConString
+        g_bIsGMTTime = g_isColGMTTime
         Try
             sQuery = "SELECT * FROM TBL_ReportsConfiguration WHERE ReportID=" + g_nReportID.ToString
             Dim oConnection As New OdbcConnection(g_sConString)
@@ -596,6 +602,7 @@ Public Class NewInduSoftReport
         Catch ex As Exception
             UpdateExceptionInDatabase(nReportID, ex.Message)
             LogError("NewIndusoftReport.vb", "ReadReportConfiguration()", ex.Message)
+            Throw ex
             Exit Sub
         End Try
 
@@ -621,6 +628,7 @@ Public Class NewInduSoftReport
 
         Catch ex As Exception
             LogError("NewIndusoftReport.vb", "ReadReportColumnConfiguration()", ex.Message)
+            Throw ex
         End Try
 
     End Sub
@@ -757,6 +765,7 @@ Public Class NewInduSoftReport
             oConnection.Close()
         Catch ex As Exception
             LogError("NewIndusoftReport.vb", "ReadReportTemplateConfiguration()", ex.Message)
+            Throw ex
 
         End Try
     End Sub
@@ -986,6 +995,7 @@ Public Class NewInduSoftReport
             oConnection.Close()
         Catch ex As Exception
             LogError("NewIndusoftReport.vb", "ReadReportColumnConfiguration()", ex.Message)
+            Throw ex
         End Try
     End Sub
 
@@ -1117,12 +1127,14 @@ Public Class NewInduSoftReport
 
         Catch ex As Exception
             LogError("NewIndusoftReport.vb", "FormatCharts()", ex.Message)
+            Throw ex
         End Try
     End Sub
 
 
-    Public Function GenerateTrendChartReport(ByVal nReportStatusID As Integer, ByVal dtFrom As Date, ByVal dtTo As Date, ByRef sOutFileName As String, ByRef nTimeInterval As Integer) As Boolean
+    Public Function GenerateTrendChartReport(reportId As Integer, nReportStatusID As Integer, ByVal dtFrom As Date, ByVal dtTo As Date, ByRef sOutFileName As String, ByRef nTimeInterval As Integer) As Boolean
 
+        ReadReportConfiguration(reportId)
         GenerateTrendChartReport = False
 
         Dim nTopMargin As Integer = 0
@@ -1320,9 +1332,9 @@ Public Class NewInduSoftReport
                         Try
                             oAlmTime = oReader("Al_Start_Time")
                             If g_bIsGMTTime Then
-                                sValues(0) = FormatTimeToString(oAlmTime.ToLocalTime, g_oColList(0).m_sColFormat)
+                                sValues(0) = FormatTimeToString(oAlmTime.ToLocalTime, g_bIsGMTTime, g_oColList(0).m_sColFormat)
                             Else
-                                sValues(0) = FormatTimeToString(oAlmTime, g_oColList(0).m_sColFormat)
+                                sValues(0) = FormatTimeToString(oAlmTime, g_bIsGMTTime, g_oColList(0).m_sColFormat)
                             End If
                         Catch ex As Exception
                             LogError("NewIndusoftReport.vb", "GetPointAlarmList()", ex.Message)
@@ -1368,9 +1380,9 @@ Public Class NewInduSoftReport
                                 oAlmInfo.m_sDuration = GetDurationString(oAlmTime, oAlmRtnTime)
 
                                 If g_bIsGMTTime Then
-                                    oAlmInfo.m_sEndTime = FormatTimeToString(oAlmRtnTime.ToLocalTime, g_oColList(0).m_sColFormat)
+                                    oAlmInfo.m_sEndTime = FormatTimeToString(oAlmRtnTime.ToLocalTime, g_bIsGMTTime, g_oColList(0).m_sColFormat)
                                 Else
-                                    oAlmInfo.m_sEndTime = FormatTimeToString(oAlmRtnTime, g_oColList(0).m_sColFormat)
+                                    oAlmInfo.m_sEndTime = FormatTimeToString(oAlmRtnTime, g_bIsGMTTime, g_oColList(0).m_sColFormat)
                                 End If
                             Else
                                 oAlmInfo.m_sDuration = "Active"
@@ -1556,14 +1568,14 @@ Public Class NewInduSoftReport
     End Sub
 
 
-    Public Function GenerateTrendReport(ByVal nReportStatusID As Integer, ByVal dtFrom As Date, ByVal dtTo As Date, ByRef sOutFileName As String, ByRef nTimeInterval As Integer) As Boolean
+    Public Function GenerateTrendReport(reportId As Integer, nReportStatusID As Integer, ByVal dtFrom As Date, ByVal dtTo As Date, ByRef sOutFileName As String, ByRef nTimeInterval As Integer) As Boolean
 
+        ReadReportConfiguration(reportId)
         GenerateTrendReport = False
         Dim nTopMargin As Integer = 0
         Dim nBottomMargin As Integer = 0
         g_Current_MinVal = 999.0
         g_Current_MaxVal = -999.0
-
 
         Try
 
@@ -1855,6 +1867,8 @@ Public Class NewInduSoftReport
                 oReader.Close()
             Catch ex As Exception
                 LogError("NewIndusoftReport.vb", "GetColInstanceValues()", ex.Message)
+                oConnection.Close()
+                Throw ex
             End Try
             oConnection.Close()
         End Using
@@ -2011,9 +2025,10 @@ Public Class NewInduSoftReport
         End Try
     End Function
 
-    Public Function GenerateEventReport(ByRef nReportStatusID As Long, ByVal dtFrom As Date, ByVal dtTo As Date, ByRef sOutFileName As String) As Boolean
+    Public Function GenerateEventReport(reportId As Integer, nReportStatusID As Long, ByVal dtFrom As Date, ByVal dtTo As Date, ByRef sOutFileName As String) As Boolean
         GenerateEventReport = False
 
+        ReadReportConfiguration(reportId)
         Dim oReader As OdbcDataReader
         Dim sQuery As String
         Dim nTopMargin As Integer = 0
@@ -2156,8 +2171,9 @@ Public Class NewInduSoftReport
     End Function
 
 
-    Public Function GenerateAlarmReport(ByRef nReportStatusID As Long, ByVal dtFrom As Date, ByVal dtTo As Date, ByRef sOutFileName As String) As Boolean
+    Public Function GenerateAlarmReport(reportId As Integer, nReportStatusID As Long, ByVal dtFrom As Date, ByVal dtTo As Date, ByRef sOutFileName As String) As Boolean
 
+        ReadReportConfiguration(reportId)
         GenerateAlarmReport = False
 
         Dim sAlmGrpColName As String = ""

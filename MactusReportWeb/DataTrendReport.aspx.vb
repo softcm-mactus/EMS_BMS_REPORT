@@ -198,7 +198,13 @@ Public Class DataTrendReport
 
 
         Dim nReportStatusID As Long
-        nReportStatusID = InsertNewReportStatusRecord(nReportID, oFromDate, oToDate, nInterval, m_sUserName, ReportType.DataReport)
+
+        If g_trendDBType = DBType.EBODB Then
+            nReportStatusID = InsertNewReportStatusRecord(ReportType.DataReport, nReportID, g_isEBOGMTTime, oFromDate, oToDate, nInterval, m_sUserName, ReportType.AlarmReport)
+        Else
+            nReportStatusID = InsertNewReportStatusRecord(ReportType.DataReport, nReportID, g_isColGMTTime, oFromDate, oToDate, nInterval, m_sUserName, ReportType.AlarmReport)
+        End If
+
         Response.Redirect("ReportProgress.aspx?ReportStatusID=" + nReportStatusID.ToString(), False)
 
         'Dim sFileName As String = ""

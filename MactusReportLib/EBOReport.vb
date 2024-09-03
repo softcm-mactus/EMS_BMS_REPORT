@@ -10,8 +10,9 @@ Imports iTextSharp.text.pdf
 Public Class EBOReport
     Private g_sReportTitle As String
     Public g_nReportID As Integer
-    Public g_nReportType As ReportType
     Public g_nAlmGroupID As Integer
+    Public g_sEMSDbConString As String = ""
+    Public g_bIsGMTTime As Boolean = False
 
     Private g_fSideMargin As Single = 40
     Private g_fTopBottomMargin As Single = 30
@@ -445,6 +446,9 @@ Public Class EBOReport
             g_nHeaderCount += 1
         End If
 
+        g_sEMSDbConString = g_sEBODBConString
+        g_bIsGMTTime = g_isEBOGMTTime
+
         Try
             sQuery = "SELECT * FROM TBL_ReportsConfiguration WHERE ReportID=" + g_nReportID.ToString
             Dim oConnection As New OdbcConnection(g_sConString)
@@ -538,6 +542,7 @@ Public Class EBOReport
                 Catch ex As Exception
                     g_bPrintMinMaxRows = False
                 End Try
+
             End If
 
             oReader.Close()
@@ -1044,8 +1049,9 @@ Public Class EBOReport
         End Try
     End Sub
 
-    Public Function GenerateTrendChartReport(ByVal nReportStatusID As Integer, ByVal dtFrom As Date, ByVal dtTo As Date, ByRef sOutFileName As String, ByRef nTimeInterval As Integer) As Boolean
+    Public Function GenerateTrendChartReport(reportId As Integer, nReportStatusID As Integer, ByVal dtFrom As Date, ByVal dtTo As Date, ByRef sOutFileName As String, ByRef nTimeInterval As Integer) As Boolean
 
+        ReadReportConfiguration(reportId)
         GenerateTrendChartReport = False
 
         Dim nTopMargin As Integer = 0
@@ -1248,9 +1254,9 @@ Public Class EBOReport
 
                             oAlmTime = oReader("timestamp")
                             If g_bIsGMTTime Then
-                                sValues(0) = FormatTimeToString(oAlmTime.ToLocalTime, g_oColList(0).m_sColFormat)
+                                sValues(0) = FormatTimeToString(oAlmTime.ToLocalTime, g_bIsGMTTime, g_oColList(0).m_sColFormat)
                             Else
-                                sValues(0) = FormatTimeToString(oAlmTime, g_oColList(0).m_sColFormat)
+                                sValues(0) = FormatTimeToString(oAlmTime, g_bIsGMTTime, g_oColList(0).m_sColFormat)
                             End If
                         Catch ex As Exception
                             LogError("EBOReport.vb", "GetPointAlarmList()", ex.Message)
@@ -1281,9 +1287,9 @@ Public Class EBOReport
                                 oAlmInfo.m_sDuration = GetDurationString(oAlmTime, oAlmRtnTime)
 
                                 If g_bIsGMTTime Then
-                                    oAlmInfo.m_sEndTime = FormatTimeToString(oAlmRtnTime.ToLocalTime, g_oColList(0).m_sColFormat)
+                                    oAlmInfo.m_sEndTime = FormatTimeToString(oAlmRtnTime.ToLocalTime, g_bIsGMTTime, g_oColList(0).m_sColFormat)
                                 Else
-                                    oAlmInfo.m_sEndTime = FormatTimeToString(oAlmRtnTime, g_oColList(0).m_sColFormat)
+                                    oAlmInfo.m_sEndTime = FormatTimeToString(oAlmRtnTime, g_bIsGMTTime, g_oColList(0).m_sColFormat)
                                 End If
                             Else
                                 oAlmInfo.m_sDuration = "Active"
@@ -1510,8 +1516,9 @@ Public Class EBOReport
 
     End Function
 
-    Public Function GenerateTrendReport(ByVal nReportStatusID As Integer, ByVal dtFrom As Date, ByVal dtTo As Date, ByRef sOutFileName As String, ByRef nTimeInterval As Integer) As Boolean
+    Public Function GenerateTrendReport(reportId As Integer, nReportStatusID As Integer, ByVal dtFrom As Date, ByVal dtTo As Date, ByRef sOutFileName As String, ByRef nTimeInterval As Integer) As Boolean
 
+        ReadReportConfiguration(reportId)
         GenerateTrendReport = False
         Dim nTopMargin As Integer = 0
         Dim nBottomMargin As Integer = 0
@@ -1717,7 +1724,7 @@ Public Class EBOReport
         oFromDate = oTime.AddSeconds(-30)
         oToDate = oFromDate.AddMinutes(nIntervalMin)
         '  oToDate = oToDate.AddSeconds(30)
-        g_oColList(0).m_sValue = FormatTimeToString(oTime, g_oColList(0).m_sColFormat)
+        g_oColList(0).m_sValue = FormatTimeToString(oTime, g_bIsGMTTime, g_oColList(0).m_sColFormat)
         'If g_bIsGMTTime Then
         '    oToDate = oToDate.ToUniversalTime
         '    oFromDate = oFromDate.ToUniversalTime
@@ -1878,9 +1885,10 @@ Public Class EBOReport
         End Try
     End Function
 
-    Public Function GenerateEventReport(ByVal nReportStatusID As Long, ByVal dtFrom As Date, ByVal dtTo As Date, ByRef sOutFileName As String) As Boolean
+    Public Function GenerateEventReport(reportId As Integer, nReportStatusID As Long, ByVal dtFrom As Date, ByVal dtTo As Date, ByRef sOutFileName As String) As Boolean
         GenerateEventReport = False
 
+        ReadReportConfiguration(reportId)
         Dim oReader As OdbcDataReader
         Dim sQuery As String
         Dim nTopMargin As Integer = 0
@@ -2141,8 +2149,9 @@ Public Class EBOReport
 
     End Function
 
-    Public Function GenerateAlarmReport(ByVal nReportStatusID As Long, ByVal dtFrom As Date, ByVal dtTo As Date, ByRef sOutFileName As String) As Boolean
+    Public Function GenerateAlarmReport(reportId As Integer, nReportStatusID As Long, ByVal dtFrom As Date, ByVal dtTo As Date, ByRef sOutFileName As String) As Boolean
 
+        ReadReportConfiguration(reportId)
         GenerateAlarmReport = False
 
         Dim oReader As OdbcDataReader
@@ -2256,9 +2265,9 @@ Public Class EBOReport
 
                                 oAlmTime = oReader("timestamp")
                                 If g_bIsGMTTime Then
-                                    sValues(0) = FormatTimeToString(oAlmTime.ToLocalTime, g_oColList(0).m_sColFormat)
+                                    sValues(0) = FormatTimeToString(oAlmTime.ToLocalTime, g_bIsGMTTime, g_oColList(0).m_sColFormat)
                                 Else
-                                    sValues(0) = FormatTimeToString(oAlmTime, g_oColList(0).m_sColFormat)
+                                    sValues(0) = FormatTimeToString(oAlmTime, g_bIsGMTTime, g_oColList(0).m_sColFormat)
                                 End If
                             Catch ex As Exception
                                 LogError("EBOReport.vb", "GenerateAlarmReport()", ex.Message)
@@ -2288,9 +2297,9 @@ Public Class EBOReport
 
                                 If bAlmRtn Then
                                     If g_bIsGMTTime Then
-                                        sValues(3) = FormatTimeToString(oAlmRtnTime.ToLocalTime, g_oColList(0).m_sColFormat)
+                                        sValues(3) = FormatTimeToString(oAlmRtnTime.ToLocalTime, g_bIsGMTTime, g_oColList(0).m_sColFormat)
                                     Else
-                                        sValues(3) = FormatTimeToString(oAlmRtnTime, g_oColList(0).m_sColFormat)
+                                        sValues(3) = FormatTimeToString(oAlmRtnTime, g_bIsGMTTime, g_oColList(0).m_sColFormat)
                                     End If
                                 Else
                                     sValues(3) = ""
@@ -2298,9 +2307,9 @@ Public Class EBOReport
 
                                 If bACKDOne Then
                                     If g_bIsGMTTime Then
-                                        sValues(4) = FormatTimeToString(oAlarmAckTime.ToLocalTime, g_oColList(0).m_sColFormat)
+                                        sValues(4) = FormatTimeToString(oAlarmAckTime.ToLocalTime, g_bIsGMTTime, g_oColList(0).m_sColFormat)
                                     Else
-                                        sValues(4) = FormatTimeToString(oAlarmAckTime, g_oColList(0).m_sColFormat)
+                                        sValues(4) = FormatTimeToString(oAlarmAckTime, g_bIsGMTTime, g_oColList(0).m_sColFormat)
                                     End If
                                 Else
                                     sValues(4) = ""

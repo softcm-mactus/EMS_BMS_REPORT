@@ -207,7 +207,7 @@ namespace ReportsSetup
                 logInfo($"Updating EBO DB info in configuration database: \"{installInfo.eboInfo.connectionString}\"");
                 try
                 {
-                    string query = $"Update TBL_ReportAppConfig set Value = '{installInfo.eboInfo.connectionString}' where Code = 'EMSDBODBCLocation'";
+                    string query = $"Update TBL_ReportAppConfig set Value = '{installInfo.eboInfo.connectionString}' where Code = 'COLDBLocation'";
                     using (var oConnection = new OdbcConnection(installInfo.dbInfo.connectionString))
                     {
                         oConnection.Open();

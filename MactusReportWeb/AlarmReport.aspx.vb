@@ -153,7 +153,13 @@ Public Class AlarmReport
         End Try
 
         Dim nReportStatusID As Long
-        nReportStatusID = InsertNewReportStatusRecord(nReportID, oFromDate, oToDate, nInterval, m_sUserName, ReportType.AlarmReport)
+
+        If g_dbType = DBType.EBODB Then
+            nReportStatusID = InsertNewReportStatusRecord(ReportType.AlarmReport, nReportID, g_isEBOGMTTime, oFromDate, oToDate, nInterval, m_sUserName, ReportType.AlarmReport)
+        Else
+            nReportStatusID = InsertNewReportStatusRecord(ReportType.AlarmReport, nReportID, g_isColGMTTime, oFromDate, oToDate, nInterval, m_sUserName, ReportType.AlarmReport)
+        End If
+
         Response.Redirect("ReportProgress.aspx?ReportStatusID=" + nReportStatusID.ToString(), False)
 
 
